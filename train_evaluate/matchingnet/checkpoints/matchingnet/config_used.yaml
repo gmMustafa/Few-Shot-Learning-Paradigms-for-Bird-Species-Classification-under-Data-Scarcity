@@ -1,0 +1,48 @@
+base_classes:
+- ABBOTTS BABBLER
+- ABBOTTS BOOBY
+- ABYSSINIAN GROUND HORNBILL
+- AFRICAN CROWNED CRANE
+- AFRICAN EMERALD CUCKOO
+- AFRICAN FIREFINCH
+- AFRICAN OYSTER CATCHER
+- AFRICAN PIED HORNBILL
+- AFRICAN PYGMY GOOSE
+- ALBATROSS
+- ALBERTS TOWHEE
+- ALEXANDRINE PARAKEET
+- ALPINE CHOUGH
+- ALTAMIRA YELLOWTHROAT
+- AMERICAN AVOCET
+data:
+  test: ../../data/test
+  train: ../../data/train
+  val: ../../data/valid
+eval:
+  episodes: 600
+  k_shot: 1
+  n_way: 5
+  num_workers: 0
+experiment:
+  name: matchingnet_base15_novel5
+image_size: 224
+novel_classes:
+- AMERICAN BITTERN
+- AMERICAN COOT
+- AMERICAN FLAMINGO
+- AMERICAN GOLDFINCH
+- AMERICAN KESTREL
+output:
+  ckpt_dir: checkpoints/matchingnet
+  ckpt_name: matchingnet_best.pth
+  results_dir: ../../results/matching_net
+seed: 42
+train:
+  episodes_per_epoch: 5
+  k_shot: 1
+  lr: 0.0001
+  n_way: 5
+  num_epochs: 1
+  num_workers: 0
+  patience: 1
+  q_query: 4

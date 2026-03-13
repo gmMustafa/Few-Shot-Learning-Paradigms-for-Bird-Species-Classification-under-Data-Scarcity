@@ -205,3 +205,33 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# ── Project-specific ──────────────────────────────────────────────────────────
+
+# ML model checkpoints and weights (large binaries)
+*.pth
+*.pt
+*.ckpt
+*.h5
+*.hdf5
+*.safetensors
+
+# Dataset (transfer separately via rsync/scp)
+data/train/
+data/test/
+data/valid/
+data/images*/
+*.csv
+
+# Generated results and plots (reproducible from code)
+results/
+plots/
+
+# SLURM / HPC job logs
+logs/
+*.out
+*.err
+
+# IDE settings
+.vscode/
+.idea/
