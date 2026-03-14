@@ -1,0 +1,32 @@
+{
+  "experiment": "matchingnet_base15_novel5",
+  "model": "matchingnet_resnet50",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "num_episodes": 600,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": ".\\train_evaluate\\matchingnet\\checkpoints\\matchingnet\\matchingnet_best.pth",
+  "epochs_trained": 1,
+  "mean_accuracy_pct": 99.3933,
+  "std_accuracy_pct": 2.8807,
+  "ci95_pct": 0.2305,
+  "wilson_ci_95": [
+    99.2558,
+    99.5056
+  ],
+  "macro_f1": 0.9939,
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 100.0,
+    "AMERICAN COOT": 98.8667,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 98.1
+  }
+}

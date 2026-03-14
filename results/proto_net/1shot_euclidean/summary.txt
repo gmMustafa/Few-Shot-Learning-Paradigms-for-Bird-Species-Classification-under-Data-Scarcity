@@ -1,0 +1,18 @@
+ProtoNet — 5-way 1-shot Evaluation (euclidean distance)
+============================================================
+Episodes       : 600
+Distance       : euclidean
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : .\train_evaluate\proto_net\checkpoints\protonet\protonet_best.pth
+
+Mean accuracy  : 94.07% ± 0.69% (95% CI)
+Std            : 8.68%
+Wilson CI 95%  : [93.68%, 94.43%]
+Macro F1       : 0.9404
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 96.80%
+  AMERICAN COOT                 : 95.90%
+  AMERICAN FLAMINGO             : 98.37%
+  AMERICAN GOLDFINCH            : 98.60%
+  AMERICAN KESTREL              : 80.67%

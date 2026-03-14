@@ -1,0 +1,32 @@
+Experiment:     resnet50_base15
+Checkpoint:     .\train_evaluate\baseline\resNet50_b15\checkpoints\baseline\base15\resnet50_base15_best.pth
+Epochs trained: 1
+Seed:           42
+LR:             0.0001
+Num classes:    15 (base)
+Test images:    75
+
+Best Val Acc:   98.67%
+Test Accuracy:  100.00%
+95% CI:         [95.13%, 100.00%]
+Macro AUC (OvR):1.0000
+
+                            precision  recall  f1-score  support
+ABBOTTS BABBLER                   1.0     1.0       1.0      5.0
+ABBOTTS BOOBY                     1.0     1.0       1.0      5.0
+ABYSSINIAN GROUND HORNBILL        1.0     1.0       1.0      5.0
+AFRICAN CROWNED CRANE             1.0     1.0       1.0      5.0
+AFRICAN EMERALD CUCKOO            1.0     1.0       1.0      5.0
+AFRICAN FIREFINCH                 1.0     1.0       1.0      5.0
+AFRICAN OYSTER CATCHER            1.0     1.0       1.0      5.0
+AFRICAN PIED HORNBILL             1.0     1.0       1.0      5.0
+AFRICAN PYGMY GOOSE               1.0     1.0       1.0      5.0
+ALBATROSS                         1.0     1.0       1.0      5.0
+ALBERTS TOWHEE                    1.0     1.0       1.0      5.0
+ALEXANDRINE PARAKEET              1.0     1.0       1.0      5.0
+ALPINE CHOUGH                     1.0     1.0       1.0      5.0
+ALTAMIRA YELLOWTHROAT             1.0     1.0       1.0      5.0
+AMERICAN AVOCET                   1.0     1.0       1.0      5.0
+accuracy                          1.0     1.0       1.0      1.0
+macro avg                         1.0     1.0       1.0     75.0
+weighted avg                      1.0     1.0       1.0     75.0

@@ -1,0 +1,18 @@
+Option A: Zero-Shot Transfer — base-15 model on novel-5 test images
+======================================================================
+
+The model was trained on 15 base classes.
+It has a 15-class output head.
+When novel class images are passed through, all predictions are
+'wrong' — the model assigns each novel image to some base class.
+
+Novel images evaluated: 25
+Top-1 accuracy (novel): 0.0% (definitionally 0)
+
+Per-novel-class breakdown:
+       novel_class  total_images       top_predicted_as  top_count
+  AMERICAN BITTERN             5        ABBOTTS BABBLER          4
+     AMERICAN COOT             5 AFRICAN OYSTER CATCHER          5
+ AMERICAN FLAMINGO             5        AMERICAN AVOCET          3
+AMERICAN GOLDFINCH             5  ALTAMIRA YELLOWTHROAT          5
+  AMERICAN KESTREL             5    AFRICAN PYGMY GOOSE          3

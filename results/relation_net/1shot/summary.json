@@ -1,0 +1,32 @@
+{
+  "experiment": "relationnet_base15_novel5",
+  "model": "relationnet_resnet50",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "num_episodes": 600,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": ".\\train_evaluate\\relationnet\\checkpoints\\relationnet\\relationnet_best.pth",
+  "epochs_trained": 1,
+  "mean_accuracy_pct": 18.9267,
+  "std_accuracy_pct": 5.694,
+  "ci95_pct": 0.4556,
+  "wilson_ci_95": [
+    18.3078,
+    19.5615
+  ],
+  "macro_f1": 0.1501,
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 29.4333,
+    "AMERICAN COOT": 6.0667,
+    "AMERICAN FLAMINGO": 46.0667,
+    "AMERICAN GOLDFINCH": 13.0667,
+    "AMERICAN KESTREL": 0.0
+  }
+}

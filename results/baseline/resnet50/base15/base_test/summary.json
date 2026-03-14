@@ -1,0 +1,22 @@
+{
+  "experiment": "resnet50_base15_base_test",
+  "model": "resnet50",
+  "seed": 42,
+  "lr": 0.0001,
+  "batch_size": 16,
+  "epochs_trained": 1,
+  "checkpoint": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_best.pth",
+  "num_classes": 15,
+  "test_images": 75,
+  "val_acc_best": 0.9866666666666667,
+  "accuracy": 1.0,
+  "accuracy_ci_95": [
+    0.9512761575171942,
+    1.0
+  ],
+  "macro_f1": 1.0,
+  "macro_precision": 1.0,
+  "macro_recall": 1.0,
+  "weighted_f1": 1.0,
+  "macro_auc_ovr": 1.0
+}

@@ -1,0 +1,50 @@
+\begin{table}[htbp]
+\centering
+\caption{Comparison of Methods on Novel Bird Species Classification (5 Novel Classes). Reference results use full training data and are not directly comparable to few-shot methods. Direct results use the same K images per novel class as the FSL methods.}
+\label{tab:results_comparison}
+\begin{tabular}{llccc}
+\hline
+\textbf{Group} & \textbf{Method} & \textbf{Accuracy (\%)} & \textbf{95\% CI} & \textbf{Macro F1} \\
+\hline
+\multicolumn{5}{l}{\textit{Supervised (Reference)}} \\
+  & Full-20 Baseline & 99.00\% & [94.55, 99.82] & 0.9899 \\
+  & Base-15 Baseline & 100.00\% & [95.13, 100.00] & 1.0000 \\
+\hline
+\multicolumn{5}{l}{\textit{Low-Data Supervised}} \\
+  & K=5 Fine-tune & 60.00\% & [40.74, 76.60] & 0.5835 \\
+\hline
+\multicolumn{5}{l}{\textit{Zero-Shot Reference}} \\
+  & Zero-Shot Transfer & 0.00\% & [0.0, 0.0] & --- \\
+\hline
+\multicolumn{5}{l}{\textit{NCC 1-Shot}} \\
+  & NCC (Euclidean) & 80.80\% & [73.02, 86.74] & --- \\
+  & NCC (Manhattan) & --- & --- & --- \\
+\hline
+\multicolumn{5}{l}{\textit{NCC 3-Shot}} \\
+  & NCC (Euclidean) & --- & --- & --- \\
+  & NCC (Manhattan) & --- & --- & --- \\
+\hline
+\multicolumn{5}{l}{\textit{NCC 5-Shot}} \\
+  & NCC (Euclidean) & --- & --- & --- \\
+  & NCC (Manhattan) & --- & --- & --- \\
+\hline
+\multicolumn{5}{l}{\textit{FSL 1-Shot}} \\
+  & ProtoNet (Euclidean) & 92.00\% & [85.90, 95.60] & --- \\
+  & ProtoNet (Manhattan) & 47.20\% & [38.66, 55.90] & --- \\
+  & MatchingNet (Cosine) & 96.80\% & [92.06, 98.75] & --- \\
+  & RelationNet (Learned) & 16.80\% & [11.26, 24.32] & --- \\
+\hline
+\multicolumn{5}{l}{\textit{FSL 3-Shot}} \\
+  & ProtoNet (Euclidean) & --- & --- & --- \\
+  & ProtoNet (Manhattan) & --- & --- & --- \\
+  & MatchingNet (Cosine) & --- & --- & --- \\
+  & RelationNet (Learned) & --- & --- & --- \\
+\hline
+\multicolumn{5}{l}{\textit{FSL 5-Shot}} \\
+  & ProtoNet (Euclidean) & --- & --- & --- \\
+  & ProtoNet (Manhattan) & --- & --- & --- \\
+  & MatchingNet (Cosine) & --- & --- & --- \\
+  & RelationNet (Learned) & --- & --- & --- \\
+\hline
+\end{tabular}
+\end{table}

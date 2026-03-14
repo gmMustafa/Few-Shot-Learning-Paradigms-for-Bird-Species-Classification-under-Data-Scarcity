@@ -1,0 +1,16 @@
+ProtoNet — 5-way 1-shot Evaluation
+============================================================
+Episodes       : 5
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : .\train_evaluate\proto_net\checkpoints\protonet\protonet_best.pth
+
+Mean accuracy  : 92.00% ± 8.59% (95% CI)
+Std            : 9.80%
+Wilson CI 95%  : [85.90%, 95.60%]
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 80.00%
+  AMERICAN COOT                 : 100.00%
+  AMERICAN FLAMINGO             : 100.00%
+  AMERICAN GOLDFINCH            : 100.00%
+  AMERICAN KESTREL              : 80.00%

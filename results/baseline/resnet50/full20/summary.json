@@ -1,0 +1,22 @@
+{
+  "experiment": "resnet50_full20",
+  "model": "resnet50",
+  "seed": 42,
+  "lr": 0.0001,
+  "batch_size": 16,
+  "epochs_trained": 1,
+  "checkpoint": ".\\train_evaluate\\baseline\\resNet50_FS\\checkpoints\\baseline\\full20\\resnet50_full20_best.pth",
+  "num_classes": 20,
+  "test_images": 100,
+  "val_acc_best": 1.0,
+  "accuracy": 0.99,
+  "accuracy_ci_95": [
+    0.9455138038212946,
+    0.9982325679358593
+  ],
+  "macro_f1": 0.98989898989899,
+  "macro_precision": 0.9916666666666668,
+  "macro_recall": 0.99,
+  "weighted_f1": 0.98989898989899,
+  "macro_auc_ovr": 1.0
+}

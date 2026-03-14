@@ -1,0 +1,17 @@
+Relation Networks — 5-way 1-shot Evaluation
+============================================================
+Episodes       : 600
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : .\train_evaluate\relationnet\checkpoints\relationnet\relationnet_best.pth
+
+Mean accuracy  : 18.93% ± 0.46% (95% CI)
+Std            : 5.69%
+Wilson CI 95%  : [18.31%, 19.56%]
+Macro F1       : 0.1501
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 29.43%
+  AMERICAN COOT                 : 6.07%
+  AMERICAN FLAMINGO             : 46.07%
+  AMERICAN GOLDFINCH            : 13.07%
+  AMERICAN KESTREL              : 0.00%

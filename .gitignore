@@ -140,6 +140,7 @@ celerybeat.pid
 .venv
 env/
 venv/
+fsl_venv/
 ENV/
 env.bak/
 venv.bak/
@@ -224,8 +225,8 @@ data/images*/
 *.csv
 
 # Generated results and plots (reproducible from code)
-results/
-plots/
+#results/
+#plots/
 
 # SLURM / HPC job logs
 logs/

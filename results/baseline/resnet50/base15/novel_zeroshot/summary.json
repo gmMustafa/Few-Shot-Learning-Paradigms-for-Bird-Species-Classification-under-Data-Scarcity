@@ -1,0 +1,9 @@
+{
+  "experiment": "base15_novel_zeroshot",
+  "checkpoint": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_best.pth",
+  "num_base_classes": 15,
+  "num_novel_classes": 5,
+  "novel_test_images": 25,
+  "top1_accuracy": 0.0,
+  "note": "Accuracy is 0 by definition: the model has a 15-class head and cannot output novel class labels. The heatmap shows which base classes novel images get assigned to."
+}

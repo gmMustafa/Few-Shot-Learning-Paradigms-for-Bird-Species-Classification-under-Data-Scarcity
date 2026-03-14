@@ -1,0 +1,315 @@
+"""
+plots/tsne_plot.py — t-SNE embedding visualization for FSL backbone.
+
+Shows how novel class images cluster in the ResNet-50 feature space.
+Generates a side-by-side comparison:
+  LEFT  : Embeddings from ImageNet pretrained ResNet-50 (no FSL training)
+  RIGHT : Embeddings from the trained ProtoNet backbone
+
+This directly visualizes what episodic training achieves — tighter,
+more separable clusters for novel classes.
+
+Additionally generates:
+  - A single plot of the trained model embeddings with prototypes marked
+  - Saved to results/proto_net/tsne/
+
+Usage:
+    python plots/tsne_plot.py
+    python plots/tsne_plot.py --no-pretrained   # skip the before/after comparison
+
+Requirements: scikit-learn (already installed via sklearn)
+"""
+import os
+import sys
+import random
+import argparse
+
+import numpy as np
+import torch
+import torch.nn as nn
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from sklearn.manifold import TSNE
+from torchvision.models import resnet50, ResNet50_Weights
+import yaml
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+
+from utils.dataset import FilteredDataset, get_eval_transforms
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Colour per novel class
+NOVEL_COLORS = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
+NOVEL_SHORT  = ['AM. BITTERN', 'AM. COOT', 'AM. FLAMINGO',
+                'AM. GOLDFINCH', 'AM. KESTREL']
+
+
+def set_seed(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+
+def load_novel_images(data_root, novel_classes, image_size=224, max_per_class=None):
+    """
+    Load images from BOTH novel train and test sets.
+    Returns:
+        images : list of tensors
+        labels : list of int (0..4)
+        splits : list of str ('train' or 'test')
+    """
+    transform = get_eval_transforms(image_size)
+    images, labels, splits = [], [], []
+
+    for split in ['train', 'test']:
+        split_dir = os.path.join(data_root, split)
+        if not os.path.exists(split_dir):
+            # try 'valid' for val split
+            if split == 'test':
+                continue
+        try:
+            ds = FilteredDataset(split_dir, novel_classes, transform=transform)
+        except Exception:
+            continue
+
+        by_class = ds.get_class_to_indices()
+        for cls_idx in range(len(novel_classes)):
+            idxs = by_class.get(cls_idx, [])
+            if max_per_class:
+                idxs = idxs[:max_per_class]
+            for i in idxs:
+                img, lbl = ds[i]
+                images.append(img)
+                labels.append(cls_idx)
+                splits.append(split)
+
+    return images, labels, splits
+
+
+def extract_embeddings(backbone, images, device, batch_size=16):
+    """Run images through backbone in batches, return numpy embeddings."""
+    backbone.eval()
+    embeddings = []
+    with torch.no_grad():
+        for i in range(0, len(images), batch_size):
+            batch = torch.stack(images[i: i + batch_size]).to(device)
+            emb   = backbone(batch).cpu().numpy()
+            embeddings.append(emb)
+    return np.vstack(embeddings)
+
+
+def compute_prototypes(embeddings, labels, n_way):
+    """Compute class prototype = mean of all embeddings per class."""
+    D = embeddings.shape[1]
+    protos = np.zeros((n_way, D))
+    for c in range(n_way):
+        mask = (np.array(labels) == c)
+        protos[c] = embeddings[mask].mean(axis=0)
+    return protos
+
+
+def plot_tsne(ax, tsne_emb, labels, splits, proto_2d=None,
+              novel_classes=None, title=''):
+    """Plot t-SNE scatter on ax. proto_2d: [n_way, 2] if provided."""
+    n_way = len(NOVEL_COLORS)
+
+    for cls_idx in range(n_way):
+        mask_train = [i for i, (l, s) in enumerate(zip(labels, splits))
+                      if l == cls_idx and s == 'train']
+        mask_test  = [i for i, (l, s) in enumerate(zip(labels, splits))
+                      if l == cls_idx and s == 'test']
+
+        color = NOVEL_COLORS[cls_idx]
+        if mask_train:
+            ax.scatter(tsne_emb[mask_train, 0], tsne_emb[mask_train, 1],
+                       c=color, marker='o', s=18, alpha=0.4, linewidths=0)
+        if mask_test:
+            ax.scatter(tsne_emb[mask_test, 0], tsne_emb[mask_test, 1],
+                       c=color, marker='*', s=80, alpha=0.9,
+                       edgecolors='black', linewidths=0.4,
+                       label=NOVEL_SHORT[cls_idx])
+
+    if proto_2d is not None:
+        ax.scatter(proto_2d[:, 0], proto_2d[:, 1],
+                   c=NOVEL_COLORS[:n_way], marker='P',
+                   s=200, edgecolors='black', linewidths=1.5,
+                   zorder=5, label='Prototype')
+
+    ax.set_title(title, fontsize=11)
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.legend(loc='lower right', fontsize=7, markerscale=1.2)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config', default='configs/proto_configs.yaml',
+                        help='Path to proto config (relative to project root)')
+    parser.add_argument('--no-pretrained', action='store_true',
+                        help='Skip the before/after comparison, show trained only')
+    parser.add_argument('--max-train', type=int, default=30,
+                        help='Max train images per class to embed (default 30)')
+    args = parser.parse_args()
+
+    set_seed(42)
+    device = torch.device('cpu')
+
+    cfg_path = os.path.join(ROOT, args.config)
+    with open(cfg_path) as f:
+        cfg = yaml.safe_load(f)
+
+    novel_classes = cfg['novel_classes']
+    image_size    = cfg['image_size']
+    data_root     = os.path.join(ROOT, 'data')
+    ckpt_path     = os.path.normpath(
+        os.path.join(ROOT, 'train_evaluate', 'proto_net',
+                     cfg['output']['ckpt_dir'], cfg['output']['ckpt_name']))
+
+    out_dir = os.path.join(ROOT, 'results', 'proto_net', 'tsne')
+    os.makedirs(out_dir, exist_ok=True)
+
+    print(f"Loading images for {len(novel_classes)} novel classes...")
+    images, labels, splits = load_novel_images(
+        data_root, novel_classes, image_size,
+        max_per_class=args.max_train)
+
+    if not images:
+        print("ERROR: No novel class images found. Check data paths.")
+        return
+
+    n_test  = sum(1 for s in splits if s == 'test')
+    n_train = sum(1 for s in splits if s == 'train')
+    print(f"Loaded {len(images)} images  ({n_train} train, {n_test} test)")
+
+    # -------------------------------------------------------------------------
+    # TRAINED backbone (ProtoNet checkpoint)
+    # -------------------------------------------------------------------------
+    if not os.path.exists(ckpt_path):
+        print(f"WARNING: Checkpoint not found at {ckpt_path}")
+        print("         Run train.py first. Showing pretrained-only plot.")
+        args.no_pretrained = False   # force pretrained-only mode
+
+    trained_backbone = resnet50(weights=ResNet50_Weights.DEFAULT)
+    trained_backbone.fc = nn.Identity()
+
+    if os.path.exists(ckpt_path):
+        ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+        # Extract just the encoder state dict
+        encoder_state = {k.replace('encoder.', ''): v
+                         for k, v in ckpt['model_state_dict'].items()
+                         if k.startswith('encoder.')}
+        trained_backbone.load_state_dict(encoder_state, strict=False)
+        print(f"Loaded trained checkpoint (epoch {ckpt['epoch']})")
+
+    trained_backbone = trained_backbone.to(device)
+
+    print("Extracting trained embeddings...")
+    trained_emb = extract_embeddings(trained_backbone, images, device)
+
+    # Prototypes from all available embeddings (not just train)
+    protos_trained = compute_prototypes(trained_emb, labels, len(novel_classes))
+
+    # -------------------------------------------------------------------------
+    # PRETRAINED backbone (ImageNet only, no FSL training)
+    # -------------------------------------------------------------------------
+    pretrained_emb = None
+    if not args.no_pretrained:
+        print("Extracting pretrained (ImageNet-only) embeddings...")
+        pretrained_backbone = resnet50(weights=ResNet50_Weights.DEFAULT)
+        pretrained_backbone.fc = nn.Identity()
+        pretrained_backbone = pretrained_backbone.to(device)
+        pretrained_emb = extract_embeddings(pretrained_backbone, images, device)
+
+    # -------------------------------------------------------------------------
+    # t-SNE
+    # -------------------------------------------------------------------------
+    tsne = TSNE(n_components=2, perplexity=min(30, len(images) - 1),
+                random_state=42, max_iter=1000)
+
+    print("Running t-SNE on trained embeddings...")
+    all_for_tsne = trained_emb
+    if pretrained_emb is not None:
+        all_for_tsne = np.vstack([trained_emb, pretrained_emb])
+
+    tsne_all = tsne.fit_transform(all_for_tsne)
+    n = len(images)
+    tsne_trained    = tsne_all[:n]
+    tsne_pretrained = tsne_all[n:] if pretrained_emb is not None else None
+
+    # Project prototypes into t-SNE space (nearest embedding to each prototype)
+    # This is an approximation — t-SNE is non-linear and prototypes aren't in the
+    # original dataset, so we find the closest training image and use its t-SNE coords
+    proto_2d = np.zeros((len(novel_classes), 2))
+    for c in range(len(novel_classes)):
+        dists = np.linalg.norm(trained_emb - protos_trained[c], axis=1)
+        nearest = np.argmin(dists)
+        proto_2d[c] = tsne_trained[nearest]
+
+    # -------------------------------------------------------------------------
+    # Plot
+    # -------------------------------------------------------------------------
+    if pretrained_emb is not None:
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+        plot_tsne(ax1, tsne_pretrained, labels, splits,
+                  proto_2d=None,
+                  novel_classes=novel_classes,
+                  title='Before FSL Training\n(ImageNet pretrained ResNet-50)')
+
+        plot_tsne(ax2, tsne_trained, labels, splits,
+                  proto_2d=proto_2d,
+                  novel_classes=novel_classes,
+                  title='After ProtoNet Training\n(ResNet-50 fine-tuned episodically)')
+
+        # Shared legend
+        train_patch = mpatches.Patch(color='gray', alpha=0.4, label='Train images (●)')
+        test_patch  = mpatches.Patch(color='gray', alpha=0.9, label='Test images (★)')
+        proto_patch = mpatches.Patch(facecolor='white', edgecolor='black',
+                                     label='Prototype (✚)')
+        fig.legend(handles=[train_patch, test_patch, proto_patch],
+                   loc='lower center', ncol=3, fontsize=9,
+                   bbox_to_anchor=(0.5, -0.02))
+
+        plt.suptitle('t-SNE of Novel Class Embeddings — Before vs After ProtoNet Training\n'
+                     '(5 novel bird species, ResNet-50 backbone)',
+                     fontsize=12, y=1.01)
+        plt.tight_layout()
+        out_path = os.path.join(out_dir, 'tsne_before_after.png')
+        plt.savefig(out_path, dpi=150, bbox_inches='tight')
+        plt.close()
+        print(f"Saved: {out_path}")
+
+    # Single trained-only plot
+    fig, ax = plt.subplots(figsize=(8, 7))
+    plot_tsne(ax, tsne_trained, labels, splits,
+              proto_2d=proto_2d,
+              novel_classes=novel_classes,
+              title='t-SNE of Novel Class Embeddings\n'
+                    '(ProtoNet-trained ResNet-50, ● = train, ★ = test, ✚ = prototype)')
+
+    # Manual legend for markers
+    train_line = plt.Line2D([0], [0], marker='o', color='gray',
+                             markersize=6, alpha=0.5, label='Train images', linestyle='None')
+    test_line  = plt.Line2D([0], [0], marker='*', color='gray',
+                             markersize=9, label='Test images', linestyle='None')
+    proto_line = plt.Line2D([0], [0], marker='P', color='gray',
+                             markersize=10, label='Prototype', linestyle='None',
+                             markeredgecolor='black')
+    class_patches = [mpatches.Patch(color=NOVEL_COLORS[i],
+                                    label=NOVEL_SHORT[i])
+                     for i in range(len(novel_classes))]
+    ax.legend(handles=class_patches + [train_line, test_line, proto_line],
+              loc='lower right', fontsize=8)
+
+    plt.tight_layout()
+    out_path = os.path.join(out_dir, 'tsne_trained.png')
+    plt.savefig(out_path, dpi=150)
+    plt.close()
+    print(f"Saved: {out_path}")
+
+
+if __name__ == '__main__':
+    import multiprocessing
+    multiprocessing.freeze_support()
+    main()

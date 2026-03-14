@@ -1,0 +1,27 @@
+{
+  "experiment": "base15_kshot_finetune_K5",
+  "model": "resnet50",
+  "seed": 42,
+  "k_shot": 5,
+  "ft_lr": 5e-05,
+  "batch_size": 16,
+  "base_checkpoint": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_best.pth",
+  "ft_checkpoint": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_finetune_best.pth",
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "train_images": 25,
+  "test_images": 25,
+  "accuracy": 0.6,
+  "accuracy_ci_95": [
+    0.40739457358967,
+    0.7659669762225203
+  ],
+  "macro_f1": 0.5835497835497835,
+  "macro_precision": 0.6222222222222221,
+  "macro_recall": 0.6
+}

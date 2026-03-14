@@ -1,0 +1,34 @@
+{
+  "experiment": "ncc_base15_novel5",
+  "model": "resnet50_base15_backbone",
+  "method": "nearest_centroid_classifier",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "distance": "euclidean",
+  "num_episodes": 5,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "backbone_ckpt": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_best.pth",
+  "backbone_epoch": 1,
+  "note": "Frozen base-15 backbone. No episodic training. Compares directly with ProtoNet (same distance, same K) to isolate the effect of episodic training.",
+  "mean_accuracy_pct": 80.8,
+  "std_accuracy_pct": 5.8788,
+  "ci95_pct": 5.153,
+  "wilson_ci_95": [
+    73.0188,
+    86.7446
+  ],
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 84.0,
+    "AMERICAN COOT": 100.0,
+    "AMERICAN FLAMINGO": 80.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 40.0
+  }
+}

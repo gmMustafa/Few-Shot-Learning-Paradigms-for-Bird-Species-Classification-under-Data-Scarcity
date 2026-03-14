@@ -1,0 +1,31 @@
+{
+  "experiment": "protonet_base15_novel5",
+  "model": "resnet50",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "num_episodes": 5,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": ".\\train_evaluate\\proto_net\\checkpoints\\protonet\\protonet_best.pth",
+  "epochs_trained": 1,
+  "mean_accuracy_pct": 92.0,
+  "std_accuracy_pct": 9.798,
+  "ci95_pct": 8.5883,
+  "wilson_ci_95": [
+    85.8987,
+    95.5967
+  ],
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 80.0,
+    "AMERICAN COOT": 100.0,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 80.0
+  }
+}
