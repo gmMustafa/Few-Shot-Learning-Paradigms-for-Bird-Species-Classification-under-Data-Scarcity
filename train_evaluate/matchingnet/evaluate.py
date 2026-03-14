@@ -149,10 +149,11 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
             all_split.append('test')
 
     encoder.eval()
+    enc_device = next(encoder.parameters()).device
     all_feats = []
     with torch.no_grad():
         for i in range(0, len(all_imgs), 32):
-            batch = torch.stack(all_imgs[i:i + 32])
+            batch = torch.stack(all_imgs[i:i + 32]).to(enc_device)
             all_feats.append(encoder(batch).cpu().numpy())
     X      = np.vstack(all_feats)
     y      = np.array(all_labels)
