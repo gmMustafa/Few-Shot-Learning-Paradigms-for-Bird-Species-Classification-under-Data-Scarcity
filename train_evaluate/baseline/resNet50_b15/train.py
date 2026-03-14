@@ -91,7 +91,17 @@ def main():
     set_seed(SEED)
 
     DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Device: {DEVICE}")
+
+    print("=" * 60)
+    print("DEVICE INFO")
+    print(f"  CUDA available : {torch.cuda.is_available()}")
+    print(f"  Device         : {DEVICE}")
+    if torch.cuda.is_available():
+        print(f"  GPU name       : {torch.cuda.get_device_name(0)}")
+        print(f"  GPU memory     : {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+    else:
+        print("  WARNING: Running on CPU — training will be slow!")
+    print("=" * 60)
 
     EPOCHS      = int(cfg["train"]["epochs"])
     BATCH_SIZE  = int(cfg["train"]["batch_size"])
@@ -103,6 +113,16 @@ def main():
     if args.debug:
         EPOCHS, PATIENCE = 1, 1
         print("DEBUG MODE: epochs=1, patience=1 (smoke test only)")
+
+    print("CONFIG")
+    print(f"  Epochs       : {EPOCHS}")
+    print(f"  Batch size   : {BATCH_SIZE}")
+    print(f"  LR           : {LR}")
+    print(f"  Image size   : {IMAGE_SIZE}")
+    print(f"  Patience     : {PATIENCE}")
+    print(f"  Num workers  : {NUM_WORKERS}")
+    print(f"  Config file  : {config_path}")
+    print("=" * 60)
 
     train_dir = os.path.normpath(os.path.join(script_dir, cfg["data_train"]))
     val_dir   = os.path.normpath(os.path.join(script_dir, cfg["data_valid"]))

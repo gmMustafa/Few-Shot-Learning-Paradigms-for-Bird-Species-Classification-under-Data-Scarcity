@@ -3,6 +3,7 @@
 import os
 import json
 import random
+import time
 import yaml
 import argparse
 import numpy as np
@@ -63,7 +64,17 @@ def main():
     set_seed(int(cfg["train"]["seed"]))
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Device: {device}")
+
+    print("=" * 60)
+    print("DEVICE INFO")
+    print(f"  CUDA available : {torch.cuda.is_available()}")
+    print(f"  Device         : {device}")
+    if torch.cuda.is_available():
+        print(f"  GPU name       : {torch.cuda.get_device_name(0)}")
+        print(f"  GPU memory     : {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+    else:
+        print("  WARNING: Running on CPU — training will be slow!")
+    print("=" * 60)
 
     epochs      = int(cfg["train"]["epochs"])
     batch_size  = int(cfg["train"]["batch_size"])
@@ -71,6 +82,16 @@ def main():
     num_workers = int(cfg["train"]["num_workers"])
     patience    = int(cfg["train"].get("patience", 7))
     image_size  = int(cfg["image_size"])
+
+    print("CONFIG")
+    print(f"  Epochs       : {epochs}")
+    print(f"  Batch size   : {batch_size}")
+    print(f"  LR           : {lr}")
+    print(f"  Image size   : {image_size}")
+    print(f"  Patience     : {patience}")
+    print(f"  Num workers  : {num_workers}")
+    print(f"  Config file  : {config_path}")
+    print("=" * 60)
 
     if args.debug:
         epochs, patience = 1, 1
@@ -144,15 +165,20 @@ def main():
     epochs_no_improve  = 0
     history            = []
 
-    print(f"\nTraining started | Epochs: {epochs} | Batch: {batch_size} | LR: {lr} | Patience: {patience}\n")
+    print(f"\nTraining started | Epochs: {epochs} | Batch: {batch_size} | LR: {lr} | Patience: {patience}")
+    print(f"Start time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+    log_every = max(1, len(train_loader) // 5)  # print ~5x per epoch
+    train_start = time.time()
 
     for epoch in range(epochs):
+        epoch_start = time.time()
         model.train()
         running_loss   = 0.0
         correct_train  = 0
         total_train    = 0
 
-        for images, labels in train_loader:
+        for batch_idx, (images, labels) in enumerate(train_loader, 1):
             images, labels = images.to(device), labels.to(device)
 
             logits = model(images)
@@ -167,12 +193,23 @@ def main():
             correct_train += (preds == labels).sum().item()
             total_train   += labels.size(0)
 
+            if batch_idx % log_every == 0 or batch_idx == len(train_loader):
+                print(f"  [Epoch {epoch+1}/{epochs}] Batch {batch_idx}/{len(train_loader)} | "
+                      f"Loss: {running_loss/batch_idx:.4f} | "
+                      f"Acc: {correct_train/total_train:.4f}")
+
         train_loss = running_loss / max(len(train_loader), 1)
         train_acc  = correct_train / max(total_train, 1)
         val_loss, val_acc = evaluate(model, val_loader, device, criterion=criterion)
 
         scheduler.step()
         current_lr = scheduler.get_last_lr()[0]
+
+        epoch_time = time.time() - epoch_start
+        elapsed    = time.time() - train_start
+        epochs_done = epoch + 1
+        eta_sec    = (elapsed / epochs_done) * (epochs - epochs_done)
+        eta_str    = time.strftime("%H:%M:%S", time.gmtime(eta_sec))
 
         history.append({
             "epoch":      epoch + 1,
@@ -187,7 +224,8 @@ def main():
             f"Epoch {epoch + 1:02d}/{epochs} | "
             f"Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.4f} | "
             f"Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.4f} | "
-            f"LR: {current_lr:.2e}"
+            f"LR: {current_lr:.2e} | "
+            f"Time: {epoch_time:.1f}s | ETA: {eta_str}"
         )
 
         if val_acc > best_val_acc:

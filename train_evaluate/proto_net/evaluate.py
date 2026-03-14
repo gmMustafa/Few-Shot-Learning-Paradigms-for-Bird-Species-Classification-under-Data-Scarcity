@@ -275,7 +275,19 @@ def main():
     novel_classes = cfg['novel_classes']
 
     set_seed(seed)
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    print("=" * 60)
+    print("DEVICE INFO")
+    print(f"  CUDA available : {torch.cuda.is_available()}")
+    print(f"  Device         : {device}")
+    if torch.cuda.is_available():
+        print(f"  GPU name       : {torch.cuda.get_device_name(0)}")
+        print(f"  GPU memory     : {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+    else:
+        print("  WARNING: Running on CPU")
+    print(f"  Eval config    : {n_way}-way {k_shot}-shot | {num_episodes} episodes | distance={distance}")
+    print("=" * 60)
 
     # --- resolve paths ---
     # Results folder encodes both k_shot and distance: e.g. "1shot_euclidean"

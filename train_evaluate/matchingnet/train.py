@@ -123,7 +123,7 @@ def main():
 
     seed = cfg['seed']
     set_seed(seed)
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     base_classes       = cfg['base_classes']
     image_size         = cfg['image_size']
@@ -146,6 +146,24 @@ def main():
     # Base classes ONLY — no novel class data during training
     train_ds = FilteredDataset(data_train, base_classes, transform=transform)
     val_ds   = FilteredDataset(data_val,   base_classes, transform=transform)
+
+    print("=" * 60)
+    print("DEVICE INFO")
+    print(f"  CUDA available : {torch.cuda.is_available()}")
+    print(f"  Device         : {device}")
+    if torch.cuda.is_available():
+        print(f"  GPU name       : {torch.cuda.get_device_name(0)}")
+        print(f"  GPU memory     : {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+    else:
+        print("  WARNING: Running on CPU — training will be slow!")
+    print("CONFIG")
+    print(f"  Epochs         : {num_epochs}")
+    print(f"  Episodes/epoch : {episodes_per_epoch}")
+    print(f"  {n_way}-way {k_shot}-shot | q_query={q_query}")
+    print(f"  LR             : {lr}")
+    print(f"  Patience       : {patience}")
+    print(f"  Config file    : {config_path}")
+    print("=" * 60)
 
     print(f"Base classes : {len(base_classes)}")
     print(f"Train samples: {len(train_ds)}")

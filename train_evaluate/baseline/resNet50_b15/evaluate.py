@@ -113,6 +113,18 @@ def main():
         cfg = yaml.safe_load(f)
 
     DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    print("=" * 60)
+    print("DEVICE INFO")
+    print(f"  CUDA available : {torch.cuda.is_available()}")
+    print(f"  Device         : {DEVICE}")
+    if torch.cuda.is_available():
+        print(f"  GPU name       : {torch.cuda.get_device_name(0)}")
+        print(f"  GPU memory     : {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+    else:
+        print("  WARNING: Running on CPU")
+    print("=" * 60)
+
     BATCH_SIZE  = int(cfg["train"]["batch_size"])
     NUM_WORKERS = int(cfg["train"].get("num_workers", 0))
     IMAGE_SIZE  = int(cfg["image_size"])
