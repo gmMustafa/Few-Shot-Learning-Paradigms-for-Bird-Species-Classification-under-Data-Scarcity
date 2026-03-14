@@ -12,21 +12,21 @@
     "AMERICAN GOLDFINCH",
     "AMERICAN KESTREL"
   ],
-  "checkpoint": ".\\train_evaluate\\relationnet\\checkpoints\\relationnet\\relationnet_best.pth",
-  "epochs_trained": 1,
-  "mean_accuracy_pct": 18.9267,
-  "std_accuracy_pct": 5.694,
-  "ci95_pct": 0.4556,
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/relationnet/checkpoints/relationnet/relationnet_best.pth",
+  "epochs_trained": 10,
+  "mean_accuracy_pct": 72.66,
+  "std_accuracy_pct": 11.6695,
+  "ci95_pct": 0.9338,
   "wilson_ci_95": [
-    18.3078,
-    19.5615
+    71.941,
+    73.3674
   ],
-  "macro_f1": 0.1501,
+  "macro_f1": 0.7229,
   "per_class_accuracy_pct": {
-    "AMERICAN BITTERN": 29.4333,
-    "AMERICAN COOT": 6.0667,
-    "AMERICAN FLAMINGO": 46.0667,
-    "AMERICAN GOLDFINCH": 13.0667,
-    "AMERICAN KESTREL": 0.0
+    "AMERICAN BITTERN": 47.2,
+    "AMERICAN COOT": 97.0333,
+    "AMERICAN FLAMINGO": 74.0667,
+    "AMERICAN GOLDFINCH": 94.8667,
+    "AMERICAN KESTREL": 50.1333
   }
 }

@@ -5,8 +5,8 @@
   "k_shot": 5,
   "ft_lr": 5e-05,
   "batch_size": 16,
-  "base_checkpoint": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_best.pth",
-  "ft_checkpoint": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_finetune_best.pth",
+  "base_checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth",
+  "ft_checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_finetune_best.pth",
   "novel_classes": [
     "AMERICAN BITTERN",
     "AMERICAN COOT",
@@ -16,12 +16,12 @@
   ],
   "train_images": 25,
   "test_images": 25,
-  "accuracy": 0.6,
+  "accuracy": 1.0,
   "accuracy_ci_95": [
-    0.40739457358967,
-    0.7659669762225203
+    0.8668077490609515,
+    0.9999999999999999
   ],
-  "macro_f1": 0.5835497835497835,
-  "macro_precision": 0.6222222222222221,
-  "macro_recall": 0.6
+  "macro_f1": 1.0,
+  "macro_precision": 1.0,
+  "macro_recall": 1.0
 }

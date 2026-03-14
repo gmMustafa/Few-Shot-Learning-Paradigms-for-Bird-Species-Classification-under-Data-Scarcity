@@ -1,0 +1,33 @@
+{
+  "experiment": "protonet_base15_novel5",
+  "model": "resnet50",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 3,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/proto_net/checkpoints/protonet/protonet_best.pth",
+  "epochs_trained": 7,
+  "mean_accuracy_pct": 90.1933,
+  "std_accuracy_pct": 8.9809,
+  "ci95_pct": 0.7186,
+  "wilson_ci_95": [
+    89.707,
+    90.659
+  ],
+  "macro_f1": 0.9004,
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 80.9333,
+    "AMERICAN COOT": 98.6,
+    "AMERICAN FLAMINGO": 97.3,
+    "AMERICAN GOLDFINCH": 99.6333,
+    "AMERICAN KESTREL": 74.5
+  }
+}

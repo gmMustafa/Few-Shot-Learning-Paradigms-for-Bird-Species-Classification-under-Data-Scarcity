@@ -38,11 +38,11 @@ output:
   results_dir: ../../results/proto_net
 seed: 42
 train:
-  episodes_per_epoch: 10
+  episodes_per_epoch: 100
   k_shot: 1
   lr: 0.0001
   n_way: 5
-  num_epochs: 1
+  num_epochs: 30
   num_workers: 0
-  patience: 1
+  patience: 10
   q_query: 15

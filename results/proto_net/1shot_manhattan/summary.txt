@@ -1,18 +1,18 @@
-ProtoNet — 5-way 1-shot Evaluation (manhattan distance)
+ProtoNet â€” 5-way 1-shot Evaluation (manhattan distance)
 ============================================================
 Episodes       : 600
 Distance       : manhattan
 Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
-Checkpoint     : .\train_evaluate\proto_net\checkpoints\protonet\protonet_best.pth
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/proto_net/checkpoints/protonet/protonet_best.pth
 
-Mean accuracy  : 60.69% ± 1.36% (95% CI)
-Std            : 16.94%
-Wilson CI 95%  : [59.91%, 61.47%]
-Macro F1       : 0.5936
+Mean accuracy  : 78.95% Â± 1.07% (95% CI)
+Std            : 13.38%
+Wilson CI 95%  : [78.29%, 79.59%]
+Macro F1       : 0.7854
 
 Per-class accuracy:
-  AMERICAN BITTERN              : 69.80%
-  AMERICAN COOT                 : 57.23%
-  AMERICAN FLAMINGO             : 76.87%
-  AMERICAN GOLDFINCH            : 74.57%
-  AMERICAN KESTREL              : 25.00%
+  AMERICAN BITTERN              : 70.63%
+  AMERICAN COOT                 : 90.30%
+  AMERICAN FLAMINGO             : 86.70%
+  AMERICAN GOLDFINCH            : 95.37%
+  AMERICAN KESTREL              : 51.73%

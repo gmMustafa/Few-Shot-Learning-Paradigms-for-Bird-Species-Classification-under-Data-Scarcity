@@ -1,0 +1,17 @@
+Matching Networks — 5-way 5-shot Evaluation
+============================================================
+Episodes       : 600
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/matchingnet/checkpoints/matchingnet/matchingnet_best.pth
+
+Mean accuracy  : 70.78% ± 0.59% (95% CI)
+Std            : 7.39%
+Wilson CI 95%  : [70.05%, 71.50%]
+Macro F1       : 0.6698
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 100.00%
+  AMERICAN COOT                 : 59.80%
+  AMERICAN FLAMINGO             : 76.97%
+  AMERICAN GOLDFINCH            : 100.00%
+  AMERICAN KESTREL              : 17.13%

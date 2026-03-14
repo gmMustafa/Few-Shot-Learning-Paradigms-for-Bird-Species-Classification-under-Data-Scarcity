@@ -1,12 +1,12 @@
 Experiment:     resnet50_base15
-Checkpoint:     .\train_evaluate\baseline\resNet50_b15\checkpoints\baseline\base15\resnet50_base15_best.pth
-Epochs trained: 1
+Checkpoint:     Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth
+Epochs trained: 2
 Seed:           42
 LR:             0.0001
 Num classes:    15 (base)
 Test images:    75
 
-Best Val Acc:   98.67%
+Best Val Acc:   100.00%
 Test Accuracy:  100.00%
 95% CI:         [95.13%, 100.00%]
 Macro AUC (OvR):1.0000

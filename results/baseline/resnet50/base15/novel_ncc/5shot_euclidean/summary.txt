@@ -1,0 +1,17 @@
+NCC (Nearest Centroid) — 5-way 5-shot (euclidean)
+============================================================
+Backbone       : ResNet-50 trained on 15 base classes (frozen)
+Distance       : euclidean
+Episodes       : 600
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+
+Mean accuracy  : 98.63% ± 0.35% (95% CI)
+Std            : 4.34%
+Wilson CI 95%  : [98.43%, 98.81%]
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 100.00%
+  AMERICAN COOT                 : 100.00%
+  AMERICAN FLAMINGO             : 96.83%
+  AMERICAN GOLDFINCH            : 100.00%
+  AMERICAN KESTREL              : 96.33%

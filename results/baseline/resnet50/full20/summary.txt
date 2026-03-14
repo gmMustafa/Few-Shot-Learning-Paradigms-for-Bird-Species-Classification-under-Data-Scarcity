@@ -1,6 +1,6 @@
 Experiment:     resnet50_full20
-Checkpoint:     .\train_evaluate\baseline\resNet50_FS\checkpoints\baseline\full20\resnet50_full20_best.pth
-Epochs trained: 1
+Checkpoint:     Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_FS/checkpoints/baseline/full20/resnet50_full20_best.pth
+Epochs trained: 3
 Seed:           42
 LR:             0.0001
 Batch size:     16
@@ -20,18 +20,18 @@ AFRICAN CROWNED CRANE        1.000000    1.00  1.000000     5.00
 AFRICAN EMERALD CUCKOO       1.000000    1.00  1.000000     5.00
 AFRICAN FIREFINCH            1.000000    1.00  1.000000     5.00
 AFRICAN OYSTER CATCHER       1.000000    1.00  1.000000     5.00
-AFRICAN PIED HORNBILL        0.833333    1.00  0.909091     5.00
+AFRICAN PIED HORNBILL        1.000000    1.00  1.000000     5.00
 AFRICAN PYGMY GOOSE          1.000000    1.00  1.000000     5.00
 ALBATROSS                    1.000000    1.00  1.000000     5.00
 ALBERTS TOWHEE               1.000000    1.00  1.000000     5.00
 ALEXANDRINE PARAKEET         1.000000    1.00  1.000000     5.00
-ALPINE CHOUGH                1.000000    0.80  0.888889     5.00
-ALTAMIRA YELLOWTHROAT        1.000000    1.00  1.000000     5.00
+ALPINE CHOUGH                1.000000    1.00  1.000000     5.00
+ALTAMIRA YELLOWTHROAT        1.000000    0.80  0.888889     5.00
 AMERICAN AVOCET              1.000000    1.00  1.000000     5.00
 AMERICAN BITTERN             1.000000    1.00  1.000000     5.00
 AMERICAN COOT                1.000000    1.00  1.000000     5.00
 AMERICAN FLAMINGO            1.000000    1.00  1.000000     5.00
-AMERICAN GOLDFINCH           1.000000    1.00  1.000000     5.00
+AMERICAN GOLDFINCH           0.833333    1.00  0.909091     5.00
 AMERICAN KESTREL             1.000000    1.00  1.000000     5.00
 accuracy                     0.990000    0.99  0.990000     0.99
 macro avg                    0.991667    0.99  0.989899   100.00

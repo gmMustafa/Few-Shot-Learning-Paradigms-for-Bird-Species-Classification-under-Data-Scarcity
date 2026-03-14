@@ -6,7 +6,7 @@
   "n_way": 5,
   "k_shot": 1,
   "distance": "euclidean",
-  "num_episodes": 5,
+  "num_episodes": 600,
   "novel_classes": [
     "AMERICAN BITTERN",
     "AMERICAN COOT",
@@ -14,21 +14,21 @@
     "AMERICAN GOLDFINCH",
     "AMERICAN KESTREL"
   ],
-  "backbone_ckpt": ".\\train_evaluate\\baseline\\resNet50_b15\\checkpoints\\baseline\\base15\\resnet50_base15_best.pth",
-  "backbone_epoch": 1,
+  "backbone_ckpt": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth",
+  "backbone_epoch": 2,
   "note": "Frozen base-15 backbone. No episodic training. Compares directly with ProtoNet (same distance, same K) to isolate the effect of episodic training.",
-  "mean_accuracy_pct": 80.8,
-  "std_accuracy_pct": 5.8788,
-  "ci95_pct": 5.153,
+  "mean_accuracy_pct": 89.74,
+  "std_accuracy_pct": 9.8812,
+  "ci95_pct": 0.7907,
   "wilson_ci_95": [
-    73.0188,
-    86.7446
+    89.2442,
+    90.2155
   ],
   "per_class_accuracy_pct": {
-    "AMERICAN BITTERN": 84.0,
-    "AMERICAN COOT": 100.0,
-    "AMERICAN FLAMINGO": 80.0,
-    "AMERICAN GOLDFINCH": 100.0,
-    "AMERICAN KESTREL": 40.0
+    "AMERICAN BITTERN": 92.9,
+    "AMERICAN COOT": 96.8667,
+    "AMERICAN FLAMINGO": 96.8,
+    "AMERICAN GOLDFINCH": 97.8333,
+    "AMERICAN KESTREL": 64.3
   }
 }
