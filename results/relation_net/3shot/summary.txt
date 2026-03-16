@@ -1,0 +1,17 @@
+Relation Networks — 5-way 3-shot Evaluation
+============================================================
+Episodes       : 600
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/relationnet/checkpoints/relationnet/relationnet_best.pth
+
+Mean accuracy  : 78.23% ± 0.72% (95% CI)
+Std            : 8.97%
+Wilson CI 95%  : [77.56%, 78.88%]
+Macro F1       : 0.7790
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 40.10%
+  AMERICAN COOT                 : 100.00%
+  AMERICAN FLAMINGO             : 92.17%
+  AMERICAN GOLDFINCH            : 100.00%
+  AMERICAN KESTREL              : 58.87%
