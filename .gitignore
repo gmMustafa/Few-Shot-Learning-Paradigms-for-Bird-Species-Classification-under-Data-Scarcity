@@ -222,6 +222,7 @@ data/train/
 data/test/
 data/valid/
 data/images*/
+data_cub-200-2011/
 *.csv
 
 # Generated results and plots (reproducible from code)
@@ -236,3 +237,12 @@ logs/
 # IDE settings
 .vscode/
 .idea/
+
+#Latex
+latex/
+
+#Tree
+tree.txt
+
+#zip files
+*.zip
