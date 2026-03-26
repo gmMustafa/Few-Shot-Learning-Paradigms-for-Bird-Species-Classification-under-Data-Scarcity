@@ -1,0 +1,10 @@
+Novel K-shot Fine-tuning
+============================================================
+Experiment         : resnet50_base10
+K-shot             : 5
+Support samples    : 50
+Validation samples : 50
+Test samples       : 50
+Best val acc       : 92.00%
+Test accuracy      : 92.00%
+95% CI             : [81.16%, 96.85%]

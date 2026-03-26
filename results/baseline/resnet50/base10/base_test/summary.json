@@ -1,0 +1,27 @@
+{
+  "experiment": "resnet50_base10",
+  "num_base_classes": 10,
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS"
+  ],
+  "accuracy": 1.0,
+  "accuracy_ci_95": [
+    0.928652,
+    1.0
+  ],
+  "macro_f1": 1.0,
+  "macro_precision": 1.0,
+  "macro_recall": 1.0,
+  "auc_ovr": 1.0,
+  "num_test_samples": 50,
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_bX/checkpoints/baseline/base10/resnet50_base10_best.pth"
+}

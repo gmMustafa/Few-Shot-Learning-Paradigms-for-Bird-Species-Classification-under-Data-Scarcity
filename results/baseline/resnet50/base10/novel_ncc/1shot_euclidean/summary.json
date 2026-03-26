@@ -1,0 +1,55 @@
+{
+  "experiment": "resnet50_base10",
+  "evaluation": "novel_ncc",
+  "split": "base10_novel10",
+  "n_way": 5,
+  "k_shot": 1,
+  "q_query": 5,
+  "distance": "euclidean",
+  "num_episodes": 600,
+  "mean_accuracy_pct": 87.006667,
+  "std_accuracy_pct": 10.145604,
+  "ci95_pct": 0.811817,
+  "wilson_ci_95": [
+    86.459107,
+    87.535277
+  ],
+  "macro_f1": 0.870291,
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS"
+  ],
+  "novel_classes": [
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET",
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "per_class_accuracy_pct": {
+    "ALBERTS TOWHEE": 87.432432,
+    "ALEXANDRINE PARAKEET": 94.58194,
+    "ALPINE CHOUGH": 75.882353,
+    "ALTAMIRA YELLOWTHROAT": 61.570997,
+    "AMERICAN AVOCET": 94.437086,
+    "AMERICAN BITTERN": 93.146853,
+    "AMERICAN COOT": 96.842105,
+    "AMERICAN FLAMINGO": 95.033557,
+    "AMERICAN GOLDFINCH": 93.212996,
+    "AMERICAN KESTREL": 81.461794
+  },
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_bX/checkpoints/baseline/base10/resnet50_base10_best.pth"
+}

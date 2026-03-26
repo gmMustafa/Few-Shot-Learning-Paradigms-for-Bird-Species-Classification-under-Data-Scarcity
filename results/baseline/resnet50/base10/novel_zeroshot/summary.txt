@@ -1,0 +1,9 @@
+Zero-shot novel evaluation
+============================================================
+Experiment       : resnet50_base10
+Base classes     : 10
+Novel classes    : 10
+Novel test imgs  : 50
+Accuracy         : 0.00%
+95% CI           : [0.00%, 0.00%]
+Note             : 0% by design because the base-only classifier head cannot output novel labels.
