@@ -1,0 +1,59 @@
+# Baseline config: ResNet-50 trained on fixed 10 base classes (full data)
+
+image_size: 224
+
+experiment:
+  name: "resnet50_base10"
+
+data_train: "../../../data/train"
+data_valid: "../../../data/valid"
+data_test:  "../../../data/test"
+
+train:
+  seed: 42
+  epochs: 30
+  batch_size: 16
+  lr: 0.0001
+  num_workers: 0        # Windows-safe
+  patience: 7           # early stopping patience
+  scheduler: "cosine"
+
+# Fixed base classes (10)
+base_classes:
+  - ABBOTTS BABBLER
+  - ABBOTTS BOOBY
+  - ABYSSINIAN GROUND HORNBILL
+  - AFRICAN CROWNED CRANE
+  - AFRICAN EMERALD CUCKOO
+  - AFRICAN FIREFINCH
+  - AFRICAN OYSTER CATCHER
+  - AFRICAN PIED HORNBILL
+  - AFRICAN PYGMY GOOSE
+  - ALBATROSS
+
+# Fixed novel classes (10)
+novel_classes:
+  - ALBERTS TOWHEE
+  - ALEXANDRINE PARAKEET
+  - ALPINE CHOUGH
+  - ALTAMIRA YELLOWTHROAT
+  - AMERICAN AVOCET
+  - AMERICAN BITTERN
+  - AMERICAN COOT
+  - AMERICAN FLAMINGO
+  - AMERICAN GOLDFINCH
+  - AMERICAN KESTREL
+
+# Option B: K-shot fine-tuning settings
+finetune:
+  k_shot: 5
+  epochs: 20
+  lr: 0.00005
+  patience: 5
+
+output:
+  ckpt_dir: "checkpoints/baseline/base10"
+  results_dir: "../../../results/baseline/resnet50/base10"
+  save_best_name: "resnet50_base10_best.pth"
+  save_final_name: "resnet50_base10_final.pth"
+  finetune_best_name: "resnet50_base10_finetune_best.pth"
