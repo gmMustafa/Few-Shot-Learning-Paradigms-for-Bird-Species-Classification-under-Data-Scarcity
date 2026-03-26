@@ -1,0 +1,29 @@
+split,group,method,setup,acc,ci,f1,note
+b15_n5,Supervised (Reference),Full-20 Baseline,"20-way, full data",99.00,"[94.55, 99.82]",0.9899,Reference
+b15_n5,Supervised (Reference),Base-15 Baseline,"15-way, full data",100.00,"[95.13, 100.00]",1.0000,Reference
+b15_n5,Low-Data Supervised,K=5 Fine-tune,"5-way, 5-shot fine-tune",100.00,"[86.68, 100.00]",1.0000,Reference
+b15_n5,Zero-Shot Reference,Zero-Shot Transfer,"5-way, 0-shot",0.00,"[0.0, 0.0]",—,0% by design (15-class head cannot output novel labels)
+b15_n5,NCC 1-Shot,NCC (Euclidean),5-way 1-shot,89.74,"[89.24, 90.22]",—,Direct
+b15_n5,NCC 1-Shot,NCC (Manhattan),5-way 1-shot,82.44,"[81.82, 83.04]",—,Direct
+b15_n5,NCC 3-Shot,NCC (Euclidean),5-way 3-shot,97.65,"[97.40, 97.88]",—,Direct
+b15_n5,NCC 3-Shot,NCC (Manhattan),5-way 3-shot,92.35,"[91.91, 92.76]",—,Direct
+b15_n5,NCC 5-Shot,NCC (Euclidean),5-way 5-shot,98.63,"[98.43, 98.81]",—,Direct
+b15_n5,NCC 5-Shot,NCC (Manhattan),5-way 5-shot,94.42,"[94.04, 94.78]",—,Direct
+b15_n5,FSL 1-Shot,ProtoNet (Euclidean),5-way 1-shot,94.11,"[93.72, 94.47]",0.9403,Direct
+b15_n5,FSL 1-Shot,ProtoNet (Manhattan),5-way 1-shot,78.95,"[78.29, 79.59]",0.7854,Direct
+b15_n5,FSL 1-Shot,MatchingNet (Cosine),5-way 1-shot,60.90,"[60.12, 61.68]",0.5813,Direct
+b15_n5,FSL 1-Shot,RelationNet (Learned),5-way 1-shot,72.66,"[71.94, 73.37]",0.7229,Direct
+b15_n5,FSL 3-Shot,ProtoNet (Euclidean),5-way 3-shot,99.23,"[99.07, 99.35]",0.9923,Direct
+b15_n5,FSL 3-Shot,ProtoNet (Manhattan),5-way 3-shot,90.19,"[89.71, 90.66]",0.9004,Direct
+b15_n5,FSL 3-Shot,MatchingNet (Cosine),5-way 3-shot,69.00,"[68.26, 69.74]",0.6564,Direct
+b15_n5,FSL 3-Shot,RelationNet (Learned),5-way 3-shot,78.23,"[77.56, 78.88]",0.7790,Direct
+b15_n5,FSL 5-Shot,ProtoNet (Euclidean),5-way 5-shot,99.91,"[99.84, 99.94]",0.9991,Direct
+b15_n5,FSL 5-Shot,ProtoNet (Manhattan),5-way 5-shot,93.25,"[92.83, 93.64]",0.9314,Direct
+b15_n5,FSL 5-Shot,MatchingNet (Cosine),5-way 5-shot,70.78,"[70.05, 71.50]",0.6698,Direct
+b15_n5,FSL 5-Shot,RelationNet (Learned),5-way 5-shot,78.71,"[78.04, 79.35]",0.7837,Direct
+b10_n10,ProtoNet b10_n10,ProtoNet (Euclidean),5-way 1-shot,88.76,"[88.24, 89.26]",0.8874,Direct
+b10_n10,ProtoNet b10_n10,ProtoNet (Manhattan),5-way 1-shot,77.50,"[76.82, 78.16]",0.7762,Direct
+b10_n10,ProtoNet b10_n10,ProtoNet (Euclidean),5-way 3-shot,94.63,"[94.26, 94.98]",0.9466,Direct
+b10_n10,ProtoNet b10_n10,ProtoNet (Manhattan),5-way 3-shot,88.55,"[88.03, 89.05]",0.8859,Direct
+b10_n10,ProtoNet b10_n10,ProtoNet (Euclidean),5-way 5-shot,95.41,"[95.06, 95.73]",0.9543,Direct
+b10_n10,ProtoNet b10_n10,ProtoNet (Manhattan),5-way 5-shot,90.32,"[89.84, 90.78]",0.9034,Direct

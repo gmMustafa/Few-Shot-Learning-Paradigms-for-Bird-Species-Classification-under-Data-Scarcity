@@ -40,7 +40,7 @@ data:
 train:
   n_way:               5
   k_shot:              1
-  q_query:             5        # Reduced to avoid overlap issues
+  q_query:             15       # base classes have ~160 images → ~10% overlap, strong gradient
   episodes_per_epoch:  100
   num_epochs:          30
   lr:                  0.0001
@@ -50,7 +50,7 @@ train:
 eval:
   n_way:       5       # sampled from 10 novel classes
   k_shot:      1       # override via CLI if needed
-  q_query:     5
+  q_query:     5       # novel classes have ~25 images → keep low to reduce episode correlation
   episodes:    600
   num_workers: 0
 
