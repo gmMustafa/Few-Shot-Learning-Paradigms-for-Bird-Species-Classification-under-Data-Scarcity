@@ -167,7 +167,7 @@ def main():
 
     print(f"Base classes : {len(base_classes)}")
     print(f"Train samples: {len(train_ds)}")
-    print(f"Val samples  : {len(val_ds)}  (5 per class × 15 = 75)")
+    print(f"Val samples  : {len(val_ds)}")
 
     val_q_query = min(q_query, 4)   # val set has 5 images/class → max 4 queries when k=1
 

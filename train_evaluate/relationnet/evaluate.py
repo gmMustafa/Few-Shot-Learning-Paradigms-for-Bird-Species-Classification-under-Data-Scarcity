@@ -58,25 +58,35 @@ def wilson_ci(correct: int, total: int):
     return max(0.0, ctr - mar), min(1.0, ctr + mar)
 
 
-def build_query_tensors(novel_test_ds, novel_classes, device):
-    by_class = novel_test_ds.get_class_to_indices()
+def sample_episode_class_indices(rng, total_novel_classes, n_way):
+    if n_way > total_novel_classes:
+        raise ValueError(f"n_way={n_way} > total novel classes={total_novel_classes}")
+    return sorted(rng.sample(range(total_novel_classes), n_way))
+
+
+def build_episode_support(novel_train_ds, selected_class_indices, k_shot, rng, device):
+    """Sample k_shot support images for each selected class (episode-local labels 0..n_way-1)."""
+    by_class = novel_train_ds.get_class_to_indices()
     images, labels = [], []
-    for cls_idx in range(len(novel_classes)):
-        for i in by_class[cls_idx]:
-            img, _ = novel_test_ds[i]
+    for epi_label, global_cls in enumerate(selected_class_indices):
+        for i in rng.sample(by_class[global_cls], k_shot):
+            img, _ = novel_train_ds[i]
             images.append(img)
-            labels.append(cls_idx)
+            labels.append(epi_label)
     return torch.stack(images).to(device), torch.tensor(labels, dtype=torch.long).to(device)
 
 
-def build_support_tensors(novel_train_ds, novel_classes, k_shot, rng, device):
-    by_class = novel_train_ds.get_class_to_indices()
+def build_episode_query(novel_test_ds, selected_class_indices, q_query, rng, device):
+    """Sample q_query query images for each selected class (episode-local labels 0..n_way-1)."""
+    by_class = novel_test_ds.get_class_to_indices()
     images, labels = [], []
-    for cls_idx in range(len(novel_classes)):
-        for i in rng.sample(by_class[cls_idx], k_shot):
-            img, _ = novel_train_ds[i]
+    for epi_label, global_cls in enumerate(selected_class_indices):
+        pool = by_class[global_cls]
+        chosen = rng.sample(pool, min(q_query, len(pool)))
+        for i in chosen:
+            img, _ = novel_test_ds[i]
             images.append(img)
-            labels.append(cls_idx)
+            labels.append(epi_label)
     return torch.stack(images).to(device), torch.tensor(labels, dtype=torch.long).to(device)
 
 
@@ -225,6 +235,7 @@ def main():
     k_shot        = args.k_shot if args.k_shot is not None else cfg['eval']['k_shot']
     num_episodes  = 5 if args.debug else cfg['eval']['episodes']
     n_way         = cfg['eval']['n_way']
+    q_query       = cfg['eval'].get('q_query', 5)
     seed          = cfg['seed']
     image_size    = cfg['image_size']
     novel_classes = cfg['novel_classes']
@@ -257,8 +268,9 @@ def main():
     novel_test_ds  = FilteredDataset(data_test,  novel_classes, transform=transform)
 
     print(f"Novel train samples : {len(novel_train_ds)}  (support pool)")
-    print(f"Novel test samples  : {len(novel_test_ds)}   (fixed query set)")
-    print(f"Evaluation          : {n_way}-way {k_shot}-shot, {num_episodes} episodes")
+    print(f"Novel test samples  : {len(novel_test_ds)}   (query pool)")
+    print(f"Novel classes       : {len(novel_classes)} total, sample {n_way} per episode")
+    print(f"Evaluation          : {n_way}-way {k_shot}-shot | q_query={q_query} | {num_episodes} episodes")
 
     # Load model
     ckpt_path = os.path.join(ckpt_dir, cfg['output']['ckpt_name'])
@@ -270,22 +282,26 @@ def main():
     model.eval()
     print(f"Loaded checkpoint   : {ckpt_path}  (trained to epoch {ckpt['epoch']})")
 
-    # Fixed query tensors
-    query_images, query_labels = build_query_tensors(novel_test_ds, novel_classes, device)
-
     rng = random.Random(seed)
     episode_accuracies = []
-    class_correct = np.zeros(n_way, dtype=float)
-    class_total   = np.zeros(n_way, dtype=float)
-    cm = np.zeros((n_way, n_way), dtype=float)
-    # accumulate all predictions for macro-F1
+    # Track per-class stats in global novel-class space
+    per_class_correct = {cls: 0 for cls in novel_classes}
+    per_class_total   = {cls: 0 for cls in novel_classes}
+    global_cm = np.zeros((len(novel_classes), len(novel_classes)), dtype=float)
     all_truths: list = []
     all_preds:  list = []
+    first_episode_class_indices: list = []
 
     with torch.no_grad():
         for ep in tqdm(range(num_episodes), desc=f"{n_way}-way {k_shot}-shot eval"):
-            support_images, support_labels = build_support_tensors(
-                novel_train_ds, novel_classes, k_shot, rng, device)
+            selected_class_indices = sample_episode_class_indices(rng, len(novel_classes), n_way)
+            if ep == 0:
+                first_episode_class_indices = selected_class_indices.copy()
+
+            support_images, support_labels = build_episode_support(
+                novel_train_ds, selected_class_indices, k_shot, rng, device)
+            query_images, query_labels = build_episode_query(
+                novel_test_ds, selected_class_indices, q_query, rng, device)
 
             # RelationNet returns scores [N*Q, n_way] → argmax for prediction
             scores = model(support_images, support_labels, query_images, n_way)
@@ -297,10 +313,14 @@ def main():
 
             all_truths.extend(truths.tolist())
             all_preds.extend(preds.tolist())
-            for t, p in zip(truths, preds):
-                class_correct[t] += int(t == p)
-                class_total[t]   += 1
-                cm[t, p]         += 1
+
+            # Map episode-local labels back to global novel-class indices
+            for t_local, p_local in zip(truths, preds):
+                t_global = selected_class_indices[int(t_local)]
+                p_global = selected_class_indices[int(p_local)]
+                per_class_correct[novel_classes[t_global]] += int(t_local == p_local)
+                per_class_total[novel_classes[t_global]]   += 1
+                global_cm[t_global, p_global] += 1
 
     # Metrics
     macro_f1 = f1_score(all_truths, all_preds, average='macro', zero_division=0)
@@ -309,11 +329,13 @@ def main():
     std_acc  = float(np.std(episode_accuracies))  * 100
     ci95     = 1.96 * std_acc / math.sqrt(n_ep)
 
-    per_class_acc = (class_correct / class_total * 100).tolist()
-    cm_avg        = (cm / n_ep).tolist()
+    per_class_acc = {
+        cls: (100.0 * per_class_correct[cls] / per_class_total[cls]) if per_class_total[cls] > 0 else 0.0
+        for cls in novel_classes
+    }
 
-    total_correct = int(class_correct.sum())
-    total_queries = int(class_total.sum())
+    total_correct = sum(per_class_correct.values())
+    total_queries = sum(per_class_total.values())
     ci_low, ci_high = wilson_ci(total_correct, total_queries)
 
     print(f"\n{n_way}-way {k_shot}-shot | {n_ep} episodes")
@@ -321,9 +343,9 @@ def main():
     print(f"Std           : {std_acc:.2f}%")
     print(f"Wilson CI     : [{ci_low*100:.2f}%, {ci_high*100:.2f}%]")
     print(f"Macro F1      : {macro_f1:.4f}")
-    print("\nPer-class accuracy:")
-    for cls, acc in zip(novel_classes, per_class_acc):
-        print(f"  {cls:<30s}: {acc:.2f}%")
+    print("\nPer-class accuracy (global novel-class space):")
+    for cls in novel_classes:
+        print(f"  {cls:<30s}: {per_class_acc[cls]:.2f}%  | queries={per_class_total[cls]}")
 
     # Save summary.json
     summary = {
@@ -332,6 +354,7 @@ def main():
         'seed':           seed,
         'n_way':          n_way,
         'k_shot':         k_shot,
+        'q_query':        q_query,
         'num_episodes':   n_ep,
         'novel_classes':  novel_classes,
         'checkpoint':     ckpt_path,
@@ -341,9 +364,8 @@ def main():
         'ci95_pct':            round(ci95, 4),
         'wilson_ci_95':        [round(ci_low*100, 4), round(ci_high*100, 4)],
         'macro_f1':            round(float(macro_f1), 4),
-        'per_class_accuracy_pct': {
-            cls: round(acc, 4) for cls, acc in zip(novel_classes, per_class_acc)
-        },
+        'per_class_accuracy_pct': {cls: round(acc, 4) for cls, acc in per_class_acc.items()},
+        'per_class_query_total': per_class_total,
     }
     with open(os.path.join(results_dir, 'summary.json'), 'w') as f:
         json.dump(summary, f, indent=2)
@@ -353,6 +375,8 @@ def main():
         f"Relation Networks — {n_way}-way {k_shot}-shot Evaluation",
         "=" * 60,
         f"Episodes       : {n_ep}",
+        f"n_way          : {n_way} (sampled from {len(novel_classes)} novel classes)",
+        f"q_query        : {q_query}",
         f"Novel classes  : {', '.join(novel_classes)}",
         f"Checkpoint     : {ckpt_path}",
         "",
@@ -362,7 +386,7 @@ def main():
         f"Macro F1       : {macro_f1:.4f}",
         "",
         "Per-class accuracy:",
-    ] + [f"  {cls:<30s}: {acc:.2f}%" for cls, acc in zip(novel_classes, per_class_acc)]
+    ] + [f"  {cls:<30s}: {per_class_acc[cls]:.2f}%  | queries={per_class_total[cls]}" for cls in novel_classes]
     with open(os.path.join(results_dir, 'summary.txt'), 'w') as f:
         f.write('\n'.join(lines) + '\n')
 
@@ -372,9 +396,9 @@ def main():
         'accuracy': episode_accuracies,
     }).to_csv(os.path.join(results_dir, 'episode_accuracies.csv'), index=False)
 
-    # Confusion matrix
+    # Confusion matrix (global novel-class space)
     save_confusion_matrix(
-        np.array(cm_avg),
+        global_cm / n_ep,
         [c.replace('AMERICAN ', 'AM.') for c in novel_classes],
         os.path.join(results_dir, 'confusion_matrix.png'),
     )
@@ -386,13 +410,15 @@ def main():
             history = json.load(f)
         save_learning_curves(history, os.path.join(results_dir, 'learning_curves.png'))
 
-    # t-SNE feature space visualization (single fixed episode)
-    save_tsne_episode(
-        model.encoder, novel_train_ds, novel_test_ds, novel_classes,
-        k_shot, seed, n_way,
-        os.path.join(results_dir, 'tsne_features.png'),
-        f'RelationNet Feature Space — Novel Classes\n({n_way}-Way {k_shot}-Shot, Fixed Episode)',
-    )
+    # t-SNE for the first episode's sampled classes
+    if first_episode_class_indices:
+        ep1_classes = [novel_classes[i] for i in first_episode_class_indices]
+        save_tsne_episode(
+            model.encoder, novel_train_ds, novel_test_ds, ep1_classes,
+            k_shot, seed, n_way,
+            os.path.join(results_dir, 'tsne_features.png'),
+            f'RelationNet Feature Space — Episode 1\n({n_way}-Way {k_shot}-Shot, classes: {", ".join([c.replace("AMERICAN ", "AM. ") for c in ep1_classes])})',
+        )
 
     print(f"\nResults saved to: {results_dir}")
 
