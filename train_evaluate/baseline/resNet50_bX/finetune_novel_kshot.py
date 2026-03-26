@@ -209,11 +209,14 @@ def main():
     # Load base checkpoint into full model first
     base_model = models.resnet50(weights=None)
     base_model.fc = nn.Linear(base_model.fc.in_features, len(base_classes))
-    base_model.load_state_dict(torch.load(ckpt_path, map_location=device))
+    _ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    _state = _ckpt["model_state_dict"] if isinstance(_ckpt, dict) and "model_state_dict" in _ckpt else _ckpt
+    base_model.load_state_dict(_state)
 
-    # Replace classifier for novel classes
+    # Transfer backbone weights only (exclude fc), then attach novel-class head
     model = models.resnet50(weights=None)
-    model.load_state_dict(base_model.state_dict(), strict=False)
+    backbone_state = {k: v for k, v in base_model.state_dict().items() if not k.startswith("fc.")}
+    model.load_state_dict(backbone_state, strict=False)
     model.fc = nn.Linear(model.fc.in_features, len(novel_classes))
     model = model.to(device)
 

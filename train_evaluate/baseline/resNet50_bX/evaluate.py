@@ -176,9 +176,12 @@ def main():
 
     model = models.resnet50(weights=None)
     model.fc = nn.Linear(model.fc.in_features, num_classes)
-    model.load_state_dict(torch.load(ckpt_path, map_location=device))
+    ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    state = ckpt["model_state_dict"] if isinstance(ckpt, dict) and "model_state_dict" in ckpt else ckpt
+    model.load_state_dict(state)
     model = model.to(device)
     model.eval()
+
 
     print("CONFIG")
     print(f"  Experiment    : {cfg['experiment']['name']}")

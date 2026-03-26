@@ -231,14 +231,12 @@ def main():
     novel_train_subset = Subset(train_full, train_idx)
     novel_test_subset = Subset(test_full, test_idx)
 
-    model = models.resnet50(weights=None)
-    model.fc = nn.Identity()
-    backbone_state = torch.load(ckpt_path, map_location=device)
-
-    # Remove classifier weights if full model checkpoint includes fc
+    # Load full classifier checkpoint, then strip the fc layer for embedding extraction
     full_model = models.resnet50(weights=None)
     full_model.fc = nn.Linear(full_model.fc.in_features, len(base_classes))
-    full_model.load_state_dict(backbone_state)
+    _ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+    _state = _ckpt["model_state_dict"] if isinstance(_ckpt, dict) and "model_state_dict" in _ckpt else _ckpt
+    full_model.load_state_dict(_state)
     full_model.fc = nn.Identity()
     model = full_model.to(device)
     model.eval()
