@@ -1,0 +1,21 @@
+ProtoNet — episodic novel-class evaluation (manhattan)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 5
+q_query        : 5
+Distance       : manhattan
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/proto_net/checkpoints/protonetbase15_novel5/protonet_best.pth
+
+Mean accuracy  : 93.29% ± 0.61% (95% CI)
+Std            : 7.65%
+Wilson CI 95%  : [92.88%, 93.68%]
+Macro F1       : 0.9317
+
+Per-class accuracy:
+  AMERICAN BITTERN              :  88.60% | appeared= 600 | queries= 3000
+  AMERICAN COOT                 :  99.77% | appeared= 600 | queries= 3000
+  AMERICAN FLAMINGO             :  99.17% | appeared= 600 | queries= 3000
+  AMERICAN GOLDFINCH            : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN KESTREL              :  78.93% | appeared= 600 | queries= 3000

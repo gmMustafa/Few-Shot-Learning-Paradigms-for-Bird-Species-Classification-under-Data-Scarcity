@@ -1,22 +1,10 @@
-Option B: K=5 Shot Fine-tuning — base-15 backbone + novel-5 head
-======================================================================
-
-Base checkpoint:  Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth
-Fine-tuned ckpt:  Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_finetune_best.pth
-K (train/class):  5
-Train images:     25
-Test images:      25
-
-Novel Test Accuracy: 100.00%
-95% CI:              [86.68%, 100.00%]
-Macro F1:            1.0000
-
-                    precision  recall  f1-score  support
-AMERICAN BITTERN          1.0     1.0       1.0      5.0
-AMERICAN COOT             1.0     1.0       1.0      5.0
-AMERICAN FLAMINGO         1.0     1.0       1.0      5.0
-AMERICAN GOLDFINCH        1.0     1.0       1.0      5.0
-AMERICAN KESTREL          1.0     1.0       1.0      5.0
-accuracy                  1.0     1.0       1.0      1.0
-macro avg                 1.0     1.0       1.0     25.0
-weighted avg              1.0     1.0       1.0     25.0
+Novel K-shot Fine-tuning
+============================================================
+Experiment         : resnet50_base15
+K-shot             : 5
+Support samples    : 25
+Validation samples : 25
+Test samples       : 25
+Best val acc       : 100.00%
+Test accuracy      : 100.00%
+95% CI             : [86.68%, 100.00%]

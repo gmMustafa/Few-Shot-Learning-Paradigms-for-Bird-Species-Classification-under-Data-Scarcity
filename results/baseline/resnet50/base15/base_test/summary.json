@@ -1,22 +1,32 @@
 {
-  "experiment": "resnet50_base15_base_test",
-  "model": "resnet50",
-  "seed": 42,
-  "lr": 0.0001,
-  "batch_size": 16,
-  "epochs_trained": 2,
-  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth",
-  "num_classes": 15,
-  "test_images": 75,
-  "val_acc_best": 1.0,
+  "experiment": "resnet50_base15",
+  "num_base_classes": 15,
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS",
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET"
+  ],
   "accuracy": 1.0,
   "accuracy_ci_95": [
-    0.9512761575171942,
+    0.951276,
     1.0
   ],
   "macro_f1": 1.0,
   "macro_precision": 1.0,
   "macro_recall": 1.0,
-  "weighted_f1": 1.0,
-  "macro_auc_ovr": 1.0
+  "auc_ovr": 1.0,
+  "num_test_samples": 75,
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_bX/checkpoints/baseline/base15/resnet50_base15_best.pth"
 }

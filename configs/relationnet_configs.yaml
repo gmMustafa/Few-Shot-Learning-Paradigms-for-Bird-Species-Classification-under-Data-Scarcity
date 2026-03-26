@@ -55,6 +55,6 @@ eval:
   num_workers: 0
 
 output:
-  ckpt_dir:    "checkpoints/relationnet"
+  ckpt_dir:    "checkpoints/relationnetbase15_novel5"
   ckpt_name:   "relationnet_best.pth"
-  results_dir: "../../results/relation_net"
+  results_dir: "../../results/relation_net/base15_novel5"

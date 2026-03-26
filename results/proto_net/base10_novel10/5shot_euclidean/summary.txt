@@ -1,0 +1,26 @@
+ProtoNet — episodic novel-class evaluation (euclidean)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 5
+q_query        : 5
+Distance       : euclidean
+Novel classes  : ALBERTS TOWHEE, ALEXANDRINE PARAKEET, ALPINE CHOUGH, ALTAMIRA YELLOWTHROAT, AMERICAN AVOCET, AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/proto_net/checkpoints/protonet_base10_novel10/protonet_best.pth
+
+Mean accuracy  : 95.77% ± 0.41% (95% CI)
+Std            : 5.17%
+Wilson CI 95%  : [95.43%, 96.08%]
+Macro F1       : 0.9580
+
+Per-class accuracy:
+  ALBERTS TOWHEE                :  99.68% | appeared= 312 | queries= 1560
+  ALEXANDRINE PARAKEET          :  99.31% | appeared= 289 | queries= 1445
+  ALPINE CHOUGH                 :  99.93% | appeared= 307 | queries= 1535
+  ALTAMIRA YELLOWTHROAT         :  70.67% | appeared= 298 | queries= 1490
+  AMERICAN AVOCET               : 100.00% | appeared= 275 | queries= 1375
+  AMERICAN BITTERN              : 100.00% | appeared= 319 | queries= 1595
+  AMERICAN COOT                 : 100.00% | appeared= 304 | queries= 1520
+  AMERICAN FLAMINGO             : 100.00% | appeared= 312 | queries= 1560
+  AMERICAN GOLDFINCH            : 100.00% | appeared= 278 | queries= 1390
+  AMERICAN KESTREL              :  88.10% | appeared= 306 | queries= 1530

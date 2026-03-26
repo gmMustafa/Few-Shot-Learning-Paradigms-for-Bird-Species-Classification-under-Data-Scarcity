@@ -1,12 +1,24 @@
 {
-  "experiment": "base15_kshot_finetune_K5",
-  "model": "resnet50",
-  "seed": 42,
-  "k_shot": 5,
-  "ft_lr": 5e-05,
-  "batch_size": 16,
-  "base_checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth",
-  "ft_checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_finetune_best.pth",
+  "experiment": "resnet50_base15",
+  "evaluation": "novel_kshot_finetune",
+  "split": "base15_novel5",
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS",
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET"
+  ],
   "novel_classes": [
     "AMERICAN BITTERN",
     "AMERICAN COOT",
@@ -14,14 +26,16 @@
     "AMERICAN GOLDFINCH",
     "AMERICAN KESTREL"
   ],
-  "train_images": 25,
-  "test_images": 25,
-  "accuracy": 1.0,
-  "accuracy_ci_95": [
-    0.8668077490609515,
-    0.9999999999999999
+  "k_shot": 5,
+  "support_samples": 25,
+  "valid_samples": 25,
+  "test_samples": 25,
+  "test_accuracy": 1.0,
+  "test_accuracy_ci_95": [
+    0.866808,
+    1.0
   ],
-  "macro_f1": 1.0,
-  "macro_precision": 1.0,
-  "macro_recall": 1.0
+  "best_val_acc": 1.0,
+  "base_checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_bX/checkpoints/baseline/base15/resnet50_base15_best.pth",
+  "finetune_checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_bX/checkpoints/baseline/base15/resnet50_base15_finetune_best.pth"
 }

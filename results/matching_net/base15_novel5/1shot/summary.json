@@ -1,0 +1,40 @@
+{
+  "experiment": "matchingnet_base15_novel5",
+  "model": "matchingnet_resnet50",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "q_query": 5,
+  "num_episodes": 600,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/matchingnet/checkpoints/matchingnetbase15_novel5/matchingnet_best.pth",
+  "epochs_trained": 7,
+  "mean_accuracy_pct": 60.9333,
+  "std_accuracy_pct": 11.0289,
+  "ci95_pct": 0.8825,
+  "wilson_ci_95": [
+    60.1498,
+    61.7112
+  ],
+  "macro_f1": 0.5829,
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 87.4,
+    "AMERICAN COOT": 47.8,
+    "AMERICAN FLAMINGO": 53.5333,
+    "AMERICAN GOLDFINCH": 96.6333,
+    "AMERICAN KESTREL": 19.3
+  },
+  "per_class_query_total": {
+    "AMERICAN BITTERN": 3000,
+    "AMERICAN COOT": 3000,
+    "AMERICAN FLAMINGO": 3000,
+    "AMERICAN GOLDFINCH": 3000,
+    "AMERICAN KESTREL": 3000
+  }
+}

@@ -55,6 +55,6 @@ eval:
   num_workers: 0
 
 output:
-  ckpt_dir:  "checkpoints/protonet"
+  ckpt_dir:  "checkpoints/protonetbase15_novel5"
   ckpt_name: "protonet_best.pth"
-  results_dir: "../../results/proto_net"
+  results_dir: "../../results/proto_net/base15_novel5"

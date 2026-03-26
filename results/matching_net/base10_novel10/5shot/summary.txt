@@ -1,0 +1,24 @@
+Matching Networks — 5-way 5-shot Evaluation
+============================================================
+Episodes       : 600
+n_way          : 5 (sampled from 10 novel classes)
+q_query        : 5
+Novel classes  : ALBERTS TOWHEE, ALEXANDRINE PARAKEET, ALPINE CHOUGH, ALTAMIRA YELLOWTHROAT, AMERICAN AVOCET, AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/matchingnet/checkpoints/matchingnet_base10_novel10/matchingnet_best.pth
+
+Mean accuracy  : 66.74% ± 0.94% (95% CI)
+Std            : 11.72%
+Wilson CI 95%  : [65.98%, 67.49%]
+Macro F1       : 0.6667
+
+Per-class accuracy:
+  ALBERTS TOWHEE                : 78.41%  | queries=1510
+  ALEXANDRINE PARAKEET          : 71.44%  | queries=1600
+  ALPINE CHOUGH                 : 93.70%  | queries=1555
+  ALTAMIRA YELLOWTHROAT         : 31.38%  | queries=1415
+  AMERICAN AVOCET               : 75.64%  | queries=1490
+  AMERICAN BITTERN              : 66.94%  | queries=1455
+  AMERICAN COOT                 : 80.00%  | queries=1575
+  AMERICAN FLAMINGO             : 80.00%  | queries=1520
+  AMERICAN GOLDFINCH            : 42.33%  | queries=1505
+  AMERICAN KESTREL              : 41.38%  | queries=1375

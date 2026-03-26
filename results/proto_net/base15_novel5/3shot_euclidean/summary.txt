@@ -1,0 +1,21 @@
+ProtoNet — episodic novel-class evaluation (euclidean)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 3
+q_query        : 5
+Distance       : euclidean
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/proto_net/checkpoints/protonetbase15_novel5/protonet_best.pth
+
+Mean accuracy  : 99.18% ± 0.26% (95% CI)
+Std            : 3.19%
+Wilson CI 95%  : [99.02%, 99.31%]
+Macro F1       : 0.9918
+
+Per-class accuracy:
+  AMERICAN BITTERN              :  99.87% | appeared= 600 | queries= 3000
+  AMERICAN COOT                 : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN FLAMINGO             :  98.20% | appeared= 600 | queries= 3000
+  AMERICAN GOLDFINCH            : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN KESTREL              :  97.83% | appeared= 600 | queries= 3000

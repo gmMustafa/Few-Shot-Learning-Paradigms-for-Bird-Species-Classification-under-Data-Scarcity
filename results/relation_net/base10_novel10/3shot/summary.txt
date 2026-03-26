@@ -1,0 +1,24 @@
+Relation Networks — 5-way 3-shot Evaluation
+============================================================
+Episodes       : 600
+n_way          : 5 (sampled from 10 novel classes)
+q_query        : 5
+Novel classes  : ALBERTS TOWHEE, ALEXANDRINE PARAKEET, ALPINE CHOUGH, ALTAMIRA YELLOWTHROAT, AMERICAN AVOCET, AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/relationnet/checkpoints/relationnet_base10_novel10/relationnet_best.pth
+
+Mean accuracy  : 74.89% ± 0.95% (95% CI)
+Std            : 11.81%
+Wilson CI 95%  : [74.19%, 75.57%]
+Macro F1       : 0.7484
+
+Per-class accuracy:
+  ALBERTS TOWHEE                : 94.34%  | queries=1590
+  ALEXANDRINE PARAKEET          : 46.15%  | queries=1480
+  ALPINE CHOUGH                 : 97.08%  | queries=1540
+  ALTAMIRA YELLOWTHROAT         : 82.13%  | queries=1500
+  AMERICAN AVOCET               : 98.46%  | queries=1495
+  AMERICAN BITTERN              : 31.01%  | queries=1435
+  AMERICAN COOT                 : 87.60%  | queries=1435
+  AMERICAN FLAMINGO             : 66.78%  | queries=1430
+  AMERICAN GOLDFINCH            : 60.33%  | queries=1530
+  AMERICAN KESTREL              : 81.21%  | queries=1565

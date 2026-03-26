@@ -55,6 +55,6 @@ eval:
   num_workers: 0
 
 output:
-  ckpt_dir:    "checkpoints/matchingnet"
+  ckpt_dir:    "checkpoints/matchingnetbase15_novel5"
   ckpt_name:   "matchingnet_best.pth"
-  results_dir: "../../results/matching_net"
+  results_dir: "../../results/matching_net/base15_novel5"

@@ -46,4 +46,4 @@ train:
   num_epochs: 30
   num_workers: 0
   patience: 10
-  q_query: 5
+  q_query: 15

@@ -1,12 +1,37 @@
 {
-  "experiment": "ncc_base15_novel5",
-  "model": "resnet50_base15_backbone",
-  "method": "nearest_centroid_classifier",
-  "seed": 42,
+  "experiment": "resnet50_base15",
+  "evaluation": "novel_ncc",
+  "split": "base15_novel5",
   "n_way": 5,
   "k_shot": 3,
+  "q_query": 5,
   "distance": "euclidean",
   "num_episodes": 600,
+  "mean_accuracy_pct": 97.58,
+  "std_accuracy_pct": 5.994186,
+  "ci95_pct": 0.479635,
+  "wilson_ci_95": [
+    97.32163,
+    97.814006
+  ],
+  "macro_f1": 0.975475,
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS",
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET"
+  ],
   "novel_classes": [
     "AMERICAN BITTERN",
     "AMERICAN COOT",
@@ -14,21 +39,12 @@
     "AMERICAN GOLDFINCH",
     "AMERICAN KESTREL"
   ],
-  "backbone_ckpt": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_b15/checkpoints/baseline/base15/resnet50_base15_best.pth",
-  "backbone_epoch": 2,
-  "note": "Frozen base-15 backbone. No episodic training. Compares directly with ProtoNet (same distance, same K) to isolate the effect of episodic training.",
-  "mean_accuracy_pct": 97.6533,
-  "std_accuracy_pct": 5.5845,
-  "ci95_pct": 0.4469,
-  "wilson_ci_95": [
-    97.3986,
-    97.8837
-  ],
   "per_class_accuracy_pct": {
-    "AMERICAN BITTERN": 100.0,
+    "AMERICAN BITTERN": 99.966667,
     "AMERICAN COOT": 100.0,
-    "AMERICAN FLAMINGO": 98.1667,
-    "AMERICAN GOLDFINCH": 99.9667,
-    "AMERICAN KESTREL": 90.1333
-  }
+    "AMERICAN FLAMINGO": 98.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 89.933333
+  },
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_bX/checkpoints/baseline/base15/resnet50_base15_best.pth"
 }
