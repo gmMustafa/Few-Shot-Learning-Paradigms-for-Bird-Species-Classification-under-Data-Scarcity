@@ -133,19 +133,25 @@ def from_baseline(d, label, group, note, split='b15_n5'):
     """Parse a supervised baseline summary.json."""
     if d is None:
         return dict(split=split, group=group, method=label, setup='—', acc=None, ci='—',
-                    ci_lo=None, ci_hi=None, f1=None, note=note)
+                    ci_lo=None, ci_hi=None, f1=None, precision=None, recall=None, note=note)
     # novel_kshot_5 uses 'test_accuracy'; others use 'accuracy'
     raw_acc = d.get('accuracy') or d.get('test_accuracy')
     acc = float(raw_acc) * 100
     ci  = d.get('accuracy_ci_95') or d.get('test_accuracy_ci_95')
     ci_str = fmt_ci(ci, scale=100) if ci else '—'
-    f1  = d.get('macro_f1')
+    f1        = d.get('macro_f1')
+    precision = d.get('macro_precision')
+    recall    = d.get('macro_recall')
+    auc       = d.get('auc_ovr')
     return dict(split=split, group=group, method=label,
                 setup=note,
                 acc=acc, ci=ci_str,
                 ci_lo=float(ci[0])*100 if ci else None,
                 ci_hi=float(ci[1])*100 if ci else None,
-                f1=float(f1) if f1 else None,
+                f1=float(f1) if f1 is not None else None,
+                precision=float(precision) if precision is not None else None,
+                recall=float(recall) if recall is not None else None,
+                auc=float(auc) if auc is not None else None,
                 note='Reference')
 
 
@@ -154,16 +160,22 @@ def from_fsl(d, label, group, k_shot, split='b15_n5', n_way=5):
     setup = f'{n_way}-way {k_shot}-shot'
     if d is None:
         return dict(split=split, group=group, method=label, setup=setup, acc=None, ci='—',
-                    ci_lo=None, ci_hi=None, f1=None, note='Direct')
+                    ci_lo=None, ci_hi=None, f1=None, precision=None, recall=None, note='Direct')
     acc   = float(d['mean_accuracy_pct'])
     ci95  = float(d['ci95_pct'])
     wci   = d.get('wilson_ci_95')
     ci_str = fmt_ci(wci, scale=1.0) if wci else f'[{acc-ci95:.2f}, {acc+ci95:.2f}]'
     ci_lo  = float(wci[0]) if wci else acc - ci95
     ci_hi  = float(wci[1]) if wci else acc + ci95
+    precision = d.get('macro_precision')
+    recall    = d.get('macro_recall')
+    auc       = d.get('auc_ovr')
     return dict(split=split, group=group, method=label, setup=setup,
                 acc=acc, ci=ci_str, ci_lo=ci_lo, ci_hi=ci_hi,
                 f1=float(d['macro_f1']) if d.get('macro_f1') is not None else None,
+                precision=float(precision) if precision is not None else None,
+                recall=float(recall) if recall is not None else None,
+                auc=float(auc) if auc is not None else None,
                 note='Direct')
 
 
@@ -181,7 +193,7 @@ rows = [
     # --- Zero-shot reference (always 0%) ---
     dict(split='b15_n5', group='Zero-Shot Reference', method='Zero-Shot Transfer',
          setup='5-way, 0-shot', acc=0.0, ci='[0.0, 0.0]',
-         ci_lo=0.0, ci_hi=0.0, f1=None,
+         ci_lo=0.0, ci_hi=0.0, f1=None, precision=None, recall=None, auc=None,
          note='0% by design (15-class head cannot output novel labels)'),
 
     # --- NCC Baseline (direct comparator to ProtoNet — same K, same distance) ---
@@ -250,7 +262,7 @@ df = pd.DataFrame(rows)
 # Console table
 # ---------------------------------------------------------------------------
 
-DISPLAY_COLS = ['split', 'group', 'method', 'setup', 'acc', 'ci', 'f1', 'note']
+DISPLAY_COLS = ['split', 'group', 'method', 'setup', 'acc', 'ci', 'f1', 'precision', 'recall', 'auc', 'note']
 
 def fmt_acc(v):
     if v is None or (isinstance(v, float) and math.isnan(v)):
@@ -262,11 +274,11 @@ def fmt_f1_cell(v):
         return '—'
     return f'{v:.4f}'
 
-print('\n' + '=' * 110)
+print('\n' + '=' * 145)
 print('THESIS COMPARISON TABLE')
-print('=' * 110)
-print(f"{'Split':<10} {'Group':<24} {'Method':<24} {'Setup':<18} {'Accuracy':>10} {'95% CI':>22} {'Macro F1':>10}")
-print('-' * 110)
+print('=' * 145)
+print(f"{'Split':<10} {'Group':<24} {'Method':<24} {'Setup':<18} {'Accuracy':>10} {'95% CI':>22} {'Macro F1':>10} {'Precision':>10} {'Recall':>10} {'AUC-OVR':>10}")
+print('-' * 145)
 
 current_split = None
 current_group = None
@@ -281,11 +293,14 @@ for _, r in df.iterrows():
         current_group = r['group']
         print(f"  <{r['group']}>")
 
-    acc_str = fmt_acc(r['acc'])
-    f1_str  = fmt_f1_cell(r['f1'])
-    print(f"    {r['method']:<24} {r['setup']:<18} {acc_str:>10} {r['ci']:>22} {f1_str:>10}")
+    acc_str  = fmt_acc(r['acc'])
+    f1_str   = fmt_f1_cell(r['f1'])
+    prec_str = fmt_f1_cell(r.get('precision'))
+    rec_str  = fmt_f1_cell(r.get('recall'))
+    auc_str  = fmt_f1_cell(r.get('auc'))
+    print(f"    {r['method']:<24} {r['setup']:<18} {acc_str:>10} {r['ci']:>22} {f1_str:>10} {prec_str:>10} {rec_str:>10} {auc_str:>10}")
 
-print('=' * 110)
+print('=' * 145)
 print('\nNotes:')
 print('  b15_n5      : original 15 base / 5 novel setup')
 print('  b10_n10     : new 10 base / 10 novel setup (ProtoNet, MatchingNet, RelationNet)')
@@ -301,13 +316,15 @@ print()
 out_dir = os.path.join(RES, 'comparison')
 os.makedirs(out_dir, exist_ok=True)
 
-csv_df = df[['split', 'group', 'method', 'setup', 'acc', 'ci', 'f1', 'note']].copy()
+csv_df = df[['split', 'group', 'method', 'setup', 'acc', 'ci', 'f1', 'precision', 'recall', 'auc', 'note']].copy()
+_fmt = lambda v: f'{v:.4f}' if v is not None and not (isinstance(v, float) and math.isnan(v)) else '—'
 csv_df['acc'] = csv_df['acc'].apply(
     lambda v: f'{v:.2f}' if v is not None and not (isinstance(v, float) and math.isnan(v)) else '—'
 )
-csv_df['f1'] = csv_df['f1'].apply(
-    lambda v: f'{v:.4f}' if v is not None and not (isinstance(v, float) and math.isnan(v)) else '—'
-)
+csv_df['f1']        = csv_df['f1'].apply(_fmt)
+csv_df['precision'] = csv_df['precision'].apply(_fmt)
+csv_df['recall']    = csv_df['recall'].apply(_fmt)
+csv_df['auc']       = csv_df['auc'].apply(_fmt)
 csv_df.to_csv(os.path.join(out_dir, 'comparison_table.csv'), index=False)
 print(f"Saved: results/comparison/comparison_table.csv")
 
@@ -332,15 +349,20 @@ def f1_tex(v):
 def ci_tex(s):
     return s if s != '—' else '---'
 
+def pr_tex(v):
+    if v is None or (isinstance(v, float) and math.isnan(v)):
+        return '---'
+    return f'{v:.4f}'
+
 lines = [
     r'\begin{table}[htbp]',
     r'\centering',
     r'\caption{Comparison of methods on Birds-20 novel class evaluation. '
     r'Includes both the base15/novel5 and base10/novel10 setups for all FSL methods (ProtoNet, MatchingNet, RelationNet) and NCC baselines.}',
     r'\label{tab:results_comparison}',
-    r'\begin{tabular}{lllcc}',
+    r'\begin{tabular}{lllccccc}',
     r'\hline',
-    r'\textbf{Split} & \textbf{Method} & \textbf{Accuracy (\%)} & \textbf{95\% CI} & \textbf{Macro F1} \\',
+    r'\textbf{Split} & \textbf{Method} & \textbf{Accuracy (\%)} & \textbf{95\% CI} & \textbf{Macro F1} & \textbf{Precision} & \textbf{Recall} & \textbf{AUC-OVR} \\',
     r'\hline',
 ]
 
@@ -350,13 +372,16 @@ for _, r in df.iterrows():
         if current_split is not None:
             lines.append(r'\hline')
         current_split = r['split']
-        lines.append(f"\\multicolumn{{5}}{{l}}{{\\textit{{{tex_escape(r['split'])}}}}}" + r' \\')
+        lines.append(f"\\multicolumn{{8}}{{l}}{{\\textit{{{tex_escape(r['split'])}}}}}" + r' \\')
 
     method_cell = tex_escape(str(r['method']))
     acc_cell    = acc_tex(r['acc'])
     ci_cell     = ci_tex(r['ci']).replace('%', r'\%')
     f1_cell     = f1_tex(r['f1'])
-    lines.append(f"{tex_escape(r['split'])} & {method_cell} & {acc_cell} & {ci_cell} & {f1_cell} \\\\")
+    prec_cell   = pr_tex(r.get('precision'))
+    rec_cell    = pr_tex(r.get('recall'))
+    auc_cell    = pr_tex(r.get('auc'))
+    lines.append(f"{tex_escape(r['split'])} & {method_cell} & {acc_cell} & {ci_cell} & {f1_cell} & {prec_cell} & {rec_cell} & {auc_cell} \\\\")
 
 lines += [
     r'\hline',

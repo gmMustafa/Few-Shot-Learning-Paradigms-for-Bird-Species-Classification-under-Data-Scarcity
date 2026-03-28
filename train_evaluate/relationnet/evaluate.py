@@ -26,7 +26,7 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 import seaborn as sns
 from torchvision.models import resnet50, ResNet50_Weights
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score
 from tqdm import tqdm
 
 SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
@@ -290,6 +290,7 @@ def main():
     global_cm = np.zeros((len(novel_classes), len(novel_classes)), dtype=float)
     all_truths: list = []
     all_preds:  list = []
+    all_probs:  list = []
     first_episode_class_indices: list = []
 
     with torch.no_grad():
@@ -303,8 +304,9 @@ def main():
             query_images, query_labels = build_episode_query(
                 novel_test_ds, selected_class_indices, q_query, rng, device)
 
-            # RelationNet returns scores [N*Q, n_way] → argmax for prediction
+            # RelationNet returns scores [N*Q, n_way] → softmax for probs, argmax for prediction
             scores = model(support_images, support_labels, query_images, n_way)
+            probs  = torch.softmax(scores, dim=1).cpu().numpy()
             preds  = scores.argmax(dim=1).cpu().numpy()
             truths = query_labels.cpu().numpy()
 
@@ -313,6 +315,7 @@ def main():
 
             all_truths.extend(truths.tolist())
             all_preds.extend(preds.tolist())
+            all_probs.extend(probs.tolist())
 
             # Map episode-local labels back to global novel-class indices
             for t_local, p_local in zip(truths, preds):
@@ -323,7 +326,13 @@ def main():
                 global_cm[t_global, p_global] += 1
 
     # Metrics
-    macro_f1 = f1_score(all_truths, all_preds, average='macro', zero_division=0)
+    macro_f1        = f1_score(all_truths, all_preds, average='macro', zero_division=0)
+    macro_precision = precision_score(all_truths, all_preds, average='macro', zero_division=0)
+    macro_recall    = recall_score(all_truths, all_preds, average='macro', zero_division=0)
+    try:
+        auc_ovr = float(roc_auc_score(all_truths, all_probs, multi_class='ovr', average='macro'))
+    except Exception:
+        auc_ovr = None
     n_ep     = len(episode_accuracies)
     mean_acc = float(np.mean(episode_accuracies)) * 100
     std_acc  = float(np.std(episode_accuracies))  * 100
@@ -342,7 +351,10 @@ def main():
     print(f"Mean accuracy : {mean_acc:.2f}% ± {ci95:.2f}% (95% CI)")
     print(f"Std           : {std_acc:.2f}%")
     print(f"Wilson CI     : [{ci_low*100:.2f}%, {ci_high*100:.2f}%]")
-    print(f"Macro F1      : {macro_f1:.4f}")
+    print(f"Macro F1       : {macro_f1:.4f}")
+    print(f"Macro Precision: {macro_precision:.4f}")
+    print(f"Macro Recall   : {macro_recall:.4f}")
+    print(f"AUC-OVR (macro): {auc_ovr:.4f}" if auc_ovr is not None else "AUC-OVR (macro): N/A")
     print("\nPer-class accuracy (global novel-class space):")
     for cls in novel_classes:
         print(f"  {cls:<30s}: {per_class_acc[cls]:.2f}%  | queries={per_class_total[cls]}")
@@ -364,6 +376,9 @@ def main():
         'ci95_pct':            round(ci95, 4),
         'wilson_ci_95':        [round(ci_low*100, 4), round(ci_high*100, 4)],
         'macro_f1':            round(float(macro_f1), 4),
+        'macro_precision':     round(float(macro_precision), 4),
+        'macro_recall':        round(float(macro_recall), 4),
+        'auc_ovr':             round(auc_ovr, 4) if auc_ovr is not None else None,
         'per_class_accuracy_pct': {cls: round(acc, 4) for cls, acc in per_class_acc.items()},
         'per_class_query_total': per_class_total,
     }
@@ -384,6 +399,9 @@ def main():
         f"Std            : {std_acc:.2f}%",
         f"Wilson CI 95%  : [{ci_low*100:.2f}%, {ci_high*100:.2f}%]",
         f"Macro F1       : {macro_f1:.4f}",
+        f"Macro Precision: {macro_precision:.4f}",
+        f"Macro Recall   : {macro_recall:.4f}",
+        f"AUC-OVR (macro): {auc_ovr:.4f}" if auc_ovr is not None else "AUC-OVR (macro): N/A",
         "",
         "Per-class accuracy:",
     ] + [f"  {cls:<30s}: {per_class_acc[cls]:.2f}%  | queries={per_class_total[cls]}" for cls in novel_classes]

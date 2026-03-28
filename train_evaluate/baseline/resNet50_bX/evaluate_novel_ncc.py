@@ -30,7 +30,7 @@ import matplotlib.pyplot as plt
 
 from torchvision import models, transforms, datasets
 from torch.utils.data import Subset
-from sklearn.metrics import f1_score, confusion_matrix
+from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score, confusion_matrix
 
 
 def set_seed(seed: int):
@@ -259,7 +259,8 @@ def main():
 
     episode_accuracies = []
     all_truths = []
-    all_preds = []
+    all_preds  = []
+    all_probs  = []
 
     global_cm = np.zeros((len(novel_classes), len(novel_classes)), dtype=float)
     episode_freq = {cls: 0 for cls in novel_classes}
@@ -291,12 +292,17 @@ def main():
 
         dists = pairwise_distance(query_x, prototypes, distance=distance)
         preds_local = np.argmin(dists, axis=1)
+        # Convert distances to probabilities via softmax of negated distances
+        neg_dists = -dists
+        exp_d = np.exp(neg_dists - neg_dists.max(axis=1, keepdims=True))
+        probs_local = exp_d / exp_d.sum(axis=1, keepdims=True)
 
         acc = float((preds_local == query_y).mean())
         episode_accuracies.append(acc)
 
         all_truths.extend(query_y.tolist())
         all_preds.extend(preds_local.tolist())
+        all_probs.extend(probs_local.tolist())
 
         for t_local, p_local in zip(query_y, preds_local):
             t_global = selected_global[int(t_local)]
@@ -315,7 +321,13 @@ def main():
     total_queries = sum(per_class_total.values())
     ci_lo, ci_hi = wilson_ci(total_correct, total_queries)
 
-    macro_f1 = f1_score(all_truths, all_preds, average="macro", zero_division=0)
+    macro_f1        = f1_score(all_truths, all_preds, average="macro", zero_division=0)
+    macro_precision = precision_score(all_truths, all_preds, average="macro", zero_division=0)
+    macro_recall    = recall_score(all_truths, all_preds, average="macro", zero_division=0)
+    try:
+        auc_ovr = float(roc_auc_score(all_truths, all_probs, multi_class="ovr", average="macro"))
+    except Exception:
+        auc_ovr = None
 
     per_class_acc = {
         cls: (100.0 * per_class_correct[cls] / per_class_total[cls]) if per_class_total[cls] > 0 else 0.0
@@ -336,6 +348,9 @@ def main():
         "ci95_pct": round(ci95, 6),
         "wilson_ci_95": [round(ci_lo * 100, 6), round(ci_hi * 100, 6)],
         "macro_f1": round(float(macro_f1), 6),
+        "macro_precision": round(float(macro_precision), 6),
+        "macro_recall": round(float(macro_recall), 6),
+        "auc_ovr": round(auc_ovr, 6) if auc_ovr is not None else None,
         "base_classes": base_classes,
         "novel_classes": novel_classes,
         "per_class_accuracy_pct": {k: round(v, 6) for k, v in per_class_acc.items()},
@@ -368,7 +383,10 @@ def main():
 
     print(f"Mean accuracy : {mean_acc:.2f}% ± {ci95:.2f}%")
     print(f"Wilson 95% CI : [{ci_lo * 100:.2f}%, {ci_hi * 100:.2f}%]")
-    print(f"Macro F1      : {macro_f1:.4f}")
+    print(f"Macro F1       : {macro_f1:.4f}")
+    print(f"Macro Precision: {macro_precision:.4f}")
+    print(f"Macro Recall   : {macro_recall:.4f}")
+    print(f"AUC-OVR (macro): {auc_ovr:.4f}" if auc_ovr is not None else "AUC-OVR (macro): N/A")
     print("Per-class accuracy:")
     for cls in novel_classes:
         print(f"  {cls:<30s}: {per_class_acc[cls]:6.2f}% | appeared={episode_freq[cls]:4d} | queries={per_class_total[cls]:5d}")
