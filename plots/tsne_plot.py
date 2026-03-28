@@ -40,10 +40,26 @@ from utils.dataset import FilteredDataset, get_eval_transforms
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Colour per novel class
-NOVEL_COLORS = ['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00']
-NOVEL_SHORT  = ['AM. BITTERN', 'AM. COOT', 'AM. FLAMINGO',
-                'AM. GOLDFINCH', 'AM. KESTREL']
+# Colour palette — supports up to 10 novel classes
+NOVEL_COLORS = [
+    '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00',
+    '#a65628', '#f781bf', '#999999', '#66c2a5', '#fc8d62',
+]
+
+
+def get_colors(n):
+    """Return n colours, cycling if needed."""
+    return [NOVEL_COLORS[i % len(NOVEL_COLORS)] for i in range(n)]
+
+
+def short_name(cls):
+    """Shorten a class label for legend display."""
+    return (cls.replace('AMERICAN ', 'AM. ')
+               .replace('ALEXANDRINE ', 'ALEX. ')
+               .replace('ABYSSINIAN ', 'ABYSS. ')
+               .replace('ALTAMIRA ', 'ALTA. ')
+               .replace('ALBERTS ', 'ALB. ')
+               .replace('ALPINE ', 'ALP. '))
 
 
 def set_seed(seed=42):
@@ -113,7 +129,9 @@ def compute_prototypes(embeddings, labels, n_way):
 def plot_tsne(ax, tsne_emb, labels, splits, proto_2d=None,
               novel_classes=None, title=''):
     """Plot t-SNE scatter on ax. proto_2d: [n_way, 2] if provided."""
-    n_way = len(NOVEL_COLORS)
+    n_way  = len(novel_classes) if novel_classes else max(labels) + 1
+    colors = get_colors(n_way)
+    shorts = [short_name(c) for c in novel_classes] if novel_classes else [str(i) for i in range(n_way)]
 
     for cls_idx in range(n_way):
         mask_train = [i for i, (l, s) in enumerate(zip(labels, splits))
@@ -121,7 +139,7 @@ def plot_tsne(ax, tsne_emb, labels, splits, proto_2d=None,
         mask_test  = [i for i, (l, s) in enumerate(zip(labels, splits))
                       if l == cls_idx and s == 'test']
 
-        color = NOVEL_COLORS[cls_idx]
+        color = colors[cls_idx]
         if mask_train:
             ax.scatter(tsne_emb[mask_train, 0], tsne_emb[mask_train, 1],
                        c=color, marker='o', s=18, alpha=0.4, linewidths=0)
@@ -129,28 +147,55 @@ def plot_tsne(ax, tsne_emb, labels, splits, proto_2d=None,
             ax.scatter(tsne_emb[mask_test, 0], tsne_emb[mask_test, 1],
                        c=color, marker='*', s=80, alpha=0.9,
                        edgecolors='black', linewidths=0.4,
-                       label=NOVEL_SHORT[cls_idx])
+                       label=shorts[cls_idx])
 
     if proto_2d is not None:
-        ax.scatter(proto_2d[:, 0], proto_2d[:, 1],
-                   c=NOVEL_COLORS[:n_way], marker='P',
-                   s=200, edgecolors='black', linewidths=1.5,
-                   zorder=5, label='Prototype')
+        for cls_idx in range(n_way):
+            ax.scatter(proto_2d[cls_idx, 0], proto_2d[cls_idx, 1],
+                       c=colors[cls_idx], marker='P',
+                       s=200, edgecolors='black', linewidths=1.5,
+                       zorder=5, label='_nolegend_' if cls_idx > 0 else 'Prototype')
 
     ax.set_title(title, fontsize=11)
     ax.set_xticks([]); ax.set_yticks([])
     ax.legend(loc='lower right', fontsize=7, markerscale=1.2)
 
 
+MODEL_DIR = {
+    'protonet':    'proto_net',
+    'matchingnet': 'matchingnet',
+    'relationnet': 'relationnet',
+}
+
+MODEL_LABEL = {
+    'protonet':    'ProtoNet',
+    'matchingnet': 'MatchingNet',
+    'relationnet': 'RelationNet',
+}
+
+DEFAULT_CONFIG = {
+    'protonet':    'configs/proto_configs.yaml',
+    'matchingnet': 'configs/matchingnet_configs.yaml',
+    'relationnet': 'configs/relationnet_configs.yaml',
+}
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='configs/proto_configs.yaml',
-                        help='Path to proto config (relative to project root)')
+    parser.add_argument('--model', default='protonet',
+                        choices=['protonet', 'matchingnet', 'relationnet'],
+                        help='Which FSL model to visualise (default: protonet)')
+    parser.add_argument('--config', default=None,
+                        help='Path to config YAML (relative to project root). '
+                             'Defaults to the standard config for --model.')
     parser.add_argument('--no-pretrained', action='store_true',
                         help='Skip the before/after comparison, show trained only')
     parser.add_argument('--max-train', type=int, default=30,
                         help='Max train images per class to embed (default 30)')
     args = parser.parse_args()
+
+    if args.config is None:
+        args.config = DEFAULT_CONFIG[args.model]
 
     set_seed(42)
     device = torch.device('cpu')
@@ -162,11 +207,16 @@ def main():
     novel_classes = cfg['novel_classes']
     image_size    = cfg['image_size']
     data_root     = os.path.join(ROOT, 'data')
-    ckpt_path     = os.path.normpath(
-        os.path.join(ROOT, 'train_evaluate', 'proto_net',
+    model_subdir  = MODEL_DIR[args.model]
+    model_label   = MODEL_LABEL[args.model]
+
+    ckpt_path = os.path.normpath(
+        os.path.join(ROOT, 'train_evaluate', model_subdir,
                      cfg['output']['ckpt_dir'], cfg['output']['ckpt_name']))
 
-    out_dir = os.path.join(ROOT, 'results', 'proto_net', 'tsne')
+    _train_dir = os.path.join(ROOT, 'train_evaluate', model_subdir)
+    _res_dir   = os.path.normpath(os.path.join(_train_dir, cfg['output']['results_dir']))
+    out_dir    = os.path.join(_res_dir, 'tsne')
     os.makedirs(out_dir, exist_ok=True)
 
     print(f"Loading images for {len(novel_classes)} novel classes...")
@@ -200,7 +250,7 @@ def main():
                          for k, v in ckpt['model_state_dict'].items()
                          if k.startswith('encoder.')}
         trained_backbone.load_state_dict(encoder_state, strict=False)
-        print(f"Loaded trained checkpoint (epoch {ckpt['epoch']})")
+        print(f"Loaded {model_label} checkpoint (epoch {ckpt['epoch']})")
 
     trained_backbone = trained_backbone.to(device)
 
@@ -260,7 +310,7 @@ def main():
         plot_tsne(ax2, tsne_trained, labels, splits,
                   proto_2d=proto_2d,
                   novel_classes=novel_classes,
-                  title='After ProtoNet Training\n(ResNet-50 fine-tuned episodically)')
+                  title=f'After {model_label} Training\n(ResNet-50 fine-tuned episodically)')
 
         # Shared legend
         train_patch = mpatches.Patch(color='gray', alpha=0.4, label='Train images (●)')
@@ -271,8 +321,8 @@ def main():
                    loc='lower center', ncol=3, fontsize=9,
                    bbox_to_anchor=(0.5, -0.02))
 
-        plt.suptitle('t-SNE of Novel Class Embeddings — Before vs After ProtoNet Training\n'
-                     '(5 novel bird species, ResNet-50 backbone)',
+        plt.suptitle(f't-SNE of Novel Class Embeddings — Before vs After {model_label} Training\n'
+                     f'({len(novel_classes)} novel bird species, ResNet-50 backbone)',
                      fontsize=12, y=1.01)
         plt.tight_layout()
         out_path = os.path.join(out_dir, 'tsne_before_after.png')
@@ -285,8 +335,8 @@ def main():
     plot_tsne(ax, tsne_trained, labels, splits,
               proto_2d=proto_2d,
               novel_classes=novel_classes,
-              title='t-SNE of Novel Class Embeddings\n'
-                    '(ProtoNet-trained ResNet-50, ● = train, ★ = test, ✚ = prototype)')
+              title=f't-SNE of Novel Class Embeddings\n'
+                    f'({model_label}-trained ResNet-50, ● = train, ★ = test, ✚ = prototype)')
 
     # Manual legend for markers
     train_line = plt.Line2D([0], [0], marker='o', color='gray',
@@ -296,8 +346,9 @@ def main():
     proto_line = plt.Line2D([0], [0], marker='P', color='gray',
                              markersize=10, label='Prototype', linestyle='None',
                              markeredgecolor='black')
-    class_patches = [mpatches.Patch(color=NOVEL_COLORS[i],
-                                    label=NOVEL_SHORT[i])
+    _colors = get_colors(len(novel_classes))
+    class_patches = [mpatches.Patch(color=_colors[i],
+                                    label=short_name(novel_classes[i]))
                      for i in range(len(novel_classes))]
     ax.legend(handles=class_patches + [train_line, test_line, proto_line],
               loc='lower right', fontsize=8)

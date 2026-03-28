@@ -1,6 +1,6 @@
 \begin{table}[htbp]
 \centering
-\caption{Comparison of methods on Birds-20 novel class evaluation. Includes the original base15/novel5 setup and ProtoNet-only results for the new base10/novel10 setup.}
+\caption{Comparison of methods on Birds-20 novel class evaluation. Includes both the base15/novel5 and base10/novel10 setups for all FSL methods (ProtoNet, MatchingNet, RelationNet) and NCC baselines.}
 \label{tab:results_comparison}
 \begin{tabular}{lllcc}
 \hline
@@ -9,34 +9,48 @@
 \multicolumn{5}{l}{\textit{b15\_n5}} \\
 b15\_n5 & Full-20 Baseline & 99.00\% & [94.55, 99.82] & 0.9899 \\
 b15\_n5 & Base-15 Baseline & 100.00\% & [95.13, 100.00] & 1.0000 \\
-b15\_n5 & K=5 Fine-tune & 100.00\% & [86.68, 100.00] & 1.0000 \\
+b15\_n5 & K=5 Fine-tune & 100.00\% & [86.68, 100.00] & --- \\
 b15\_n5 & Zero-Shot Transfer & 0.00\% & [0.0, 0.0] & --- \\
-b15\_n5 & NCC (Euclidean) & 89.74\% & [89.24, 90.22] & --- \\
-b15\_n5 & NCC (Manhattan) & 82.44\% & [81.82, 83.04] & --- \\
-b15\_n5 & NCC (Euclidean) & 97.65\% & [97.40, 97.88] & --- \\
-b15\_n5 & NCC (Manhattan) & 92.35\% & [91.91, 92.76] & --- \\
-b15\_n5 & NCC (Euclidean) & 98.63\% & [98.43, 98.81] & --- \\
-b15\_n5 & NCC (Manhattan) & 94.42\% & [94.04, 94.78] & --- \\
-b15\_n5 & ProtoNet (Euclidean) & 94.11\% & [93.72, 94.47] & 0.9403 \\
-b15\_n5 & ProtoNet (Manhattan) & 78.95\% & [78.29, 79.59] & 0.7854 \\
-b15\_n5 & MatchingNet (Cosine) & 60.90\% & [60.12, 61.68] & 0.5813 \\
-b15\_n5 & RelationNet (Learned) & 72.66\% & [71.94, 73.37] & 0.7229 \\
-b15\_n5 & ProtoNet (Euclidean) & 99.23\% & [99.07, 99.35] & 0.9923 \\
-b15\_n5 & ProtoNet (Manhattan) & 90.19\% & [89.71, 90.66] & 0.9004 \\
-b15\_n5 & MatchingNet (Cosine) & 69.00\% & [68.26, 69.74] & 0.6564 \\
-b15\_n5 & RelationNet (Learned) & 78.23\% & [77.56, 78.88] & 0.7790 \\
-b15\_n5 & ProtoNet (Euclidean) & 99.91\% & [99.84, 99.94] & 0.9991 \\
-b15\_n5 & ProtoNet (Manhattan) & 93.25\% & [92.83, 93.64] & 0.9314 \\
-b15\_n5 & MatchingNet (Cosine) & 70.78\% & [70.05, 71.50] & 0.6698 \\
-b15\_n5 & RelationNet (Learned) & 78.71\% & [78.04, 79.35] & 0.7837 \\
+b15\_n5 & NCC (Euclidean) & 88.05\% & [87.52, 88.56] & 0.8773 \\
+b15\_n5 & NCC (Manhattan) & 78.96\% & [78.30, 79.60] & 0.7926 \\
+b15\_n5 & NCC (Euclidean) & 97.58\% & [97.32, 97.81] & 0.9755 \\
+b15\_n5 & NCC (Manhattan) & 91.59\% & [91.13, 92.02] & 0.9159 \\
+b15\_n5 & NCC (Euclidean) & 98.14\% & [97.91, 98.34] & 0.9813 \\
+b15\_n5 & NCC (Manhattan) & 94.33\% & [93.94, 94.69] & 0.9425 \\
+b15\_n5 & ProtoNet (Euclidean) & 94.06\% & [93.67, 94.43] & 0.9397 \\
+b15\_n5 & ProtoNet (Manhattan) & 79.67\% & [79.02, 80.31] & 0.7918 \\
+b15\_n5 & MatchingNet (Cosine) & 60.93\% & [60.15, 61.71] & 0.5829 \\
+b15\_n5 & RelationNet (Learned) & --- & --- & --- \\
+b15\_n5 & ProtoNet (Euclidean) & 99.18\% & [99.02, 99.31] & 0.9918 \\
+b15\_n5 & ProtoNet (Manhattan) & 89.63\% & [89.13, 90.10] & 0.8947 \\
+b15\_n5 & MatchingNet (Cosine) & 68.03\% & [67.28, 68.77] & 0.6455 \\
+b15\_n5 & RelationNet (Learned) & --- & --- & --- \\
+b15\_n5 & ProtoNet (Euclidean) & 99.80\% & [99.71, 99.86] & 0.9980 \\
+b15\_n5 & ProtoNet (Manhattan) & 93.29\% & [92.88, 93.68] & 0.9317 \\
+b15\_n5 & MatchingNet (Cosine) & 70.87\% & [70.13, 71.59] & 0.6685 \\
+b15\_n5 & RelationNet (Learned) & --- & --- & --- \\
 \hline
 \multicolumn{5}{l}{\textit{b10\_n10}} \\
-b10\_n10 & ProtoNet (Euclidean) & 88.76\% & [88.24, 89.26] & 0.8874 \\
-b10\_n10 & ProtoNet (Manhattan) & 77.50\% & [76.82, 78.16] & 0.7762 \\
-b10\_n10 & ProtoNet (Euclidean) & 94.63\% & [94.26, 94.98] & 0.9466 \\
-b10\_n10 & ProtoNet (Manhattan) & 88.55\% & [88.03, 89.05] & 0.8859 \\
-b10\_n10 & ProtoNet (Euclidean) & 95.41\% & [95.06, 95.73] & 0.9543 \\
-b10\_n10 & ProtoNet (Manhattan) & 90.32\% & [89.84, 90.78] & 0.9034 \\
+b10\_n10 & Base-10 Baseline & 100.00\% & [92.87, 100.00] & 1.0000 \\
+b10\_n10 & K=5 Fine-tune & 92.00\% & [81.16, 96.84] & --- \\
+b10\_n10 & NCC (Euclidean) & 87.01\% & [86.46, 87.54] & 0.8703 \\
+b10\_n10 & NCC (Manhattan) & 76.28\% & [75.59, 76.95] & 0.7654 \\
+b10\_n10 & NCC (Euclidean) & 96.20\% & [95.88, 96.49] & 0.9620 \\
+b10\_n10 & NCC (Manhattan) & 90.25\% & [89.76, 90.71] & 0.9030 \\
+b10\_n10 & NCC (Euclidean) & 97.40\% & [97.13, 97.64] & 0.9740 \\
+b10\_n10 & NCC (Manhattan) & 92.90\% & [92.48, 93.30] & 0.9294 \\
+b10\_n10 & ProtoNet (Euclidean) & 88.45\% & [87.93, 88.95] & 0.8842 \\
+b10\_n10 & ProtoNet (Manhattan) & 76.10\% & [75.41, 76.78] & 0.7626 \\
+b10\_n10 & ProtoNet (Euclidean) & 94.83\% & [94.46, 95.17] & 0.9485 \\
+b10\_n10 & ProtoNet (Manhattan) & 87.64\% & [87.10, 88.16] & 0.8769 \\
+b10\_n10 & ProtoNet (Euclidean) & 95.77\% & [95.43, 96.08] & 0.9580 \\
+b10\_n10 & ProtoNet (Manhattan) & 90.14\% & [89.65, 90.61] & 0.9017 \\
+b10\_n10 & MatchingNet (Cosine) & 59.11\% & [58.32, 59.89] & 0.5920 \\
+b10\_n10 & MatchingNet (Cosine) & 63.35\% & [62.58, 64.12] & 0.6338 \\
+b10\_n10 & MatchingNet (Cosine) & 66.74\% & [65.98, 67.49] & 0.6667 \\
+b10\_n10 & RelationNet (Learned) & 66.94\% & [66.18, 67.69] & 0.6693 \\
+b10\_n10 & RelationNet (Learned) & 74.89\% & [74.19, 75.57] & 0.7484 \\
+b10\_n10 & RelationNet (Learned) & 76.44\% & [75.75, 77.11] & 0.7642 \\
 \hline
 \end{tabular}
 \end{table}

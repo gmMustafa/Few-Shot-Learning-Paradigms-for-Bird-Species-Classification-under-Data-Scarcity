@@ -52,10 +52,10 @@ def get_per_class(d):
 def build_heatmap(k_shot):
     # Each method: (label, path_to_summary)
     method_defs = [
-        ('ProtoNet (Euclidean)', load(f'proto_net/{k_shot}shot_euclidean/summary.json')),
-        ('ProtoNet (Manhattan)', load(f'proto_net/{k_shot}shot_manhattan/summary.json')),
-        ('MatchingNet (Cosine)', load(f'matching_net/{k_shot}shot/summary.json')),
-        ('RelationNet (Learned)',load(f'relation_net/{k_shot}shot/summary.json')),
+        ('ProtoNet (Euclidean)', load(f'proto_net/base15_novel5/{k_shot}shot_euclidean/summary.json')),
+        ('ProtoNet (Manhattan)', load(f'proto_net/base15_novel5/{k_shot}shot_manhattan/summary.json')),
+        ('MatchingNet (Cosine)', load(f'matching_net/base15_novel5/{k_shot}shot/summary.json')),
+        ('RelationNet (Learned)',load(f'relation_net/base15_novel5/{k_shot}shot/summary.json')),
     ]
 
     matrix = []

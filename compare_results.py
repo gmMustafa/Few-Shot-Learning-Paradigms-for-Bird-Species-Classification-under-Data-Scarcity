@@ -79,12 +79,12 @@ ncc_5_euc = load('baseline/resnet50/base15/novel_ncc/5shot_euclidean/summary.jso
 ncc_5_man = load('baseline/resnet50/base15/novel_ncc/5shot_manhattan/summary.json')
 
 # ProtoNet: base15 / novel5
-proto_1_euc = load('proto_net/1shot_euclidean/summary.json')
-proto_1_man = load('proto_net/1shot_manhattan/summary.json')
-proto_3_euc = load('proto_net/3shot_euclidean/summary.json')
-proto_3_man = load('proto_net/3shot_manhattan/summary.json')
-proto_5_euc = load('proto_net/5shot_euclidean/summary.json')
-proto_5_man = load('proto_net/5shot_manhattan/summary.json')
+proto_1_euc = load('proto_net/base15_novel5/1shot_euclidean/summary.json')
+proto_1_man = load('proto_net/base15_novel5/1shot_manhattan/summary.json')
+proto_3_euc = load('proto_net/base15_novel5/3shot_euclidean/summary.json')
+proto_3_man = load('proto_net/base15_novel5/3shot_manhattan/summary.json')
+proto_5_euc = load('proto_net/base15_novel5/5shot_euclidean/summary.json')
+proto_5_man = load('proto_net/base15_novel5/5shot_manhattan/summary.json')
 
 # ProtoNet: base10 / novel10
 proto_b10n10_1_euc = load('proto_net/base10_novel10/1shot_euclidean/summary.json')
@@ -94,13 +94,33 @@ proto_b10n10_3_man = load('proto_net/base10_novel10/3shot_manhattan/summary.json
 proto_b10n10_5_euc = load('proto_net/base10_novel10/5shot_euclidean/summary.json')
 proto_b10n10_5_man = load('proto_net/base10_novel10/5shot_manhattan/summary.json')
 
-# MatchingNet (cosine) and RelationNet (learned) — distance fixed by architecture
-match_1   = load('matching_net/1shot/summary.json')
-match_3   = load('matching_net/3shot/summary.json')
-match_5   = load('matching_net/5shot/summary.json')
-rel_1     = load('relation_net/1shot/summary.json')
-rel_3     = load('relation_net/3shot/summary.json')
-rel_5     = load('relation_net/5shot/summary.json')
+# MatchingNet (cosine): base15/novel5 and base10/novel10
+match_1   = load('matching_net/base15_novel5/1shot/summary.json')
+match_3   = load('matching_net/base15_novel5/3shot/summary.json')
+match_5   = load('matching_net/base15_novel5/5shot/summary.json')
+match_b10n10_1 = load('matching_net/base10_novel10/1shot/summary.json')
+match_b10n10_3 = load('matching_net/base10_novel10/3shot/summary.json')
+match_b10n10_5 = load('matching_net/base10_novel10/5shot/summary.json')
+
+# RelationNet (learned): base15/novel5 and base10/novel10
+rel_1     = load('relation_net/base15_novel5/1shot/summary.json')
+rel_3     = load('relation_net/base15_novel5/3shot/summary.json')
+rel_5     = load('relation_net/base15_novel5/5shot/summary.json')
+rel_b10n10_1 = load('relation_net/base10_novel10/1shot/summary.json')
+rel_b10n10_3 = load('relation_net/base10_novel10/3shot/summary.json')
+rel_b10n10_5 = load('relation_net/base10_novel10/5shot/summary.json')
+
+# NCC base10 / novel10
+ncc_b10_1_euc = load('baseline/resnet50/base10/novel_ncc/1shot_euclidean/summary.json')
+ncc_b10_1_man = load('baseline/resnet50/base10/novel_ncc/1shot_manhattan/summary.json')
+ncc_b10_3_euc = load('baseline/resnet50/base10/novel_ncc/3shot_euclidean/summary.json')
+ncc_b10_3_man = load('baseline/resnet50/base10/novel_ncc/3shot_manhattan/summary.json')
+ncc_b10_5_euc = load('baseline/resnet50/base10/novel_ncc/5shot_euclidean/summary.json')
+ncc_b10_5_man = load('baseline/resnet50/base10/novel_ncc/5shot_manhattan/summary.json')
+
+# Supervised baselines: base10
+base10    = load('baseline/resnet50/base10/base_test/summary.json')
+kshot5_b10 = load('baseline/resnet50/base10/novel_kshot_5/summary.json')
 
 
 # ---------------------------------------------------------------------------
@@ -114,8 +134,10 @@ def from_baseline(d, label, group, note, split='b15_n5'):
     if d is None:
         return dict(split=split, group=group, method=label, setup='—', acc=None, ci='—',
                     ci_lo=None, ci_hi=None, f1=None, note=note)
-    acc = float(d['accuracy']) * 100
-    ci  = d.get('accuracy_ci_95')
+    # novel_kshot_5 uses 'test_accuracy'; others use 'accuracy'
+    raw_acc = d.get('accuracy') or d.get('test_accuracy')
+    acc = float(raw_acc) * 100
+    ci  = d.get('accuracy_ci_95') or d.get('test_accuracy_ci_95')
     ci_str = fmt_ci(ci, scale=100) if ci else '—'
     f1  = d.get('macro_f1')
     return dict(split=split, group=group, method=label,
@@ -188,13 +210,37 @@ rows = [
     from_fsl(match_5,     'MatchingNet (Cosine)', 'FSL 5-Shot', k_shot=5, split='b15_n5'),
     from_fsl(rel_5,       'RelationNet (Learned)','FSL 5-Shot', k_shot=5, split='b15_n5'),
 
-    # --- ProtoNet only: base10 / novel10 ---
-    from_fsl(proto_b10n10_1_euc, 'ProtoNet (Euclidean)', 'ProtoNet b10_n10', k_shot=1, split='b10_n10'),
-    from_fsl(proto_b10n10_1_man, 'ProtoNet (Manhattan)', 'ProtoNet b10_n10', k_shot=1, split='b10_n10'),
-    from_fsl(proto_b10n10_3_euc, 'ProtoNet (Euclidean)', 'ProtoNet b10_n10', k_shot=3, split='b10_n10'),
-    from_fsl(proto_b10n10_3_man, 'ProtoNet (Manhattan)', 'ProtoNet b10_n10', k_shot=3, split='b10_n10'),
-    from_fsl(proto_b10n10_5_euc, 'ProtoNet (Euclidean)', 'ProtoNet b10_n10', k_shot=5, split='b10_n10'),
-    from_fsl(proto_b10n10_5_man, 'ProtoNet (Manhattan)', 'ProtoNet b10_n10', k_shot=5, split='b10_n10'),
+    # --- base10 / novel10: supervised references ---
+    from_baseline(base10,      'Base-10 Baseline',  'Supervised (Reference)',
+                  '10-way, full data', split='b10_n10'),
+    from_baseline(kshot5_b10,  'K=5 Fine-tune',     'Low-Data Supervised',
+                  '5-way, 5-shot fine-tune', split='b10_n10'),
+
+    # --- base10 / novel10: NCC ---
+    from_fsl(ncc_b10_1_euc, 'NCC (Euclidean)', 'NCC 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(ncc_b10_1_man, 'NCC (Manhattan)', 'NCC 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(ncc_b10_3_euc, 'NCC (Euclidean)', 'NCC 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(ncc_b10_3_man, 'NCC (Manhattan)', 'NCC 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(ncc_b10_5_euc, 'NCC (Euclidean)', 'NCC 5-Shot', k_shot=5, split='b10_n10'),
+    from_fsl(ncc_b10_5_man, 'NCC (Manhattan)', 'NCC 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base10 / novel10: ProtoNet ---
+    from_fsl(proto_b10n10_1_euc, 'ProtoNet (Euclidean)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(proto_b10n10_1_man, 'ProtoNet (Manhattan)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(proto_b10n10_3_euc, 'ProtoNet (Euclidean)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(proto_b10n10_3_man, 'ProtoNet (Manhattan)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(proto_b10n10_5_euc, 'ProtoNet (Euclidean)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+    from_fsl(proto_b10n10_5_man, 'ProtoNet (Manhattan)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base10 / novel10: MatchingNet ---
+    from_fsl(match_b10n10_1, 'MatchingNet (Cosine)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(match_b10n10_3, 'MatchingNet (Cosine)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(match_b10n10_5, 'MatchingNet (Cosine)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base10 / novel10: RelationNet ---
+    from_fsl(rel_b10n10_1, 'RelationNet (Learned)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(rel_b10n10_3, 'RelationNet (Learned)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(rel_b10n10_5, 'RelationNet (Learned)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
 ]
 
 df = pd.DataFrame(rows)
@@ -242,7 +288,7 @@ for _, r in df.iterrows():
 print('=' * 110)
 print('\nNotes:')
 print('  b15_n5      : original 15 base / 5 novel setup')
-print('  b10_n10     : new 10 base / 10 novel setup (ProtoNet only for now)')
+print('  b10_n10     : new 10 base / 10 novel setup (ProtoNet, MatchingNet, RelationNet)')
 print('  Reference   : Full-data supervised results. NOT directly comparable to few-shot methods.')
 print('  Direct      : Evaluated on novel classes with same K images.')
 print()
@@ -290,7 +336,7 @@ lines = [
     r'\begin{table}[htbp]',
     r'\centering',
     r'\caption{Comparison of methods on Birds-20 novel class evaluation. '
-    r'Includes the original base15/novel5 setup and ProtoNet-only results for the new base10/novel10 setup.}',
+    r'Includes both the base15/novel5 and base10/novel10 setups for all FSL methods (ProtoNet, MatchingNet, RelationNet) and NCC baselines.}',
     r'\label{tab:results_comparison}',
     r'\begin{tabular}{lllcc}',
     r'\hline',
@@ -742,6 +788,141 @@ def save_proto_split_chart(df, out_dir):
     print("Saved: results/comparison/comparison_bar_chart_proto_split.png")
 
 
-# Generate the two cleaner plots
+def save_b10_main_chart(df, out_dir):
+    """
+    Main comparison chart for the b10_n10 setup.
+    Shows NCC and all FSL methods side by side.
+    """
+    plot_df = df[
+        (df['split'] == 'b10_n10') &
+        (df['acc'].notna())
+    ].copy()
+
+    keep_methods = {
+        'Base-10 Baseline',
+        'K=5 Fine-tune',
+        'NCC (Euclidean)',
+        'NCC (Manhattan)',
+        'ProtoNet (Euclidean)',
+        'ProtoNet (Manhattan)',
+        'MatchingNet (Cosine)',
+        'RelationNet (Learned)',
+    }
+    plot_df = plot_df[plot_df['method'].isin(keep_methods)].copy()
+
+    ordered_pairs = [
+        ('Base-10 Baseline', '10-way, full data'),
+        ('K=5 Fine-tune',    '5-way, 5-shot fine-tune'),
+
+        ('NCC (Euclidean)',         '5-way 1-shot'),
+        ('NCC (Manhattan)',         '5-way 1-shot'),
+        ('ProtoNet (Euclidean)',    '5-way 1-shot'),
+        ('ProtoNet (Manhattan)',    '5-way 1-shot'),
+        ('MatchingNet (Cosine)',    '5-way 1-shot'),
+        ('RelationNet (Learned)',   '5-way 1-shot'),
+
+        ('NCC (Euclidean)',         '5-way 3-shot'),
+        ('NCC (Manhattan)',         '5-way 3-shot'),
+        ('ProtoNet (Euclidean)',    '5-way 3-shot'),
+        ('ProtoNet (Manhattan)',    '5-way 3-shot'),
+        ('MatchingNet (Cosine)',    '5-way 3-shot'),
+        ('RelationNet (Learned)',   '5-way 3-shot'),
+
+        ('NCC (Euclidean)',         '5-way 5-shot'),
+        ('NCC (Manhattan)',         '5-way 5-shot'),
+        ('ProtoNet (Euclidean)',    '5-way 5-shot'),
+        ('ProtoNet (Manhattan)',    '5-way 5-shot'),
+        ('MatchingNet (Cosine)',    '5-way 5-shot'),
+        ('RelationNet (Learned)',   '5-way 5-shot'),
+    ]
+
+    rows = []
+    for method, setup in ordered_pairs:
+        match = plot_df[(plot_df['method'] == method) & (plot_df['setup'] == setup)]
+        if len(match) == 0:
+            rows.append({'method': method, 'setup': setup, 'acc': np.nan, 'err': 0.0, 'group': None})
+        else:
+            r = match.iloc[0]
+            rows.append({'method': r['method'], 'setup': r['setup'],
+                         'acc': float(r['acc']), 'err': half_ci_width(r), 'group': r['group']})
+
+    chart_df = pd.DataFrame(rows)
+
+    color_map = {
+        'Supervised (Reference)': '#9ecae1',
+        'Low-Data Supervised':    '#2171b5',
+        'NCC 1-Shot': '#fdd0a2',
+        'NCC 3-Shot': '#fd8d3c',
+        'NCC 5-Shot': '#d94801',
+        'FSL 1-Shot': '#c7e9c0',
+        'FSL 3-Shot': '#74c476',
+        'FSL 5-Shot': '#238b45',
+    }
+
+    def short_label(method, setup):
+        if method == 'Base-10 Baseline':
+            return 'Base-10'
+        if method == 'K=5 Fine-tune':
+            return 'Fine-tune'
+        shot = setup.replace('5-way ', '').replace('-shot', 's')
+        if method == 'NCC (Euclidean)':    return f'NCC-E\n{shot}'
+        if method == 'NCC (Manhattan)':    return f'NCC-M\n{shot}'
+        if method == 'ProtoNet (Euclidean)':  return f'Proto-E\n{shot}'
+        if method == 'ProtoNet (Manhattan)':  return f'Proto-M\n{shot}'
+        if method == 'MatchingNet (Cosine)':  return f'Match\n{shot}'
+        if method == 'RelationNet (Learned)': return f'RelNet\n{shot}'
+        return method
+
+    x_labels = [short_label(r['method'], r['setup']) for _, r in chart_df.iterrows()]
+    x_vals   = chart_df['acc'].tolist()
+    x_errs   = chart_df['err'].tolist()
+    x_colors = [color_map.get(g, '#aaaaaa') if g is not None else '#eeeeee'
+                for g in chart_df['group']]
+
+    fig, ax = plt.subplots(figsize=(16, 6))
+    x = np.arange(len(x_labels))
+    bars = ax.bar(x, x_vals, color=x_colors, edgecolor='white', linewidth=0.8)
+
+    ax.errorbar(x, x_vals, yerr=x_errs, fmt='none',
+                color='black', capsize=4, capthick=1.1, linewidth=1.1)
+
+    for bar, val in zip(bars, x_vals):
+        if not np.isnan(val):
+            ax.text(bar.get_x() + bar.get_width() / 2, val + 0.8,
+                    f'{val:.1f}%', ha='center', va='bottom', fontsize=8, fontweight='bold')
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(x_labels, fontsize=8)
+    ax.set_ylabel('Accuracy (%)', fontsize=11)
+    ax.set_ylim(0, 112)
+    ax.set_title('Birds-20 Method Comparison — b10_n10\n'
+                 '(clean view of baselines, NCC, and few-shot models)', fontsize=12)
+    ax.axhline(y=20, color='gray', linestyle='--', linewidth=0.9, alpha=0.6)
+
+    for xpos in [1.5, 7.5, 13.5]:
+        ax.axvline(x=xpos, color='lightgray', linestyle='-', linewidth=0.8)
+
+    group_patches = [
+        mpatches.Patch(color='#9ecae1', label='Supervised reference'),
+        mpatches.Patch(color='#2171b5', label='Low-data supervised'),
+        mpatches.Patch(color='#fdd0a2', label='NCC / 1-shot'),
+        mpatches.Patch(color='#fd8d3c', label='NCC / 3-shot'),
+        mpatches.Patch(color='#d94801', label='NCC / 5-shot'),
+        mpatches.Patch(color='#c7e9c0', label='FSL / 1-shot'),
+        mpatches.Patch(color='#74c476', label='FSL / 3-shot'),
+        mpatches.Patch(color='#238b45', label='FSL / 5-shot'),
+    ]
+    ax.legend(handles=group_patches + [
+        plt.Line2D([0], [0], color='gray', linestyle='--', linewidth=0.9, label='Random chance (5-way)')
+    ], loc='upper right', fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(out_dir, 'comparison_bar_chart_b10_n10.png'), dpi=150)
+    plt.close()
+    print("Saved: results/comparison/comparison_bar_chart_b10_n10.png")
+
+
+# Generate the cleaner plots
 save_b15_main_chart(df, out_dir)
+save_b10_main_chart(df, out_dir)
 save_proto_split_chart(df, out_dir)

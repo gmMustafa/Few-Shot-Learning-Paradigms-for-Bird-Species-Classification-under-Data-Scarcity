@@ -51,15 +51,15 @@ methods = {
     'NCC (Euclidean)':      {k: load(f'baseline/resnet50/base15/novel_ncc/{k}shot_euclidean/summary.json') for k in shots},
     'NCC (Manhattan)':      {k: load(f'baseline/resnet50/base15/novel_ncc/{k}shot_manhattan/summary.json') for k in shots},
     # FSL methods
-    'ProtoNet (Euclidean)': {k: load(f'proto_net/{k}shot_euclidean/summary.json') for k in shots},
-    'ProtoNet (Manhattan)': {k: load(f'proto_net/{k}shot_manhattan/summary.json') for k in shots},
-    'MatchingNet (Cosine)': {k: load(f'matching_net/{k}shot/summary.json') for k in shots},
-    'RelationNet (Learned)':{k: load(f'relation_net/{k}shot/summary.json') for k in shots},
+    'ProtoNet (Euclidean)': {k: load(f'proto_net/base15_novel5/{k}shot_euclidean/summary.json') for k in shots},
+    'ProtoNet (Manhattan)': {k: load(f'proto_net/base15_novel5/{k}shot_manhattan/summary.json') for k in shots},
+    'MatchingNet (Cosine)': {k: load(f'matching_net/base15_novel5/{k}shot/summary.json') for k in shots},
+    'RelationNet (Learned)':{k: load(f'relation_net/base15_novel5/{k}shot/summary.json') for k in shots},
 }
 
 # K=5 fine-tune supervised baseline (direct comparator — fixed horizontal line)
 kshot5_sup = load('baseline/resnet50/base15/novel_kshot_5/summary.json')
-kshot5_acc = float(kshot5_sup['accuracy']) * 100 if kshot5_sup else None
+kshot5_acc = float(kshot5_sup.get('accuracy') or kshot5_sup.get('test_accuracy')) * 100 if kshot5_sup else None
 
 # ---------------------------------------------------------------------------
 # Plot
