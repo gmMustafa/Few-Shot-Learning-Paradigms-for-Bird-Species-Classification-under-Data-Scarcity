@@ -19,26 +19,29 @@
     "AMERICAN KESTREL"
   ],
   "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/relationnet/checkpoints/relationnet_base10_novel10/relationnet_best.pth",
-  "epochs_trained": 5,
-  "mean_accuracy_pct": 66.94,
-  "std_accuracy_pct": 14.7104,
-  "ci95_pct": 1.1771,
+  "epochs_trained": 7,
+  "mean_accuracy_pct": 56.4067,
+  "std_accuracy_pct": 14.0027,
+  "ci95_pct": 1.1204,
   "wilson_ci_95": [
-    66.1829,
-    67.6884
+    55.6116,
+    57.1985
   ],
-  "macro_f1": 0.6693,
+  "macro_f1": 0.565,
+  "macro_precision": 0.5673,
+  "macro_recall": 0.5641,
+  "auc_ovr": 0.8269,
   "per_class_accuracy_pct": {
-    "ALBERTS TOWHEE": 80.9241,
-    "ALEXANDRINE PARAKEET": 42.6032,
-    "ALPINE CHOUGH": 86.2838,
-    "ALTAMIRA YELLOWTHROAT": 74.658,
-    "AMERICAN AVOCET": 93.2903,
-    "AMERICAN BITTERN": 27.6761,
-    "AMERICAN COOT": 74.9502,
-    "AMERICAN FLAMINGO": 70.0364,
-    "AMERICAN GOLDFINCH": 50.6536,
-    "AMERICAN KESTREL": 67.0627
+    "ALBERTS TOWHEE": 69.1089,
+    "ALEXANDRINE PARAKEET": 38.9206,
+    "ALPINE CHOUGH": 61.0135,
+    "ALTAMIRA YELLOWTHROAT": 46.1238,
+    "AMERICAN AVOCET": 88.5806,
+    "AMERICAN BITTERN": 27.7465,
+    "AMERICAN COOT": 71.2957,
+    "AMERICAN FLAMINGO": 68.5091,
+    "AMERICAN GOLDFINCH": 43.6601,
+    "AMERICAN KESTREL": 48.8449
   },
   "per_class_query_total": {
     "ALBERTS TOWHEE": 1515,

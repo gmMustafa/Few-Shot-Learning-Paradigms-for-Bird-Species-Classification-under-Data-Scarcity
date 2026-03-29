@@ -12,6 +12,9 @@ Mean accuracy  : 89.63% ± 0.77% (95% CI)
 Std            : 9.66%
 Wilson CI 95%  : [89.13%, 90.10%]
 Macro F1       : 0.8947
+Macro Precision: 0.9042
+Macro Recall   : 0.8963
+AUC-OVR (macro): 0.9835
 
 Per-class accuracy:
   AMERICAN BITTERN              :  79.13% | appeared= 600 | queries= 3000

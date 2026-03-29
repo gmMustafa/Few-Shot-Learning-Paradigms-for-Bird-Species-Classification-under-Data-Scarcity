@@ -24,6 +24,9 @@
     80.3097
   ],
   "macro_f1": 0.7918,
+  "macro_precision": 0.8253,
+  "macro_recall": 0.7967,
+  "auc_ovr": 0.9351,
   "per_class_accuracy_pct": {
     "AMERICAN BITTERN": 73.0333,
     "AMERICAN COOT": 90.6333,

@@ -15,6 +15,9 @@
     94.685646
   ],
   "macro_f1": 0.942467,
+  "macro_precision": 0.951913,
+  "macro_recall": 0.943267,
+  "auc_ovr": 0.99207,
   "base_classes": [
     "ABBOTTS BABBLER",
     "ABBOTTS BOOBY",

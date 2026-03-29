@@ -6,19 +6,22 @@ q_query        : 5
 Novel classes  : ALBERTS TOWHEE, ALEXANDRINE PARAKEET, ALPINE CHOUGH, ALTAMIRA YELLOWTHROAT, AMERICAN AVOCET, AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
 Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/relationnet/checkpoints/relationnet_base10_novel10/relationnet_best.pth
 
-Mean accuracy  : 66.94% ± 1.18% (95% CI)
-Std            : 14.71%
-Wilson CI 95%  : [66.18%, 67.69%]
-Macro F1       : 0.6693
+Mean accuracy  : 56.41% ± 1.12% (95% CI)
+Std            : 14.00%
+Wilson CI 95%  : [55.61%, 57.20%]
+Macro F1       : 0.5650
+Macro Precision: 0.5673
+Macro Recall   : 0.5641
+AUC-OVR (macro): 0.8269
 
 Per-class accuracy:
-  ALBERTS TOWHEE                : 80.92%  | queries=1515
-  ALEXANDRINE PARAKEET          : 42.60%  | queries=1575
-  ALPINE CHOUGH                 : 86.28%  | queries=1480
-  ALTAMIRA YELLOWTHROAT         : 74.66%  | queries=1535
-  AMERICAN AVOCET               : 93.29%  | queries=1550
-  AMERICAN BITTERN              : 27.68%  | queries=1420
-  AMERICAN COOT                 : 74.95%  | queries=1505
-  AMERICAN FLAMINGO             : 70.04%  | queries=1375
-  AMERICAN GOLDFINCH            : 50.65%  | queries=1530
-  AMERICAN KESTREL              : 67.06%  | queries=1515
+  ALBERTS TOWHEE                : 69.11%  | queries=1515
+  ALEXANDRINE PARAKEET          : 38.92%  | queries=1575
+  ALPINE CHOUGH                 : 61.01%  | queries=1480
+  ALTAMIRA YELLOWTHROAT         : 46.12%  | queries=1535
+  AMERICAN AVOCET               : 88.58%  | queries=1550
+  AMERICAN BITTERN              : 27.75%  | queries=1420
+  AMERICAN COOT                 : 71.30%  | queries=1505
+  AMERICAN FLAMINGO             : 68.51%  | queries=1375
+  AMERICAN GOLDFINCH            : 43.66%  | queries=1530
+  AMERICAN KESTREL              : 48.84%  | queries=1515

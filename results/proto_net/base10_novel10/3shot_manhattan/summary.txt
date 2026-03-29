@@ -12,6 +12,9 @@ Mean accuracy  : 87.64% ± 0.73% (95% CI)
 Std            : 9.16%
 Wilson CI 95%  : [87.10%, 88.16%]
 Macro F1       : 0.8769
+Macro Precision: 0.8801
+Macro Recall   : 0.8764
+AUC-OVR (macro): 0.9751
 
 Per-class accuracy:
   ALBERTS TOWHEE                :  91.23% | appeared= 301 | queries= 1505

@@ -28,6 +28,9 @@
     64.1209
   ],
   "macro_f1": 0.6338,
+  "macro_precision": 0.6382,
+  "macro_recall": 0.6335,
+  "auc_ovr": 0.8741,
   "per_class_accuracy_pct": {
     "ALBERTS TOWHEE": 69.0566,
     "ALEXANDRINE PARAKEET": 68.7838,
