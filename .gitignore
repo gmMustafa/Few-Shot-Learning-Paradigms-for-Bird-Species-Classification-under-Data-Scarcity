@@ -246,3 +246,6 @@ tree.txt
 
 #zip files
 *.zip
+
+#claude
+.claude/

@@ -27,6 +27,9 @@ import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+plt.rcParams['figure.facecolor']  = 'white'
+plt.rcParams['axes.facecolor']    = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 
 from torchvision import models, transforms, datasets
 from torch.utils.data import Subset

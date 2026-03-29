@@ -36,7 +36,12 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+plt.rcParams['figure.facecolor']  = 'white'
+plt.rcParams['axes.facecolor']    = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 import seaborn as sns
 from torchvision.models import resnet50, ResNet50_Weights
 from sklearn.metrics import f1_score, precision_score, recall_score, roc_auc_score, confusion_matrix

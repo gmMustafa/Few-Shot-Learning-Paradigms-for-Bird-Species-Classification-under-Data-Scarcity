@@ -27,8 +27,14 @@ import argparse
 import numpy as np
 import torch
 import torch.nn as nn
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+
+plt.rcParams['figure.facecolor']  = 'white'
+plt.rcParams['axes.facecolor']    = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 from sklearn.manifold import TSNE
 from torchvision.models import resnet50, ResNet50_Weights
 import yaml

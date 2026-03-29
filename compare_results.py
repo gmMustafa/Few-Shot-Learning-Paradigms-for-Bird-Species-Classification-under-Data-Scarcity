@@ -18,9 +18,15 @@ import json
 import math
 
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
+
+plt.rcParams['figure.facecolor']  = 'white'
+plt.rcParams['axes.facecolor']    = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 
 # ---------------------------------------------------------------------------
 # Project root = directory containing this script
@@ -951,3 +957,79 @@ def save_b10_main_chart(df, out_dir):
 save_b15_main_chart(df, out_dir)
 save_b10_main_chart(df, out_dir)
 save_proto_split_chart(df, out_dir)
+
+# ---------------------------------------------------------------------------
+# All-in-One Summary Table (console + CSV)
+# ---------------------------------------------------------------------------
+
+print('\n' + '=' * 100)
+print('ALL-IN-ONE SUMMARY TABLE')
+print('=' * 100)
+print(f"{'Split':<10} {'Method':<26} {'K-Shot':<10} {'Acc (%)':>9} {'95% CI':>22} {'F1':>8} {'Prec':>8} {'Rec':>8} {'AUC':>8}")
+print('-' * 100)
+
+for split in ['b15_n5', 'b10_n10']:
+    split_df = df[df['split'] == split].copy()
+    print(f"\n  [{split}]")
+    for _, r in split_df.iterrows():
+        acc_s  = f"{r['acc']:.2f}%" if r['acc'] is not None and not (isinstance(r['acc'], float) and math.isnan(r['acc'])) else '—'
+        f1_s   = f"{r['f1']:.4f}"   if r['f1'] is not None and not (isinstance(r['f1'], float) and math.isnan(r['f1'])) else '—'
+        pr_s   = f"{r['precision']:.4f}" if r.get('precision') is not None and not (isinstance(r.get('precision'), float) and math.isnan(r.get('precision'))) else '—'
+        rc_s   = f"{r['recall']:.4f}"    if r.get('recall') is not None and not (isinstance(r.get('recall'), float) and math.isnan(r.get('recall'))) else '—'
+        auc_s  = f"{r['auc']:.4f}"       if r.get('auc') is not None and not (isinstance(r.get('auc'), float) and math.isnan(r.get('auc'))) else '—'
+        print(f"  {split:<10} {r['method']:<26} {r['setup']:<10} {acc_s:>9} {r['ci']:>22} {f1_s:>8} {pr_s:>8} {rc_s:>8} {auc_s:>8}")
+
+print('=' * 100)
+
+# Save all-in-one CSV
+aio_df = df[['split','method','setup','acc','ci','f1','precision','recall','auc']].copy()
+for col in ['acc']:
+    aio_df[col] = aio_df[col].apply(lambda v: f'{v:.2f}' if v is not None and not (isinstance(v, float) and math.isnan(v)) else '—')
+for col in ['f1','precision','recall','auc']:
+    aio_df[col] = aio_df[col].apply(lambda v: f'{v:.4f}' if v is not None and not (isinstance(v, float) and math.isnan(v)) else '—')
+aio_df.to_csv(os.path.join(out_dir, 'all_in_one_summary.csv'), index=False)
+print(f"Saved: results/comparison/all_in_one_summary.csv")
+
+# ---------------------------------------------------------------------------
+# Key Insights
+# ---------------------------------------------------------------------------
+
+print('\n' + '=' * 80)
+print('KEY INSIGHTS')
+print('=' * 80)
+
+def safe_acc(key):
+    row = df[df['method'].str.contains(key, na=False) & df['acc'].notna()]
+    if row.empty: return None
+    return float(row.iloc[0]['acc'])
+
+# Best FSL method per split
+for split in ['b15_n5', 'b10_n10']:
+    sdf = df[(df['split'] == split) & df['acc'].notna() & ~df['group'].str.contains('Supervised|Zero', na=False)]
+    if sdf.empty: continue
+    best = sdf.loc[sdf['acc'].idxmax()]
+    worst = sdf.loc[sdf['acc'].idxmin()]
+    mean_fsl = sdf['acc'].mean()
+    print(f"\n  [{split}]")
+    print(f"  Best  FSL method : {best['method']} @ {best['setup']} → {best['acc']:.2f}%")
+    print(f"  Worst FSL method : {worst['method']} @ {worst['setup']} → {worst['acc']:.2f}%")
+    print(f"  Mean  FSL acc    : {mean_fsl:.2f}%")
+
+# Shot count effect
+print('\n  [Shot Count Effect — ProtoNet Euclidean]')
+for split in ['b15_n5', 'b10_n10']:
+    for shot in [1, 3, 5]:
+        row = df[(df['split']==split) & (df['method']=='ProtoNet (Euclidean)') & (df['setup']==f'5-way {shot}-shot')]
+        if not row.empty and row.iloc[0]['acc'] is not None:
+            print(f"  {split} {shot}-shot: {float(row.iloc[0]['acc']):.2f}%")
+
+# b15 vs b10 gap
+print('\n  [Base Diversity Effect — b15_n5 vs b10_n10, ProtoNet Euclidean]')
+for shot in [1, 3, 5]:
+    r15 = df[(df['split']=='b15_n5') & (df['method']=='ProtoNet (Euclidean)') & (df['setup']==f'5-way {shot}-shot')]
+    r10 = df[(df['split']=='b10_n10') & (df['method']=='ProtoNet (Euclidean)') & (df['setup']==f'5-way {shot}-shot')]
+    if not r15.empty and not r10.empty and r15.iloc[0]['acc'] is not None and r10.iloc[0]['acc'] is not None:
+        gap = float(r15.iloc[0]['acc']) - float(r10.iloc[0]['acc'])
+        print(f"  {shot}-shot gap (b15−b10): {gap:+.2f}%")
+
+print('=' * 80)

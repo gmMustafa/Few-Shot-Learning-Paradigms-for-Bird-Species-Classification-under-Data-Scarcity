@@ -17,8 +17,14 @@ import math
 import sys
 
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
+
+plt.rcParams['figure.facecolor'] = 'white'
+plt.rcParams['axes.facecolor']   = 'white'
+plt.rcParams['savefig.facecolor'] = 'white'
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RES  = os.path.join(ROOT, 'results')
