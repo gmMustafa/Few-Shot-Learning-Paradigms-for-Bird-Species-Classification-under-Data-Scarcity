@@ -16,17 +16,32 @@ source ~/venvs/fsl/bin/activate
 cd "$HOME/FSL-Code/Project/code"
 mkdir -p logs
 
+# ---------------------------------------------------------------
+# DeiT-S pretrained weights (transferred from local machine).
+# Download on a machine with internet:
+#   python -c "import timm, torch; m=timm.create_model('deit_small_patch16_224',pretrained=True,num_classes=0); torch.save(m.state_dict(), 'deit_small_patch16_224.pth')"
+# Then: scp deit_small_patch16_224.pth <user>@<hpc>:~/
+# ---------------------------------------------------------------
+DEIT_WEIGHTS="train_evaluate/vit_backbone/deit_small_patch16_224.pth"
+
 echo "=== Job started on $(date) ==="
 python -c "import torch; print('CUDA available:', torch.cuda.is_available()); print('GPU count:', torch.cuda.device_count())"
 python -c "import timm; print('timm version:', timm.__version__)"
+if [ -f "$DEIT_WEIGHTS" ]; then
+    echo "DeiT-S weights found at $DEIT_WEIGHTS"
+else
+    echo "WARNING: DeiT-S weights NOT found at $DEIT_WEIGHTS — will attempt HuggingFace download (may fail on compute nodes)"
+fi
 
 # ---------------------------------------------------------------
 # Stage 7A — DeiT-S Supervised Baseline (B15 and B10)
 # ---------------------------------------------------------------
 echo "=== Stage 7A: DeiT-S supervised baseline ==="
 cd train_evaluate/vit_backbone/baseline
-python train.py                                                           # B15/N5
-python train.py --config ../../../configs/vit_baseline_b10_config.yaml   # B10/N10
+python train.py                                                           \
+    --weights-path "$DEIT_WEIGHTS"                                        # B15/N5
+python train.py --config ../../../configs/vit_baseline_b10_config.yaml   \
+    --weights-path "$DEIT_WEIGHTS"                                        # B10/N10
 cd ../../..
 
 # ---------------------------------------------------------------
@@ -55,7 +70,7 @@ cd ../../..
 # ---------------------------------------------------------------
 echo "=== Stage 7C: DeiT-S ProtoNet (B15/N5) ==="
 cd train_evaluate/vit_backbone/proto_net
-python train.py
+python train.py --weights-path "$DEIT_WEIGHTS"
 
 python evaluate.py --k-shot 1 --distance euclidean
 python evaluate.py --k-shot 1 --distance manhattan
@@ -65,7 +80,8 @@ python evaluate.py --k-shot 5 --distance euclidean
 python evaluate.py --k-shot 5 --distance manhattan
 
 echo "=== Stage 7C: DeiT-S ProtoNet (B10/N10) ==="
-python train.py     --config ../../../configs/vit_proto_configs_10b_10n.yaml
+python train.py --config ../../../configs/vit_proto_configs_10b_10n.yaml  \
+                --weights-path "$DEIT_WEIGHTS"
 
 python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
 python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan

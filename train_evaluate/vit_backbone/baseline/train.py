@@ -8,6 +8,10 @@
 #   python train.py
 #   python train.py --config ../../../configs/vit_baseline_b10_config.yaml
 #   python train.py --debug
+#
+# HPC offline (no internet): download weights on a machine with internet, transfer,
+# then pass --weights-path to skip HuggingFace download:
+#   python train.py --weights-path /path/to/deit_small_patch16_224.pth
 
 import os
 import sys
@@ -89,7 +93,17 @@ def main():
     )
     parser.add_argument('--debug', action='store_true',
                         help='Smoke-test mode: 1 epoch, patience=1')
+    parser.add_argument('--weights-path', default=None,
+                        help='Local path to pretrained DeiT-S weights (.pth or .safetensors). '
+                             'Use on HPC without internet access to skip HuggingFace download.')
     args = parser.parse_args()
+
+    # Auto-detect weights file next to this script's parent directory if not specified
+    if args.weights_path is None:
+        _auto = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'deit_small_patch16_224.pth'))
+        if os.path.isfile(_auto):
+            args.weights_path = _auto
+            print(f'[auto] Using DeiT-S weights: {_auto}')
 
     config_path = os.path.normpath(os.path.join(SCRIPT_DIR, args.config))
     with open(config_path, 'r') as f:
@@ -186,7 +200,11 @@ def main():
     )
 
     # DeiT-S with num_classes classification head
-    model = build_deit_classifier(num_classes=num_classes, pretrained=True)
+    model = build_deit_classifier(
+        num_classes=num_classes,
+        pretrained=(args.weights_path is None),
+        weights_path=args.weights_path,
+    )
     model = model.to(device)
 
     criterion = nn.CrossEntropyLoss()

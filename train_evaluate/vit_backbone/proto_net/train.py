@@ -5,6 +5,9 @@ Usage:
     python train.py                                                     # B15/N5
     python train.py --config ../../../configs/vit_proto_configs_10b_10n.yaml  # B10/N10
     python train.py --debug                                             # smoke test
+
+HPC offline (no internet):
+    python train.py --weights-path /path/to/deit_small_patch16_224.pth
 """
 import os
 import sys
@@ -108,7 +111,17 @@ def main():
                         help='Path to config (relative to this script)')
     parser.add_argument('--debug', action='store_true',
                         help='Smoke test: 1 epoch, 10 episodes')
+    parser.add_argument('--weights-path', default=None,
+                        help='Local path to pretrained DeiT-S weights (.pth or .safetensors). '
+                             'Use on HPC without internet access to skip HuggingFace download.')
     args = parser.parse_args()
+
+    # Auto-detect weights file in vit_backbone/ if not specified
+    if args.weights_path is None:
+        _auto = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'deit_small_patch16_224.pth'))
+        if os.path.isfile(_auto):
+            args.weights_path = _auto
+            print(f'[auto] Using DeiT-S weights: {_auto}')
 
     config_path = os.path.normpath(os.path.join(SCRIPT_DIR, args.config))
     with open(config_path) as f:
@@ -182,8 +195,11 @@ def main():
     val_loader   = DataLoader(val_ds,   batch_sampler=val_sampler,   num_workers=num_workers)
 
     # DeiT-S backbone — pretrained ImageNet, no classification head
-    backbone = DeiTSmallEncoder(pretrained=True)
-    model    = ProtoNet(encoder=backbone).to(device)
+    backbone = DeiTSmallEncoder(
+        pretrained=(args.weights_path is None),
+        weights_path=args.weights_path,
+    )
+    model = ProtoNet(encoder=backbone).to(device)
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = nn.CrossEntropyLoss()
