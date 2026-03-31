@@ -277,15 +277,20 @@ def main():
     print(f"Novel classes       : {len(novel_classes)} total, sample {n_way} per episode")
     print(f"Evaluation          : {n_way}-way {k_shot}-shot | q_query={q_query} | {num_episodes} episodes")
 
-    # Load model
+    # Load model — FCE flag is read from the config
     ckpt_path = os.path.join(ckpt_dir, cfg['output']['ckpt_name'])
     backbone  = resnet50(weights=ResNet50_Weights.DEFAULT)
     backbone.fc = nn.Identity()
-    model = MatchingNet(encoder=backbone).to(device)
+    use_fce   = bool(cfg.get('fce', False))
+    fce_steps = int(cfg.get('fce_steps', 10))
+    model = MatchingNet(encoder=backbone, embedding_dim=2048,
+                        use_fce=use_fce, fce_steps=fce_steps).to(device)
     ckpt  = torch.load(ckpt_path, map_location=device, weights_only=False)
     model.load_state_dict(ckpt['model_state_dict'])
     model.eval()
     print(f"Loaded checkpoint   : {ckpt_path}  (trained to epoch {ckpt['epoch']})")
+    if use_fce:
+        print(f"  FCE enabled    : BiLSTM support + AttLSTM query (steps={fce_steps})")
 
     rng = random.Random(seed)
     episode_accuracies = []

@@ -51,7 +51,8 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.normpath(os.path.join(SCRIPT_DIR, "..", ".."))
 sys.path.insert(0, PROJECT_ROOT)
 
-from utils.dataset import FilteredDataset, get_eval_transforms
+from PIL import Image as PILImage
+from utils.dataset import FilteredDataset, get_eval_transforms, get_tta_transforms
 from models.protonet import ProtoNet
 
 
@@ -114,7 +115,8 @@ def build_episode_support_query(
     q_query: int,
     rng: random.Random,
     device: torch.device,
-) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    return_query_paths: bool = False,
+):
     """
     Build one episodic task.
 
@@ -124,6 +126,10 @@ def build_episode_support_query(
         sampled from novel TEST split
 
     Labels are remapped to episode-local 0..n_way-1.
+
+    Args:
+        return_query_paths: if True, also return list of query image file paths
+                            (used for test-time augmentation).
     """
     train_by_class = novel_train_ds.get_class_to_indices()
     test_by_class = novel_test_ds.get_class_to_indices()
@@ -132,6 +138,7 @@ def build_episode_support_query(
     support_labels: List[int] = []
     query_images: List[torch.Tensor] = []
     query_labels: List[int] = []
+    query_paths: List[str] = []
 
     for epi_label, global_cls_idx in enumerate(selected_class_indices):
         train_candidates = train_by_class[global_cls_idx]
@@ -160,12 +167,16 @@ def build_episode_support_query(
             img, _ = novel_test_ds[ds_idx]
             query_images.append(img)
             query_labels.append(epi_label)
+            if return_query_paths:
+                query_paths.append(novel_test_ds.samples[ds_idx][0])
 
     support_tensor = torch.stack(support_images).to(device)
     query_tensor = torch.stack(query_images).to(device)
     support_label_tensor = torch.tensor(support_labels, dtype=torch.long, device=device)
     query_label_tensor = torch.tensor(query_labels, dtype=torch.long, device=device)
 
+    if return_query_paths:
+        return support_tensor, query_tensor, support_label_tensor, query_label_tensor, query_paths
     return support_tensor, query_tensor, support_label_tensor, query_label_tensor
 
 
@@ -403,6 +414,11 @@ def main() -> None:
         help="Distance metric for prototype comparison",
     )
     parser.add_argument("--debug", action="store_true", help="Smoke test: 5 episodes only")
+    parser.add_argument(
+        "--tta", type=int, default=1, metavar="N",
+        help="Test-time augmentation: average embeddings over N augmented query views "
+             "(1 = no TTA, default). Recommended: 8.",
+    )
     args = parser.parse_args()
 
     config_path = os.path.normpath(os.path.join(SCRIPT_DIR, args.config))
@@ -417,6 +433,7 @@ def main() -> None:
     distance = args.distance if args.distance is not None else cfg["eval"].get("distance", "euclidean")
     num_episodes = 5 if args.debug else cfg["eval"]["episodes"]
     novel_classes = cfg["novel_classes"]
+    tta_n = max(1, args.tta)
 
     set_seed(seed)
     rng = random.Random(seed)
@@ -439,14 +456,18 @@ def main() -> None:
     print(f"  q_query        : {q_query}")
     print(f"  Episodes       : {num_episodes}")
     print(f"  Distance       : {distance}")
+    print(f"  TTA            : {tta_n}x augmentations" if tta_n > 1 else "  TTA            : disabled")
     print("=" * 60)
 
     data_train = os.path.normpath(os.path.join(SCRIPT_DIR, cfg["data"]["train"]))
     data_test = os.path.normpath(os.path.join(SCRIPT_DIR, cfg["data"]["test"]))
     ckpt_dir = os.path.normpath(os.path.join(SCRIPT_DIR, cfg["output"]["ckpt_dir"]))
     results_base = os.path.normpath(os.path.join(SCRIPT_DIR, cfg["output"]["results_dir"]))
-    results_dir = os.path.join(results_base, f"{k_shot}shot_{distance}")
+    tta_suffix  = f"_tta{tta_n}" if tta_n > 1 else ""
+    results_dir = os.path.join(results_base, f"{k_shot}shot_{distance}{tta_suffix}")
     os.makedirs(results_dir, exist_ok=True)
+
+    tta_transform = get_tta_transforms(image_size) if tta_n > 1 else None
 
     transform = get_eval_transforms(image_size)
 
@@ -505,17 +526,43 @@ def main() -> None:
             for cls_name in selected_class_names:
                 episode_class_counter[cls_name] += 1
 
-            support_images, query_images, support_labels, query_labels = build_episode_support_query(
-                novel_train_ds=novel_train_ds,
-                novel_test_ds=novel_test_ds,
-                selected_class_indices=selected_class_indices,
-                k_shot=k_shot,
-                q_query=q_query,
-                rng=rng,
-                device=device,
-            )
+            if tta_n > 1:
+                support_images, query_images, support_labels, query_labels, query_paths = \
+                    build_episode_support_query(
+                        novel_train_ds=novel_train_ds,
+                        novel_test_ds=novel_test_ds,
+                        selected_class_indices=selected_class_indices,
+                        k_shot=k_shot, q_query=q_query, rng=rng, device=device,
+                        return_query_paths=True,
+                    )
+                # TTA: compute support prototypes then average query embeddings
+                support_emb = model.encoder(support_images)          # [N*K, D]
+                prototypes  = torch.stack([
+                    support_emb[support_labels == c].mean(dim=0)
+                    for c in range(n_way)
+                ])                                                    # [n_way, D]
+                aug_embs = [model.encoder(query_images)]              # base pass
+                for _ in range(tta_n - 1):
+                    aug_imgs = [tta_transform(PILImage.open(p).convert("RGB"))
+                                for p in query_paths]
+                    aug_batch = torch.stack(aug_imgs).to(device)
+                    aug_embs.append(model.encoder(aug_batch))
+                query_emb = torch.stack(aug_embs).mean(dim=0)        # [N*Q, D]
+                if distance == "euclidean":
+                    dists = torch.cdist(query_emb, prototypes)
+                else:  # manhattan
+                    dists = (query_emb.unsqueeze(1) - prototypes.unsqueeze(0)).abs().sum(dim=2)
+                logits = -dists
+            else:
+                support_images, query_images, support_labels, query_labels = \
+                    build_episode_support_query(
+                        novel_train_ds=novel_train_ds,
+                        novel_test_ds=novel_test_ds,
+                        selected_class_indices=selected_class_indices,
+                        k_shot=k_shot, q_query=q_query, rng=rng, device=device,
+                    )
+                logits = model(support_images, support_labels, query_images, distance=distance)
 
-            logits = model(support_images, support_labels, query_images, distance=distance)
             probs_local = torch.softmax(logits, dim=1).cpu().numpy()
             preds_local = logits.argmax(dim=1).cpu().numpy()
             truths_local = query_labels.cpu().numpy()
@@ -586,6 +633,7 @@ def main() -> None:
         "k_shot": k_shot,
         "q_query": q_query,
         "distance": distance,
+        "tta_n": tta_n,
         "num_episodes": len(episode_accuracies),
         "novel_classes": novel_classes,
         "checkpoint": ckpt_path,

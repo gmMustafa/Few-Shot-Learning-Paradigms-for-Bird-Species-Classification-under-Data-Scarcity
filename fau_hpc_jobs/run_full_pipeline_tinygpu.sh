@@ -123,6 +123,48 @@ python plots/tsne_plot.py --model matchingnet --config configs/matchingnet_confi
 python plots/tsne_plot.py --model relationnet --config configs/relationnet_configs_10b_10n.yaml
 
 echo "============================================================"
+echo "Stage 7 — DeiT-S ViT backbone (NCC + ProtoNet, both splits)"
+echo "============================================================"
+cd train_evaluate/vit_backbone/baseline
+python train.py
+python train.py --config ../../../configs/vit_baseline_b10_config.yaml
+cd ../../..
+
+cd train_evaluate/vit_backbone/ncc
+python evaluate_novel_ncc.py --k-shot 1 --distance euclidean
+python evaluate_novel_ncc.py --k-shot 1 --distance manhattan
+python evaluate_novel_ncc.py --k-shot 3 --distance euclidean
+python evaluate_novel_ncc.py --k-shot 3 --distance manhattan
+python evaluate_novel_ncc.py --k-shot 5 --distance euclidean
+python evaluate_novel_ncc.py --k-shot 5 --distance manhattan
+
+python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 1 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 1 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 3 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 3 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
+cd ../../..
+
+cd train_evaluate/vit_backbone/proto_net
+python train.py
+python evaluate.py --k-shot 1 --distance euclidean
+python evaluate.py --k-shot 1 --distance manhattan
+python evaluate.py --k-shot 3 --distance euclidean
+python evaluate.py --k-shot 3 --distance manhattan
+python evaluate.py --k-shot 5 --distance euclidean
+python evaluate.py --k-shot 5 --distance manhattan
+
+python train.py    --config ../../../configs/vit_proto_configs_10b_10n.yaml
+python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
+python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
+python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
+python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
+python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
+python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
+cd ../../..
+
+echo "============================================================"
 echo "JOB FINISHED SUCCESSFULLY"
 echo "Date: $(date)"
 echo "============================================================"

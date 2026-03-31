@@ -19,5 +19,8 @@ echo "Submitted 05_relationnet.slurm as job $jid5"
 jid6=$(sbatch --parsable --dependency=afterok:${jid1}:${jid2}:${jid3}:${jid4}:${jid5} 06_reports.slurm)
 echo "Submitted 06_reports.slurm as dependent job $jid6"
 
+jid7=$(sbatch --parsable 07_vit.slurm)
+echo "Submitted 07_vit.slurm as job $jid7"
+
 echo "All jobs submitted successfully."
 echo "Monitor with: squeue -u \$USER"

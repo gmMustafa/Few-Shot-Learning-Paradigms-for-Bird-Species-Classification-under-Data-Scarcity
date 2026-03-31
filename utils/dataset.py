@@ -25,6 +25,22 @@ def get_eval_transforms(image_size=224):
     ])
 
 
+def get_tta_transforms(image_size=224):
+    """
+    Random augmentation transforms for test-time augmentation (TTA).
+    Applied N times per query image; resulting embeddings are averaged.
+    Keeps mild perturbations to avoid artefacts on clean bird images.
+    """
+    return transforms.Compose([
+        transforms.Resize((int(image_size * 1.15), int(image_size * 1.15))),
+        transforms.RandomCrop(image_size),
+        transforms.RandomHorizontalFlip(p=0.5),
+        transforms.ColorJitter(brightness=0.15, contrast=0.15, saturation=0.1),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD),
+    ])
+
+
 # Kept for backward compatibility with baseline scripts
 def get_transforms(image_size=224):
     return get_eval_transforms(image_size)

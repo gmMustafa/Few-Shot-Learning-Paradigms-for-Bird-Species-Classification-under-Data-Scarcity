@@ -184,9 +184,14 @@ def main():
                               num_workers=num_workers)
 
     # ResNet-50 backbone — same as baselines and ProtoNet for fair comparison
-    backbone = resnet50(weights=ResNet50_Weights.DEFAULT)
+    backbone  = resnet50(weights=ResNet50_Weights.DEFAULT)
     backbone.fc = torch.nn.Identity()     # output: 2048-dim embedding
-    model = MatchingNet(encoder=backbone).to(device)
+    use_fce   = bool(cfg.get('fce', False))
+    fce_steps = int(cfg.get('fce_steps', 10))
+    model = MatchingNet(encoder=backbone, embedding_dim=2048,
+                        use_fce=use_fce, fce_steps=fce_steps).to(device)
+    if use_fce:
+        print(f"  FCE enabled    : BiLSTM support + AttLSTM query (steps={fce_steps})")
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
