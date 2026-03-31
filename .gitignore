@@ -211,6 +211,8 @@ __marimo__/
 
 # ML model checkpoints and weights (large binaries)
 *.pth
+!deit_small_patch16_224.pth
+
 *.pt
 *.ckpt
 *.h5
