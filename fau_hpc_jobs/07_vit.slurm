@@ -22,7 +22,7 @@ mkdir -p logs
 #   python -c "import timm, torch; m=timm.create_model('deit_small_patch16_224',pretrained=True,num_classes=0); torch.save(m.state_dict(), 'deit_small_patch16_224.pth')"
 # Then: scp deit_small_patch16_224.pth <user>@<hpc>:~/
 # ---------------------------------------------------------------
-DEIT_WEIGHTS="train_evaluate/vit_backbone/deit_small_patch16_224.pth"
+DEIT_WEIGHTS="pretrained_weights/deit_small_patch16_224.pth"
 
 echo "=== Job started on $(date) ==="
 python -c "import torch; print('CUDA available:', torch.cuda.is_available()); print('GPU count:', torch.cuda.device_count())"

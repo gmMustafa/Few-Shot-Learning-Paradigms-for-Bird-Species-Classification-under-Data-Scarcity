@@ -191,7 +191,19 @@ def main() -> None:
             raise ValueError(f"Class '{cls_name}' has {n_test} test images < q_query={q_query}")
 
     ckpt_path = os.path.join(ckpt_dir, cfg['output']['ckpt_name'])
-    backbone  = DeiTSmallEncoder(pretrained=True)
+
+    # Auto-detect pretrained weights to avoid HuggingFace download on HPC.
+    # The ProtoNet checkpoint already contains the fine-tuned weights, so we
+    # build the architecture (pretrained=False) and let load_state_dict restore
+    # everything from the checkpoint — no internet needed.
+    _pretrained_candidates = [
+        os.path.join(PROJECT_ROOT, 'pretrained_weights', 'deit_small_patch16_224.pth'),
+        os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'deit_small_patch16_224.pth')),
+    ]
+    _weights_path = next((p for p in _pretrained_candidates if os.path.isfile(p)), None)
+    backbone = DeiTSmallEncoder(pretrained=(_weights_path is None), weights_path=_weights_path)
+    if _weights_path:
+        print(f'[auto] DeiT-S init weights: {_weights_path}')
     model     = ProtoNet(encoder=backbone).to(device)
 
     ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)

@@ -116,12 +116,18 @@ def main():
                              'Use on HPC without internet access to skip HuggingFace download.')
     args = parser.parse_args()
 
-    # Auto-detect weights file in vit_backbone/ if not specified
+    # Auto-detect weights: check pretrained_weights/ at project root first,
+    # then fall back to the old vit_backbone/ location
     if args.weights_path is None:
-        _auto = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'deit_small_patch16_224.pth'))
-        if os.path.isfile(_auto):
-            args.weights_path = _auto
-            print(f'[auto] Using DeiT-S weights: {_auto}')
+        _candidates = [
+            os.path.join(PROJECT_ROOT, 'pretrained_weights', 'deit_small_patch16_224.pth'),
+            os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'deit_small_patch16_224.pth')),
+        ]
+        for _c in _candidates:
+            if os.path.isfile(_c):
+                args.weights_path = _c
+                print(f'[auto] Using DeiT-S weights: {_c}')
+                break
 
     config_path = os.path.normpath(os.path.join(SCRIPT_DIR, args.config))
     with open(config_path) as f:
