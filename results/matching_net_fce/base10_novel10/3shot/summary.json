@@ -1,0 +1,58 @@
+{
+  "experiment": "matchingnet_fce_base10_novel10",
+  "model": "matchingnet_resnet50",
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 3,
+  "q_query": 5,
+  "num_episodes": 600,
+  "novel_classes": [
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET",
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/matchingnet/checkpoints/matchingnet_fce_base10_novel10/matchingnet_fce_best.pth",
+  "epochs_trained": 2,
+  "mean_accuracy_pct": 56.8533,
+  "std_accuracy_pct": 12.3404,
+  "ci95_pct": 0.9874,
+  "wilson_ci_95": [
+    56.0591,
+    57.6441
+  ],
+  "macro_f1": 0.5555,
+  "macro_precision": 0.5997,
+  "macro_recall": 0.5685,
+  "auc_ovr": 0.8758,
+  "per_class_accuracy_pct": {
+    "ALBERTS TOWHEE": 99.1195,
+    "ALEXANDRINE PARAKEET": 43.9865,
+    "ALPINE CHOUGH": 85.6494,
+    "ALTAMIRA YELLOWTHROAT": 65.8,
+    "AMERICAN AVOCET": 100.0,
+    "AMERICAN BITTERN": 17.6307,
+    "AMERICAN COOT": 75.8885,
+    "AMERICAN FLAMINGO": 12.5175,
+    "AMERICAN GOLDFINCH": 24.1176,
+    "AMERICAN KESTREL": 38.9776
+  },
+  "per_class_query_total": {
+    "ALBERTS TOWHEE": 1590,
+    "ALEXANDRINE PARAKEET": 1480,
+    "ALPINE CHOUGH": 1540,
+    "ALTAMIRA YELLOWTHROAT": 1500,
+    "AMERICAN AVOCET": 1495,
+    "AMERICAN BITTERN": 1435,
+    "AMERICAN COOT": 1435,
+    "AMERICAN FLAMINGO": 1430,
+    "AMERICAN GOLDFINCH": 1530,
+    "AMERICAN KESTREL": 1565
+  }
+}
