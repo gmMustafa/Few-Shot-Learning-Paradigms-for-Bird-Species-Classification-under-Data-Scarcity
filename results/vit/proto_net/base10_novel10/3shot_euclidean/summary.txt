@@ -1,0 +1,29 @@
+DeiT-S ProtoNet — episodic novel-class evaluation (euclidean)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 3
+q_query        : 5
+Distance       : euclidean
+Novel classes  : ALBERTS TOWHEE, ALEXANDRINE PARAKEET, ALPINE CHOUGH, ALTAMIRA YELLOWTHROAT, AMERICAN AVOCET, AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonet_base10_novel10/vit_protonet_best.pth
+
+Mean accuracy  : 97.17% ± 0.31% (95% CI)
+Std            : 3.87%
+Wilson CI 95%  : [96.90%, 97.43%]
+Macro F1       : 0.9718
+Macro Precision: 0.9724
+Macro Recall   : 0.9717
+AUC-OVR (macro): 0.9995
+
+Per-class accuracy:
+  ALBERTS TOWHEE                :  99.67% | appeared= 301 | queries= 1505
+  ALEXANDRINE PARAKEET          :  99.80% | appeared= 295 | queries= 1475
+  ALPINE CHOUGH                 :  99.74% | appeared= 306 | queries= 1530
+  ALTAMIRA YELLOWTHROAT         :  79.81% | appeared= 313 | queries= 1565
+  AMERICAN AVOCET               : 100.00% | appeared= 295 | queries= 1475
+  AMERICAN BITTERN              : 100.00% | appeared= 277 | queries= 1385
+  AMERICAN COOT                 :  95.11% | appeared= 311 | queries= 1555
+  AMERICAN FLAMINGO             : 100.00% | appeared= 321 | queries= 1605
+  AMERICAN GOLDFINCH            : 100.00% | appeared= 297 | queries= 1485
+  AMERICAN KESTREL              :  98.59% | appeared= 284 | queries= 1420

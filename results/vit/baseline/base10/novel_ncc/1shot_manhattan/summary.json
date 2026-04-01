@@ -1,0 +1,59 @@
+{
+  "experiment": "deit_small_base10",
+  "backbone": "deit_small_patch16_224",
+  "evaluation": "novel_ncc",
+  "split": "base10_novel10",
+  "n_way": 5,
+  "k_shot": 1,
+  "q_query": 5,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "mean_accuracy_pct": 95.42,
+  "std_accuracy_pct": 6.005298,
+  "ci95_pct": 0.480524,
+  "wilson_ci_95": [
+    95.073667,
+    95.743076
+  ],
+  "macro_f1": 0.954141,
+  "macro_precision": 0.955505,
+  "macro_recall": 0.9542,
+  "auc_ovr": 0.993245,
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS"
+  ],
+  "novel_classes": [
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET",
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "per_class_accuracy_pct": {
+    "ALBERTS TOWHEE": 96.824324,
+    "ALEXANDRINE PARAKEET": 95.652174,
+    "ALPINE CHOUGH": 93.006536,
+    "ALTAMIRA YELLOWTHROAT": 77.280967,
+    "AMERICAN AVOCET": 99.933775,
+    "AMERICAN BITTERN": 97.062937,
+    "AMERICAN COOT": 98.947368,
+    "AMERICAN FLAMINGO": 99.798658,
+    "AMERICAN GOLDFINCH": 98.411552,
+    "AMERICAN KESTREL": 99.468439
+  },
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/baseline/checkpoints/vit_baseline/base10/deit_small_base10_best.pth"
+}

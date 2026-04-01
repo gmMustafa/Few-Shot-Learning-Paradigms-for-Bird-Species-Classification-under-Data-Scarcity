@@ -1,0 +1,24 @@
+DeiT-S ProtoNet — episodic novel-class evaluation (manhattan)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 1
+q_query        : 5
+Distance       : manhattan
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonetbase15_novel5/vit_protonet_best.pth
+
+Mean accuracy  : 96.57% ± 0.47% (95% CI)
+Std            : 5.92%
+Wilson CI 95%  : [96.27%, 96.85%]
+Macro F1       : 0.9652
+Macro Precision: 0.9678
+Macro Recall   : 0.9657
+AUC-OVR (macro): 0.9972
+
+Per-class accuracy:
+  AMERICAN BITTERN              :  98.40% | appeared= 600 | queries= 3000
+  AMERICAN COOT                 : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN FLAMINGO             : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN GOLDFINCH            :  99.63% | appeared= 600 | queries= 3000
+  AMERICAN KESTREL              :  84.83% | appeared= 600 | queries= 3000

@@ -1,0 +1,54 @@
+{
+  "experiment": "deit_small_base15",
+  "backbone": "deit_small_patch16_224",
+  "evaluation": "novel_ncc",
+  "split": "base15_novel5",
+  "n_way": 5,
+  "k_shot": 3,
+  "q_query": 5,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "mean_accuracy_pct": 99.86,
+  "std_accuracy_pct": 0.804405,
+  "ci95_pct": 0.064366,
+  "wilson_ci_95": [
+    99.786059,
+    99.908409
+  ],
+  "macro_f1": 0.998598,
+  "macro_precision": 0.998603,
+  "macro_recall": 0.9986,
+  "auc_ovr": 0.999958,
+  "base_classes": [
+    "ABBOTTS BABBLER",
+    "ABBOTTS BOOBY",
+    "ABYSSINIAN GROUND HORNBILL",
+    "AFRICAN CROWNED CRANE",
+    "AFRICAN EMERALD CUCKOO",
+    "AFRICAN FIREFINCH",
+    "AFRICAN OYSTER CATCHER",
+    "AFRICAN PIED HORNBILL",
+    "AFRICAN PYGMY GOOSE",
+    "ALBATROSS",
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET"
+  ],
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 100.0,
+    "AMERICAN COOT": 100.0,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 99.3
+  },
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/baseline/checkpoints/vit_baseline/base15/deit_small_base15_best.pth"
+}

@@ -1,0 +1,52 @@
+{
+  "experiment": "vit_protonet_base15_novel5",
+  "backbone": "deit_small_patch16_224",
+  "embedding_dim": 384,
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "q_query": 5,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "novel_classes": [
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonetbase15_novel5/vit_protonet_best.pth",
+  "epochs_trained": 4,
+  "mean_accuracy_pct": 96.5733,
+  "std_accuracy_pct": 5.9187,
+  "ci95_pct": 0.4736,
+  "wilson_ci_95": [
+    96.2701,
+    96.8527
+  ],
+  "macro_f1": 0.9652,
+  "macro_precision": 0.9678,
+  "macro_recall": 0.9657,
+  "auc_ovr": 0.9972,
+  "per_class_accuracy_pct": {
+    "AMERICAN BITTERN": 98.4,
+    "AMERICAN COOT": 100.0,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 99.6333,
+    "AMERICAN KESTREL": 84.8333
+  },
+  "per_class_episode_frequency": {
+    "AMERICAN BITTERN": 600,
+    "AMERICAN COOT": 600,
+    "AMERICAN FLAMINGO": 600,
+    "AMERICAN GOLDFINCH": 600,
+    "AMERICAN KESTREL": 600
+  },
+  "per_class_query_total": {
+    "AMERICAN BITTERN": 3000,
+    "AMERICAN COOT": 3000,
+    "AMERICAN FLAMINGO": 3000,
+    "AMERICAN GOLDFINCH": 3000,
+    "AMERICAN KESTREL": 3000
+  }
+}

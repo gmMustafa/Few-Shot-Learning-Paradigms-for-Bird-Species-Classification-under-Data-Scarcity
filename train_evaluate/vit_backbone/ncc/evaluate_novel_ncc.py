@@ -197,7 +197,8 @@ def main():
 
     train_dir  = os.path.normpath(os.path.join(SCRIPT_DIR, cfg['data_train']))
     test_dir   = os.path.normpath(os.path.join(SCRIPT_DIR, cfg['data_test']))
-    ckpt_dir   = os.path.normpath(os.path.join(SCRIPT_DIR, cfg['output']['ckpt_dir']))
+    # ckpt_dir is relative to baseline/train.py (one level up + baseline/)
+    ckpt_dir   = os.path.normpath(os.path.join(SCRIPT_DIR, '..', 'baseline', cfg['output']['ckpt_dir']))
     results_dir = os.path.normpath(
         os.path.join(SCRIPT_DIR, cfg['output']['results_dir'],
                      'novel_ncc', f'{k_shot}shot_{distance}'))

@@ -1,0 +1,24 @@
+DeiT-S ProtoNet — episodic novel-class evaluation (euclidean)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 3
+q_query        : 5
+Distance       : euclidean
+Novel classes  : AMERICAN BITTERN, AMERICAN COOT, AMERICAN FLAMINGO, AMERICAN GOLDFINCH, AMERICAN KESTREL
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonetbase15_novel5/vit_protonet_best.pth
+
+Mean accuracy  : 99.51% ± 0.13% (95% CI)
+Std            : 1.62%
+Wilson CI 95%  : [99.39%, 99.61%]
+Macro F1       : 0.9951
+Macro Precision: 0.9952
+Macro Recall   : 0.9951
+AUC-OVR (macro): 1.0000
+
+Per-class accuracy:
+  AMERICAN BITTERN              : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN COOT                 : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN FLAMINGO             : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN GOLDFINCH            : 100.00% | appeared= 600 | queries= 3000
+  AMERICAN KESTREL              :  97.57% | appeared= 600 | queries= 3000

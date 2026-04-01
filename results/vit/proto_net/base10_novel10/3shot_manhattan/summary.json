@@ -1,0 +1,72 @@
+{
+  "experiment": "vit_protonet_base10_novel10",
+  "backbone": "deit_small_patch16_224",
+  "embedding_dim": 384,
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 3,
+  "q_query": 5,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "novel_classes": [
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET",
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonet_base10_novel10/vit_protonet_best.pth",
+  "epochs_trained": 2,
+  "mean_accuracy_pct": 97.1733,
+  "std_accuracy_pct": 3.8101,
+  "ci95_pct": 0.3049,
+  "wilson_ci_95": [
+    96.8958,
+    97.4267
+  ],
+  "macro_f1": 0.9718,
+  "macro_precision": 0.9724,
+  "macro_recall": 0.9717,
+  "auc_ovr": 0.9978,
+  "per_class_accuracy_pct": {
+    "ALBERTS TOWHEE": 99.6678,
+    "ALEXANDRINE PARAKEET": 99.5932,
+    "ALPINE CHOUGH": 99.7386,
+    "ALTAMIRA YELLOWTHROAT": 80.3195,
+    "AMERICAN AVOCET": 100.0,
+    "AMERICAN BITTERN": 100.0,
+    "AMERICAN COOT": 94.6624,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 98.7324
+  },
+  "per_class_episode_frequency": {
+    "ALBERTS TOWHEE": 301,
+    "ALEXANDRINE PARAKEET": 295,
+    "ALPINE CHOUGH": 306,
+    "ALTAMIRA YELLOWTHROAT": 313,
+    "AMERICAN AVOCET": 295,
+    "AMERICAN BITTERN": 277,
+    "AMERICAN COOT": 311,
+    "AMERICAN FLAMINGO": 321,
+    "AMERICAN GOLDFINCH": 297,
+    "AMERICAN KESTREL": 284
+  },
+  "per_class_query_total": {
+    "ALBERTS TOWHEE": 1505,
+    "ALEXANDRINE PARAKEET": 1475,
+    "ALPINE CHOUGH": 1530,
+    "ALTAMIRA YELLOWTHROAT": 1565,
+    "AMERICAN AVOCET": 1475,
+    "AMERICAN BITTERN": 1385,
+    "AMERICAN COOT": 1555,
+    "AMERICAN FLAMINGO": 1605,
+    "AMERICAN GOLDFINCH": 1485,
+    "AMERICAN KESTREL": 1420
+  }
+}

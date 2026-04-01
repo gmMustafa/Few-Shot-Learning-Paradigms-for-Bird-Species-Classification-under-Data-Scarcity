@@ -1,0 +1,72 @@
+{
+  "experiment": "vit_protonet_base10_novel10",
+  "backbone": "deit_small_patch16_224",
+  "embedding_dim": 384,
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 5,
+  "q_query": 5,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "novel_classes": [
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET",
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonet_base10_novel10/vit_protonet_best.pth",
+  "epochs_trained": 2,
+  "mean_accuracy_pct": 98.0467,
+  "std_accuracy_pct": 2.993,
+  "ci95_pct": 0.2395,
+  "wilson_ci_95": [
+    97.8126,
+    98.2561
+  ],
+  "macro_f1": 0.9805,
+  "macro_precision": 0.9809,
+  "macro_recall": 0.9805,
+  "auc_ovr": 0.9988,
+  "per_class_accuracy_pct": {
+    "ALBERTS TOWHEE": 100.0,
+    "ALEXANDRINE PARAKEET": 99.8616,
+    "ALPINE CHOUGH": 100.0,
+    "ALTAMIRA YELLOWTHROAT": 85.302,
+    "AMERICAN AVOCET": 100.0,
+    "AMERICAN BITTERN": 100.0,
+    "AMERICAN COOT": 95.4605,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 100.0,
+    "AMERICAN KESTREL": 99.8039
+  },
+  "per_class_episode_frequency": {
+    "ALBERTS TOWHEE": 312,
+    "ALEXANDRINE PARAKEET": 289,
+    "ALPINE CHOUGH": 307,
+    "ALTAMIRA YELLOWTHROAT": 298,
+    "AMERICAN AVOCET": 275,
+    "AMERICAN BITTERN": 319,
+    "AMERICAN COOT": 304,
+    "AMERICAN FLAMINGO": 312,
+    "AMERICAN GOLDFINCH": 278,
+    "AMERICAN KESTREL": 306
+  },
+  "per_class_query_total": {
+    "ALBERTS TOWHEE": 1560,
+    "ALEXANDRINE PARAKEET": 1445,
+    "ALPINE CHOUGH": 1535,
+    "ALTAMIRA YELLOWTHROAT": 1490,
+    "AMERICAN AVOCET": 1375,
+    "AMERICAN BITTERN": 1595,
+    "AMERICAN COOT": 1520,
+    "AMERICAN FLAMINGO": 1560,
+    "AMERICAN GOLDFINCH": 1390,
+    "AMERICAN KESTREL": 1530
+  }
+}

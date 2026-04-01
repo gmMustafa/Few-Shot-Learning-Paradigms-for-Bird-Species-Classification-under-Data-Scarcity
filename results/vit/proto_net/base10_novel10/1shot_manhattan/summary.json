@@ -1,0 +1,72 @@
+{
+  "experiment": "vit_protonet_base10_novel10",
+  "backbone": "deit_small_patch16_224",
+  "embedding_dim": 384,
+  "seed": 42,
+  "n_way": 5,
+  "k_shot": 1,
+  "q_query": 5,
+  "distance": "manhattan",
+  "num_episodes": 600,
+  "novel_classes": [
+    "ALBERTS TOWHEE",
+    "ALEXANDRINE PARAKEET",
+    "ALPINE CHOUGH",
+    "ALTAMIRA YELLOWTHROAT",
+    "AMERICAN AVOCET",
+    "AMERICAN BITTERN",
+    "AMERICAN COOT",
+    "AMERICAN FLAMINGO",
+    "AMERICAN GOLDFINCH",
+    "AMERICAN KESTREL"
+  ],
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/vit_backbone/proto_net/checkpoints/vit_protonet_base10_novel10/vit_protonet_best.pth",
+  "epochs_trained": 2,
+  "mean_accuracy_pct": 94.4,
+  "std_accuracy_pct": 6.3077,
+  "ci95_pct": 0.5047,
+  "wilson_ci_95": [
+    94.0206,
+    94.7567
+  ],
+  "macro_f1": 0.944,
+  "macro_precision": 0.9447,
+  "macro_recall": 0.944,
+  "auc_ovr": 0.9933,
+  "per_class_accuracy_pct": {
+    "ALBERTS TOWHEE": 94.5946,
+    "ALEXANDRINE PARAKEET": 97.2575,
+    "ALPINE CHOUGH": 96.4706,
+    "ALTAMIRA YELLOWTHROAT": 72.6284,
+    "AMERICAN AVOCET": 99.404,
+    "AMERICAN BITTERN": 98.951,
+    "AMERICAN COOT": 94.9342,
+    "AMERICAN FLAMINGO": 100.0,
+    "AMERICAN GOLDFINCH": 98.7726,
+    "AMERICAN KESTREL": 93.7542
+  },
+  "per_class_episode_frequency": {
+    "ALBERTS TOWHEE": 296,
+    "ALEXANDRINE PARAKEET": 299,
+    "ALPINE CHOUGH": 306,
+    "ALTAMIRA YELLOWTHROAT": 331,
+    "AMERICAN AVOCET": 302,
+    "AMERICAN BITTERN": 286,
+    "AMERICAN COOT": 304,
+    "AMERICAN FLAMINGO": 298,
+    "AMERICAN GOLDFINCH": 277,
+    "AMERICAN KESTREL": 301
+  },
+  "per_class_query_total": {
+    "ALBERTS TOWHEE": 1480,
+    "ALEXANDRINE PARAKEET": 1495,
+    "ALPINE CHOUGH": 1530,
+    "ALTAMIRA YELLOWTHROAT": 1655,
+    "AMERICAN AVOCET": 1510,
+    "AMERICAN BITTERN": 1430,
+    "AMERICAN COOT": 1520,
+    "AMERICAN FLAMINGO": 1490,
+    "AMERICAN GOLDFINCH": 1385,
+    "AMERICAN KESTREL": 1505
+  }
+}
