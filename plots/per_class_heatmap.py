@@ -58,10 +58,21 @@ def get_per_class(d):
 def build_heatmap(k_shot):
     # Each method: (label, path_to_summary)
     method_defs = [
-        ('ProtoNet (Euclidean)', load(f'proto_net/base15_novel5/{k_shot}shot_euclidean/summary.json')),
-        ('ProtoNet (Manhattan)', load(f'proto_net/base15_novel5/{k_shot}shot_manhattan/summary.json')),
-        ('MatchingNet (Cosine)', load(f'matching_net/base15_novel5/{k_shot}shot/summary.json')),
-        ('RelationNet (Learned)',load(f'relation_net/base15_novel5/{k_shot}shot/summary.json')),
+        # ResNet-50 NCC
+        ('NCC/R50 (Euclidean)',        load(f'baseline/resnet50/base15/novel_ncc/{k_shot}shot_euclidean/summary.json')),
+        ('NCC/R50 (Manhattan)',        load(f'baseline/resnet50/base15/novel_ncc/{k_shot}shot_manhattan/summary.json')),
+        # DeiT-S NCC
+        ('NCC/DeiT-S (Euclidean)',     load(f'vit/baseline/base15/novel_ncc/{k_shot}shot_euclidean/summary.json')),
+        ('NCC/DeiT-S (Manhattan)',     load(f'vit/baseline/base15/novel_ncc/{k_shot}shot_manhattan/summary.json')),
+        # ResNet-50 FSL
+        ('ProtoNet/R50 (Euclidean)',   load(f'proto_net/base15_novel5/{k_shot}shot_euclidean/summary.json')),
+        ('ProtoNet/R50 (Manhattan)',   load(f'proto_net/base15_novel5/{k_shot}shot_manhattan/summary.json')),
+        ('MatchingNet/R50',            load(f'matching_net/base15_novel5/{k_shot}shot/summary.json')),
+        ('MatchingNet+FCE/R50',        load(f'matching_net_fce/base15_novel5/{k_shot}shot/summary.json')),
+        ('RelationNet/R50',            load(f'relation_net/base15_novel5/{k_shot}shot/summary.json')),
+        # DeiT-S FSL
+        ('ProtoNet/DeiT-S (Euclidean)',load(f'vit/proto_net/base15_novel5/{k_shot}shot_euclidean/summary.json')),
+        ('ProtoNet/DeiT-S (Manhattan)',load(f'vit/proto_net/base15_novel5/{k_shot}shot_manhattan/summary.json')),
     ]
 
     matrix = []
@@ -79,7 +90,7 @@ def build_heatmap(k_shot):
 
     matrix = np.array(matrix, dtype=float)
 
-    fig, ax = plt.subplots(figsize=(9, 4))
+    fig, ax = plt.subplots(figsize=(9, 6))
 
     if not any_data:
         ax.text(0.5, 0.5, f'No {k_shot}-shot results available yet.',
@@ -92,11 +103,11 @@ def build_heatmap(k_shot):
                     xticklabels=SHORT_NAMES, yticklabels=row_labels,
                     ax=ax, vmin=0, vmax=100,
                     linewidths=0.5, linecolor='white',
-                    annot_kws={'size': 10},
+                    annot_kws={'size': 9},
                     mask=mask)
         ax.set_xlabel('Novel Class', fontsize=11)
         ax.set_ylabel('Method', fontsize=11)
-        ax.set_title(f'Per-Class Accuracy (%) — 5-way {k_shot}-Shot\n'
+        ax.set_title(f'Per-Class Accuracy (%) — 5-way {k_shot}-Shot — B15/N5\n'
                      f'(5 novel bird species, 600 evaluation episodes)',
                      fontsize=11)
         ax.tick_params(axis='x', labelrotation=15)

@@ -53,14 +53,21 @@ def get_acc_ci(d):
 shots = [1, 3, 5]
 
 methods = {
-    # NCC baselines — frozen backbone, no episodic training
-    'NCC (Euclidean)':      {k: load(f'baseline/resnet50/base15/novel_ncc/{k}shot_euclidean/summary.json') for k in shots},
-    'NCC (Manhattan)':      {k: load(f'baseline/resnet50/base15/novel_ncc/{k}shot_manhattan/summary.json') for k in shots},
-    # FSL methods
-    'ProtoNet (Euclidean)': {k: load(f'proto_net/base15_novel5/{k}shot_euclidean/summary.json') for k in shots},
-    'ProtoNet (Manhattan)': {k: load(f'proto_net/base15_novel5/{k}shot_manhattan/summary.json') for k in shots},
-    'MatchingNet (Cosine)': {k: load(f'matching_net/base15_novel5/{k}shot/summary.json') for k in shots},
-    'RelationNet (Learned)':{k: load(f'relation_net/base15_novel5/{k}shot/summary.json') for k in shots},
+    # ResNet-50 NCC baselines
+    'NCC/R50 (Euclidean)':       {k: load(f'baseline/resnet50/base15/novel_ncc/{k}shot_euclidean/summary.json') for k in shots},
+    'NCC/R50 (Manhattan)':       {k: load(f'baseline/resnet50/base15/novel_ncc/{k}shot_manhattan/summary.json') for k in shots},
+    # DeiT-S NCC baselines
+    'NCC/DeiT-S (Euclidean)':    {k: load(f'vit/baseline/base15/novel_ncc/{k}shot_euclidean/summary.json') for k in shots},
+    'NCC/DeiT-S (Manhattan)':    {k: load(f'vit/baseline/base15/novel_ncc/{k}shot_manhattan/summary.json') for k in shots},
+    # ResNet-50 FSL methods
+    'ProtoNet/R50 (Euclidean)':  {k: load(f'proto_net/base15_novel5/{k}shot_euclidean/summary.json') for k in shots},
+    'ProtoNet/R50 (Manhattan)':  {k: load(f'proto_net/base15_novel5/{k}shot_manhattan/summary.json') for k in shots},
+    'MatchingNet/R50':           {k: load(f'matching_net/base15_novel5/{k}shot/summary.json') for k in shots},
+    'MatchingNet+FCE/R50':       {k: load(f'matching_net_fce/base15_novel5/{k}shot/summary.json') for k in shots},
+    'RelationNet/R50':           {k: load(f'relation_net/base15_novel5/{k}shot/summary.json') for k in shots},
+    # DeiT-S FSL methods
+    'ProtoNet/DeiT-S (Euclidean)':{k: load(f'vit/proto_net/base15_novel5/{k}shot_euclidean/summary.json') for k in shots},
+    'ProtoNet/DeiT-S (Manhattan)':{k: load(f'vit/proto_net/base15_novel5/{k}shot_manhattan/summary.json') for k in shots},
 }
 
 # K=5 fine-tune supervised baseline (direct comparator — fixed horizontal line)
@@ -70,11 +77,18 @@ kshot5_acc = float(kshot5_sup.get('accuracy') or kshot5_sup.get('test_accuracy')
 # ---------------------------------------------------------------------------
 # Plot
 # ---------------------------------------------------------------------------
-colors     = ['#fd8d3c', '#d94801', '#1f77b4', '#aec7e8', '#2ca02c', '#d62728']
-markers    = ['o', 's',  'o', 's',  '^', 'D']
-linestyles = ['--', ':',  '-', '-.',  '-', '--']
+colors = [
+    '#fd8d3c', '#d94801',        # R50 NCC
+    '#9467bd', '#c5b0d5',        # DeiT-S NCC
+    '#1f77b4', '#aec7e8',        # R50 ProtoNet
+    '#2ca02c', '#98df8a',        # R50 MatchingNet / FCE
+    '#d62728',                   # R50 RelationNet
+    '#17becf', '#9edae5',        # DeiT-S ProtoNet
+]
+markers    = ['o', 's', 'o', 's', 'o', 's', '^', '^', 'D', 'o', 's']
+linestyles = ['--', ':', '--', ':', '-', '-.', '-', '--', '--', '-', '-.']
 
-fig, ax = plt.subplots(figsize=(9, 5))
+fig, ax = plt.subplots(figsize=(12, 6))
 
 any_data = False
 
@@ -112,10 +126,10 @@ ax.set_xticklabels([f'{k}-shot' for k in shots], fontsize=11)
 ax.set_xlabel('Number of Support Examples per Class (K)', fontsize=12)
 ax.set_ylabel('Mean Accuracy (%)', fontsize=12)
 ax.set_ylim(0, 105)
-ax.set_title('Few-Shot Accuracy vs Number of Shots\n'
+ax.set_title('Few-Shot Accuracy vs Number of Shots — B15/N5\n'
              '(5-way, 5 novel bird species, 600 episodes, 95% CI error bars)',
              fontsize=11)
-ax.legend(loc='lower right', fontsize=9)
+ax.legend(loc='lower right', fontsize=8, ncol=2)
 ax.grid(axis='y', linestyle='--', alpha=0.4)
 
 if not any_data:

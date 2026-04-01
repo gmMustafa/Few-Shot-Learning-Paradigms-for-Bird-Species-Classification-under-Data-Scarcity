@@ -128,6 +128,50 @@ ncc_b10_5_man = load('baseline/resnet50/base10/novel_ncc/5shot_manhattan/summary
 base10    = load('baseline/resnet50/base10/base_test/summary.json')
 kshot5_b10 = load('baseline/resnet50/base10/novel_kshot_5/summary.json')
 
+# MatchingNet + FCE: base15/novel5 and base10/novel10
+match_fce_1       = load('matching_net_fce/base15_novel5/1shot/summary.json')
+match_fce_3       = load('matching_net_fce/base15_novel5/3shot/summary.json')
+match_fce_5       = load('matching_net_fce/base15_novel5/5shot/summary.json')
+match_fce_b10n10_1 = load('matching_net_fce/base10_novel10/1shot/summary.json')
+match_fce_b10n10_3 = load('matching_net_fce/base10_novel10/3shot/summary.json')
+match_fce_b10n10_5 = load('matching_net_fce/base10_novel10/5shot/summary.json')
+
+# ProtoNet TTA (5-shot euclidean only)
+proto_5_euc_tta8       = load('proto_net/base15_novel5/5shot_euclidean_tta8/summary.json')
+proto_b10n10_5_euc_tta8 = load('proto_net/base10_novel10/5shot_euclidean_tta8/summary.json')
+
+# DeiT-S NCC: base15/novel5
+vit_ncc_1_euc = load('vit/baseline/base15/novel_ncc/1shot_euclidean/summary.json')
+vit_ncc_1_man = load('vit/baseline/base15/novel_ncc/1shot_manhattan/summary.json')
+vit_ncc_3_euc = load('vit/baseline/base15/novel_ncc/3shot_euclidean/summary.json')
+vit_ncc_3_man = load('vit/baseline/base15/novel_ncc/3shot_manhattan/summary.json')
+vit_ncc_5_euc = load('vit/baseline/base15/novel_ncc/5shot_euclidean/summary.json')
+vit_ncc_5_man = load('vit/baseline/base15/novel_ncc/5shot_manhattan/summary.json')
+
+# DeiT-S NCC: base10/novel10
+vit_ncc_b10_1_euc = load('vit/baseline/base10/novel_ncc/1shot_euclidean/summary.json')
+vit_ncc_b10_1_man = load('vit/baseline/base10/novel_ncc/1shot_manhattan/summary.json')
+vit_ncc_b10_3_euc = load('vit/baseline/base10/novel_ncc/3shot_euclidean/summary.json')
+vit_ncc_b10_3_man = load('vit/baseline/base10/novel_ncc/3shot_manhattan/summary.json')
+vit_ncc_b10_5_euc = load('vit/baseline/base10/novel_ncc/5shot_euclidean/summary.json')
+vit_ncc_b10_5_man = load('vit/baseline/base10/novel_ncc/5shot_manhattan/summary.json')
+
+# DeiT-S ProtoNet: base15/novel5
+vit_proto_1_euc = load('vit/proto_net/base15_novel5/1shot_euclidean/summary.json')
+vit_proto_1_man = load('vit/proto_net/base15_novel5/1shot_manhattan/summary.json')
+vit_proto_3_euc = load('vit/proto_net/base15_novel5/3shot_euclidean/summary.json')
+vit_proto_3_man = load('vit/proto_net/base15_novel5/3shot_manhattan/summary.json')
+vit_proto_5_euc = load('vit/proto_net/base15_novel5/5shot_euclidean/summary.json')
+vit_proto_5_man = load('vit/proto_net/base15_novel5/5shot_manhattan/summary.json')
+
+# DeiT-S ProtoNet: base10/novel10
+vit_proto_b10_1_euc = load('vit/proto_net/base10_novel10/1shot_euclidean/summary.json')
+vit_proto_b10_1_man = load('vit/proto_net/base10_novel10/1shot_manhattan/summary.json')
+vit_proto_b10_3_euc = load('vit/proto_net/base10_novel10/3shot_euclidean/summary.json')
+vit_proto_b10_3_man = load('vit/proto_net/base10_novel10/3shot_manhattan/summary.json')
+vit_proto_b10_5_euc = load('vit/proto_net/base10_novel10/5shot_euclidean/summary.json')
+vit_proto_b10_5_man = load('vit/proto_net/base10_novel10/5shot_manhattan/summary.json')
+
 
 # ---------------------------------------------------------------------------
 # Normalise fields into a unified dict per experiment
@@ -259,6 +303,54 @@ rows = [
     from_fsl(rel_b10n10_1, 'RelationNet (Learned)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
     from_fsl(rel_b10n10_3, 'RelationNet (Learned)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
     from_fsl(rel_b10n10_5, 'RelationNet (Learned)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base15/novel5: MatchingNet + FCE ---
+    from_fsl(match_fce_1, 'MatchingNet+FCE (Cosine)', 'FSL 1-Shot', k_shot=1, split='b15_n5'),
+    from_fsl(match_fce_3, 'MatchingNet+FCE (Cosine)', 'FSL 3-Shot', k_shot=3, split='b15_n5'),
+    from_fsl(match_fce_5, 'MatchingNet+FCE (Cosine)', 'FSL 5-Shot', k_shot=5, split='b15_n5'),
+
+    # --- base10/novel10: MatchingNet + FCE ---
+    from_fsl(match_fce_b10n10_1, 'MatchingNet+FCE (Cosine)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(match_fce_b10n10_3, 'MatchingNet+FCE (Cosine)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(match_fce_b10n10_5, 'MatchingNet+FCE (Cosine)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base15/novel5: ProtoNet TTA ---
+    from_fsl(proto_5_euc_tta8, 'ProtoNet+TTA8 (Euclidean)', 'FSL 5-Shot', k_shot=5, split='b15_n5'),
+
+    # --- base10/novel10: ProtoNet TTA ---
+    from_fsl(proto_b10n10_5_euc_tta8, 'ProtoNet+TTA8 (Euclidean)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base15/novel5: DeiT-S NCC ---
+    from_fsl(vit_ncc_1_euc, 'DeiT-S NCC (Euclidean)', 'NCC 1-Shot', k_shot=1, split='b15_n5'),
+    from_fsl(vit_ncc_1_man, 'DeiT-S NCC (Manhattan)', 'NCC 1-Shot', k_shot=1, split='b15_n5'),
+    from_fsl(vit_ncc_3_euc, 'DeiT-S NCC (Euclidean)', 'NCC 3-Shot', k_shot=3, split='b15_n5'),
+    from_fsl(vit_ncc_3_man, 'DeiT-S NCC (Manhattan)', 'NCC 3-Shot', k_shot=3, split='b15_n5'),
+    from_fsl(vit_ncc_5_euc, 'DeiT-S NCC (Euclidean)', 'NCC 5-Shot', k_shot=5, split='b15_n5'),
+    from_fsl(vit_ncc_5_man, 'DeiT-S NCC (Manhattan)', 'NCC 5-Shot', k_shot=5, split='b15_n5'),
+
+    # --- base10/novel10: DeiT-S NCC ---
+    from_fsl(vit_ncc_b10_1_euc, 'DeiT-S NCC (Euclidean)', 'NCC 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(vit_ncc_b10_1_man, 'DeiT-S NCC (Manhattan)', 'NCC 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(vit_ncc_b10_3_euc, 'DeiT-S NCC (Euclidean)', 'NCC 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(vit_ncc_b10_3_man, 'DeiT-S NCC (Manhattan)', 'NCC 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(vit_ncc_b10_5_euc, 'DeiT-S NCC (Euclidean)', 'NCC 5-Shot', k_shot=5, split='b10_n10'),
+    from_fsl(vit_ncc_b10_5_man, 'DeiT-S NCC (Manhattan)', 'NCC 5-Shot', k_shot=5, split='b10_n10'),
+
+    # --- base15/novel5: DeiT-S ProtoNet ---
+    from_fsl(vit_proto_1_euc, 'DeiT-S ProtoNet (Euclidean)', 'FSL 1-Shot', k_shot=1, split='b15_n5'),
+    from_fsl(vit_proto_1_man, 'DeiT-S ProtoNet (Manhattan)', 'FSL 1-Shot', k_shot=1, split='b15_n5'),
+    from_fsl(vit_proto_3_euc, 'DeiT-S ProtoNet (Euclidean)', 'FSL 3-Shot', k_shot=3, split='b15_n5'),
+    from_fsl(vit_proto_3_man, 'DeiT-S ProtoNet (Manhattan)', 'FSL 3-Shot', k_shot=3, split='b15_n5'),
+    from_fsl(vit_proto_5_euc, 'DeiT-S ProtoNet (Euclidean)', 'FSL 5-Shot', k_shot=5, split='b15_n5'),
+    from_fsl(vit_proto_5_man, 'DeiT-S ProtoNet (Manhattan)', 'FSL 5-Shot', k_shot=5, split='b15_n5'),
+
+    # --- base10/novel10: DeiT-S ProtoNet ---
+    from_fsl(vit_proto_b10_1_euc, 'DeiT-S ProtoNet (Euclidean)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(vit_proto_b10_1_man, 'DeiT-S ProtoNet (Manhattan)', 'FSL 1-Shot', k_shot=1, split='b10_n10'),
+    from_fsl(vit_proto_b10_3_euc, 'DeiT-S ProtoNet (Euclidean)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(vit_proto_b10_3_man, 'DeiT-S ProtoNet (Manhattan)', 'FSL 3-Shot', k_shot=3, split='b10_n10'),
+    from_fsl(vit_proto_b10_5_euc, 'DeiT-S ProtoNet (Euclidean)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
+    from_fsl(vit_proto_b10_5_man, 'DeiT-S ProtoNet (Manhattan)', 'FSL 5-Shot', k_shot=5, split='b10_n10'),
 ]
 
 df = pd.DataFrame(rows)
