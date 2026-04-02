@@ -119,7 +119,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default="../../../configs/baseline_resnet_50_b15_config.yaml",
+        default="../../../configs/birds20/baseline_resnet_50_b15_config.yaml",
         help="Path to config yaml",
     )
     args = parser.parse_args()

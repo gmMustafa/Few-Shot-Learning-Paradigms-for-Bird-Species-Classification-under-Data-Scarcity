@@ -11,7 +11,7 @@ more separable clusters for novel classes.
 
 Additionally generates:
   - A single plot of the trained model embeddings with prototypes marked
-  - Saved to results/proto_net/tsne/
+  - Saved to results/birds20/proto_net/tsne/
 
 Usage:
     python plots/tsne_plot.py
@@ -192,11 +192,11 @@ BACKBONE_NAME = {
 }
 
 DEFAULT_CONFIG = {
-    'protonet':        'configs/proto_configs.yaml',
-    'matchingnet':     'configs/matchingnet_configs.yaml',
-    'matchingnet-fce': 'configs/matchingnet_fce_configs.yaml',
-    'relationnet':     'configs/relationnet_configs.yaml',
-    'vit-protonet':    'configs/vit_proto_configs.yaml',
+    'protonet':        'configs/birds20/proto_configs.yaml',
+    'matchingnet':     'configs/birds20/matchingnet_configs.yaml',
+    'matchingnet-fce': 'configs/birds20/matchingnet_fce_configs.yaml',
+    'relationnet':     'configs/birds20/relationnet_configs.yaml',
+    'vit-protonet':    'configs/birds20/vit_proto_configs.yaml',
 }
 
 
@@ -297,7 +297,13 @@ def main():
 
     novel_classes = cfg['novel_classes']
     image_size    = int(cfg.get('image_size', 224))
-    data_root     = os.path.join(ROOT, 'data')
+    # data root comes from the config's data.train path (strip the 'train' suffix)
+    _data_train_rel = _get_cfg_value(cfg, 'data.train', 'data_train')
+    if _data_train_rel:
+        _resolved = os.path.normpath(os.path.join(ROOT, 'train_evaluate', model_subdir, _data_train_rel))
+        data_root = os.path.dirname(_resolved)  # strip 'train' component
+    else:
+        data_root = os.path.join(ROOT, 'data')  # fallback for old configs
     model_subdir  = MODEL_DIR[args.model]
     model_label   = MODEL_LABEL[args.model]
     backbone_name = BACKBONE_NAME[args.model]

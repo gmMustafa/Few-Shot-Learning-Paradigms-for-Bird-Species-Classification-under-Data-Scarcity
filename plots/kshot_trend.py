@@ -9,7 +9,7 @@ Horizontal dashed line = K=5 fine-tune supervised baseline (direct comparator).
 Usage:
     python plots/kshot_trend.py
 Output:
-    results/comparison/kshot_trend.png
+    results/birds20/comparison/kshot_trend.png
 """
 import os
 import json
@@ -27,7 +27,7 @@ plt.rcParams['axes.facecolor']   = 'white'
 plt.rcParams['savefig.facecolor'] = 'white'
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RES  = os.path.join(ROOT, 'results')
+RES  = os.path.join(ROOT, 'results', 'birds20')
 OUT  = os.path.join(RES, 'comparison')
 os.makedirs(OUT, exist_ok=True)
 

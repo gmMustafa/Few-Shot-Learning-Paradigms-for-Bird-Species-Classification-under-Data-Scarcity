@@ -1,0 +1,52 @@
+# DeiT-S supervised baseline — 10 base classes
+# Used for NCC feature extraction after training
+
+image_size: 224
+
+experiment:
+  name: "deit_small_base10"
+
+data_train: "../../../data/train"
+data_valid: "../../../data/valid"
+data_test:  "../../../data/test"
+
+train:
+  seed: 42
+  epochs: 30
+  batch_size: 32
+  lr: 0.0001
+  num_workers: 0
+  patience: 7
+  scheduler: "cosine"
+
+# Fixed base classes (10) — identical to ResNet-50 B10 split
+base_classes:
+  - ABBOTTS BABBLER
+  - ABBOTTS BOOBY
+  - ABYSSINIAN GROUND HORNBILL
+  - AFRICAN CROWNED CRANE
+  - AFRICAN EMERALD CUCKOO
+  - AFRICAN FIREFINCH
+  - AFRICAN OYSTER CATCHER
+  - AFRICAN PIED HORNBILL
+  - AFRICAN PYGMY GOOSE
+  - ALBATROSS
+
+# Novel classes (10) — reserved exclusively for few-shot evaluation
+novel_classes:
+  - ALBERTS TOWHEE
+  - ALEXANDRINE PARAKEET
+  - ALPINE CHOUGH
+  - ALTAMIRA YELLOWTHROAT
+  - AMERICAN AVOCET
+  - AMERICAN BITTERN
+  - AMERICAN COOT
+  - AMERICAN FLAMINGO
+  - AMERICAN GOLDFINCH
+  - AMERICAN KESTREL
+
+output:
+  ckpt_dir:        "checkpoints/vit_baseline/base10"
+  results_dir:     "../../../results/birds20/vit/baseline/base10"
+  save_best_name:  "deit_small_base10_best.pth"
+  save_final_name: "deit_small_base10_final.pth"

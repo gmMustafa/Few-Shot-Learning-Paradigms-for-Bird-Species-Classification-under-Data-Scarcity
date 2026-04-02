@@ -36,7 +36,7 @@ novel_classes:
 output:
   ckpt_dir: checkpoints/relationnet_base10_novel10
   ckpt_name: relationnet_best.pth
-  results_dir: ../../results/relation_net/base10_novel10
+  results_dir: ../../results/birds20/relation_net/base10_novel10
 seed: 42
 train:
   episodes_per_epoch: 100

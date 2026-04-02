@@ -10,8 +10,8 @@
 #   - no support/query overlap within an episode
 #
 # Usage examples:
-#   python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b15_config.yaml --k-shot 1 --distance euclidean
-#   python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 5 --distance manhattan
+#   python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b15_config.yaml --k-shot 1 --distance euclidean
+#   python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 5 --distance manhattan
 
 import os
 import json
@@ -149,7 +149,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default="../../../configs/baseline_resnet_50_b15_config.yaml",
+        default="../../../configs/birds20/baseline_resnet_50_b15_config.yaml",
         help="Path to config yaml",
     )
     parser.add_argument("--k-shot", type=int, required=True, help="Support images per class")

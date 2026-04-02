@@ -405,7 +405,7 @@ def save_tsne_episode(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="../../configs/proto_configs.yaml")
+    parser.add_argument("--config", default="../../configs/birds20/proto_configs.yaml")
     parser.add_argument("--k-shot", type=int, default=None, help="Override eval k_shot")
     parser.add_argument(
         "--distance",

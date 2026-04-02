@@ -41,7 +41,7 @@ finetune:
   patience: 5
 output:
   ckpt_dir: checkpoints/baseline/base15
-  results_dir: ../../../results/baseline/resnet50/base15
+  results_dir: ../../../results/birds20/baseline/resnet50/base15
   save_best_name: resnet50_base15_best.pth
   save_final_name: resnet50_base15_final.pth
   finetune_best_name: resnet50_base15_finetune_best.pth

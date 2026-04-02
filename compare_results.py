@@ -4,9 +4,9 @@ compare_results.py — Thesis comparison table generator.
 Reads all experiment summary.json files, builds a unified comparison table,
 and saves:
   - Console output (formatted table)
-  - results/comparison/comparison_table.csv
-  - results/comparison/comparison_table.tex  (ready to paste into LaTeX)
-  - results/comparison/comparison_bar_chart.png
+  - results/birds20/comparison/comparison_table.csv
+  - results/birds20/comparison/comparison_table.tex  (ready to paste into LaTeX)
+  - results/birds20/comparison/comparison_bar_chart.png
 
 Missing results (not yet run) are shown as '—' gracefully.
 
@@ -32,7 +32,7 @@ plt.rcParams['savefig.facecolor'] = 'white'
 # Project root = directory containing this script
 # ---------------------------------------------------------------------------
 ROOT = os.path.dirname(os.path.abspath(__file__))
-RES = os.path.join(ROOT, 'results')
+RES = os.path.join(ROOT, 'results', 'birds20')
 
 
 # ---------------------------------------------------------------------------
@@ -424,7 +424,7 @@ csv_df['precision'] = csv_df['precision'].apply(_fmt)
 csv_df['recall']    = csv_df['recall'].apply(_fmt)
 csv_df['auc']       = csv_df['auc'].apply(_fmt)
 csv_df.to_csv(os.path.join(out_dir, 'comparison_table.csv'), index=False)
-print(f"Saved: results/comparison/comparison_table.csv")
+print(f"Saved: results/birds20/comparison/comparison_table.csv")
 
 
 # ---------------------------------------------------------------------------
@@ -489,7 +489,7 @@ lines += [
 
 with open(os.path.join(out_dir, 'comparison_table.tex'), 'w') as f:
     f.write('\n'.join(lines) + '\n')
-print(f"Saved: results/comparison/comparison_table.tex")
+print(f"Saved: results/birds20/comparison/comparison_table.tex")
 
 
 # ---------------------------------------------------------------------------
@@ -583,9 +583,9 @@ print(f"Saved: results/comparison/comparison_table.tex")
 # plt.tight_layout()
 # plt.savefig(os.path.join(out_dir, 'comparison_bar_chart.png'), dpi=150)
 # plt.close()
-# print(f"Saved: results/comparison/comparison_bar_chart.png")
+# print(f"Saved: results/birds20/comparison/comparison_bar_chart.png")
 
-# print(f"\nAll outputs in: results/comparison/")
+# print(f"\nAll outputs in: results/birds20/comparison/")
 
 
 # ---------------------------------------------------------------------------
@@ -777,7 +777,7 @@ def save_b15_main_chart(df, out_dir):
     plt.tight_layout()
     plt.savefig(os.path.join(out_dir, 'comparison_bar_chart_b15_n5.png'), dpi=150)
     plt.close()
-    print("Saved: results/comparison/comparison_bar_chart_b15_n5.png")
+    print("Saved: results/birds20/comparison/comparison_bar_chart_b15_n5.png")
 
 
 def save_proto_split_chart(df, out_dir):
@@ -908,7 +908,7 @@ def save_proto_split_chart(df, out_dir):
     plt.tight_layout()
     plt.savefig(os.path.join(out_dir, 'comparison_bar_chart_proto_split.png'), dpi=150)
     plt.close()
-    print("Saved: results/comparison/comparison_bar_chart_proto_split.png")
+    print("Saved: results/birds20/comparison/comparison_bar_chart_proto_split.png")
 
 
 def save_b10_main_chart(df, out_dir):
@@ -1042,7 +1042,7 @@ def save_b10_main_chart(df, out_dir):
     plt.tight_layout()
     plt.savefig(os.path.join(out_dir, 'comparison_bar_chart_b10_n10.png'), dpi=150)
     plt.close()
-    print("Saved: results/comparison/comparison_bar_chart_b10_n10.png")
+    print("Saved: results/birds20/comparison/comparison_bar_chart_b10_n10.png")
 
 
 # Generate the cleaner plots
@@ -1080,7 +1080,7 @@ for col in ['acc']:
 for col in ['f1','precision','recall','auc']:
     aio_df[col] = aio_df[col].apply(lambda v: f'{v:.4f}' if v is not None and not (isinstance(v, float) and math.isnan(v)) else '—')
 aio_df.to_csv(os.path.join(out_dir, 'all_in_one_summary.csv'), index=False)
-print(f"Saved: results/comparison/all_in_one_summary.csv")
+print(f"Saved: results/birds20/comparison/all_in_one_summary.csv")
 
 # ---------------------------------------------------------------------------
 # Key Insights

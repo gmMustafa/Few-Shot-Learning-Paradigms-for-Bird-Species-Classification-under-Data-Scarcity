@@ -225,7 +225,10 @@ data/test/
 data/valid/
 data/images*/
 data_cub-200-2011/
-data/*.csv
+data_cub_prepared/
+#data/*.csv
+*.csv
+
 
 # Generated results and plots (reproducible from code)
 #results/

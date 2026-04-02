@@ -36,6 +36,6 @@ novel_classes:
 - AMERICAN KESTREL
 output:
   ckpt_dir: checkpoints/vit_baseline/base15
-  results_dir: ../../../results/vit/baseline/base15
+  results_dir: ../../../results/birds20/vit/baseline/base15
   save_best_name: deit_small_base15_best.pth
   save_final_name: deit_small_base15_final.pth

@@ -10,7 +10,7 @@ import numpy as np
 from models.protonet import ProtoNet
 
 # ---------- Load Config ----------
-with open('../../configs/proto_configs.yaml', 'r') as file:
+with open('../../configs/birds20/proto_configs.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 DEVICE = config["device"] if torch.cuda.is_available() else "cpu"

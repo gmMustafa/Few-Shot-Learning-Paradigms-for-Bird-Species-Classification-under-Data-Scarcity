@@ -52,12 +52,12 @@ echo "============================================================"
 echo "Stage 2B — NCC re-evaluate (b10)"
 echo "============================================================"
 cd train_evaluate/baseline/resNet50_bX
-python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 1 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 1 --distance manhattan
-python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 3 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 3 --distance manhattan
-python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 5 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 5 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 1 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 1 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 3 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 3 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 5 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 5 --distance manhattan
 cd ../../..
 
 echo "============================================================"
@@ -71,12 +71,12 @@ python evaluate.py --k-shot 3 --distance manhattan
 python evaluate.py --k-shot 5 --distance euclidean
 python evaluate.py --k-shot 5 --distance manhattan
 
-python evaluate.py --config ../../configs/proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
-python evaluate.py --config ../../configs/proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
-python evaluate.py --config ../../configs/proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
-python evaluate.py --config ../../configs/proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
-python evaluate.py --config ../../configs/proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
-python evaluate.py --config ../../configs/proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
+python evaluate.py --config ../../configs/birds20/proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
+python evaluate.py --config ../../configs/birds20/proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
+python evaluate.py --config ../../configs/birds20/proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
+python evaluate.py --config ../../configs/birds20/proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
+python evaluate.py --config ../../configs/birds20/proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
+python evaluate.py --config ../../configs/birds20/proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
 cd ../..
 
 echo "============================================================"
@@ -87,9 +87,9 @@ python evaluate.py --k-shot 1
 python evaluate.py --k-shot 3
 python evaluate.py --k-shot 5
 
-python evaluate.py --config ../../configs/matchingnet_configs_10b_10n.yaml --k-shot 1
-python evaluate.py --config ../../configs/matchingnet_configs_10b_10n.yaml --k-shot 3
-python evaluate.py --config ../../configs/matchingnet_configs_10b_10n.yaml --k-shot 5
+python evaluate.py --config ../../configs/birds20/matchingnet_configs_10b_10n.yaml --k-shot 1
+python evaluate.py --config ../../configs/birds20/matchingnet_configs_10b_10n.yaml --k-shot 3
+python evaluate.py --config ../../configs/birds20/matchingnet_configs_10b_10n.yaml --k-shot 5
 cd ../..
 
 echo "============================================================"
@@ -104,9 +104,9 @@ python evaluate.py --k-shot 3
 python evaluate.py --k-shot 5
 
 # b10/n10 — already trained
-python evaluate.py --config ../../configs/relationnet_configs_10b_10n.yaml --k-shot 1
-python evaluate.py --config ../../configs/relationnet_configs_10b_10n.yaml --k-shot 3
-python evaluate.py --config ../../configs/relationnet_configs_10b_10n.yaml --k-shot 5
+python evaluate.py --config ../../configs/birds20/relationnet_configs_10b_10n.yaml --k-shot 1
+python evaluate.py --config ../../configs/birds20/relationnet_configs_10b_10n.yaml --k-shot 3
+python evaluate.py --config ../../configs/birds20/relationnet_configs_10b_10n.yaml --k-shot 5
 cd ../..
 
 echo "============================================================"
@@ -115,19 +115,19 @@ echo "============================================================"
 python compare_results.py
 python plots/kshot_trend.py
 python plots/per_class_heatmap.py
-python plots/tsne_plot.py --model protonet    --config configs/proto_configs.yaml
-python plots/tsne_plot.py --model matchingnet --config configs/matchingnet_configs.yaml
-python plots/tsne_plot.py --model relationnet --config configs/relationnet_configs.yaml
-python plots/tsne_plot.py --model protonet    --config configs/proto_configs_10b_10n.yaml
-python plots/tsne_plot.py --model matchingnet --config configs/matchingnet_configs_10b_10n.yaml
-python plots/tsne_plot.py --model relationnet --config configs/relationnet_configs_10b_10n.yaml
+python plots/tsne_plot.py --model protonet    --config configs/birds20/proto_configs.yaml
+python plots/tsne_plot.py --model matchingnet --config configs/birds20/matchingnet_configs.yaml
+python plots/tsne_plot.py --model relationnet --config configs/birds20/relationnet_configs.yaml
+python plots/tsne_plot.py --model protonet    --config configs/birds20/proto_configs_10b_10n.yaml
+python plots/tsne_plot.py --model matchingnet --config configs/birds20/matchingnet_configs_10b_10n.yaml
+python plots/tsne_plot.py --model relationnet --config configs/birds20/relationnet_configs_10b_10n.yaml
 
 echo "============================================================"
 echo "Stage 7 — DeiT-S ViT backbone (NCC + ProtoNet, both splits)"
 echo "============================================================"
 cd train_evaluate/vit_backbone/baseline
 python train.py
-python train.py --config ../../../configs/vit_baseline_b10_config.yaml
+python train.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml
 cd ../../..
 
 cd train_evaluate/vit_backbone/ncc
@@ -138,12 +138,12 @@ python evaluate_novel_ncc.py --k-shot 3 --distance manhattan
 python evaluate_novel_ncc.py --k-shot 5 --distance euclidean
 python evaluate_novel_ncc.py --k-shot 5 --distance manhattan
 
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 1 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 1 --distance manhattan
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 3 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 3 --distance manhattan
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 1 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 1 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 3 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 3 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 5 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
 cd ../../..
 
 cd train_evaluate/vit_backbone/proto_net
@@ -155,13 +155,13 @@ python evaluate.py --k-shot 3 --distance manhattan
 python evaluate.py --k-shot 5 --distance euclidean
 python evaluate.py --k-shot 5 --distance manhattan
 
-python train.py    --config ../../../configs/vit_proto_configs_10b_10n.yaml
-python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
-python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
-python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
-python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
-python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
-python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
+python train.py    --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml
+python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
+python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
+python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
+python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
+python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
+python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
 cd ../../..
 
 echo "============================================================"

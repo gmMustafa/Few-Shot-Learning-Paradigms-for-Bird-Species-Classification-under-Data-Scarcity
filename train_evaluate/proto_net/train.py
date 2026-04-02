@@ -114,7 +114,7 @@ def run_epoch(model, loader, optimizer, criterion, device,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='../../configs/proto_configs.yaml',
+    parser.add_argument('--config', default='../../configs/birds20/proto_configs.yaml',
                         help='Path to config (relative to this script)')
     parser.add_argument('--debug', action='store_true',
                         help='Smoke test: 1 epoch, 10 episodes')

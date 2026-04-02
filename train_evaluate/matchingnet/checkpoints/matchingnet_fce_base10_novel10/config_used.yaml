@@ -38,7 +38,7 @@ novel_classes:
 output:
   ckpt_dir: checkpoints/matchingnet_fce_base10_novel10
   ckpt_name: matchingnet_fce_best.pth
-  results_dir: ../../results/matching_net_fce/base10_novel10
+  results_dir: ../../results/birds20/matching_net_fce/base10_novel10
 seed: 42
 train:
   episodes_per_epoch: 100

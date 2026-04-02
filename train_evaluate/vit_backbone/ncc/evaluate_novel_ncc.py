@@ -8,7 +8,7 @@
 #
 # Usage:
 #   python evaluate_novel_ncc.py --k-shot 1 --distance euclidean
-#   python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
+#   python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
 
 import os
 import sys
@@ -143,7 +143,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--config',
-        default='../../../configs/vit_baseline_b15_config.yaml',
+        default='../../../configs/birds20/vit_baseline_b15_config.yaml',
         help='Path to config yaml',
     )
     parser.add_argument('--k-shot',  type=int, required=True)

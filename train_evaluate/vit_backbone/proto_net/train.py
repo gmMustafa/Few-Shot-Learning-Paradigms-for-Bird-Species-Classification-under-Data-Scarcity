@@ -3,7 +3,7 @@ DeiT-S ProtoNet Training — episodic training on base classes only.
 
 Usage:
     python train.py                                                     # B15/N5
-    python train.py --config ../../../configs/vit_proto_configs_10b_10n.yaml  # B10/N10
+    python train.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml  # B10/N10
     python train.py --debug                                             # smoke test
 
 HPC offline (no internet):
@@ -107,7 +107,7 @@ def run_epoch(model, loader, optimizer, criterion, device,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='../../../configs/vit_proto_configs.yaml',
+    parser.add_argument('--config', default='../../../configs/birds20/vit_proto_configs.yaml',
                         help='Path to config (relative to this script)')
     parser.add_argument('--debug', action='store_true',
                         help='Smoke test: 1 epoch, 10 episodes')

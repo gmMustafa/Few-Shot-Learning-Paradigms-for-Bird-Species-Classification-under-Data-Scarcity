@@ -6,7 +6,7 @@
 #
 # Usage:
 #   python train.py
-#   python train.py --config ../../../configs/vit_baseline_b10_config.yaml
+#   python train.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml
 #   python train.py --debug
 #
 # HPC offline (no internet): download weights on a machine with internet, transfer,
@@ -88,7 +88,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--config',
-        default='../../../configs/vit_baseline_b15_config.yaml',
+        default='../../../configs/birds20/vit_baseline_b15_config.yaml',
         help='Path to config yaml (relative to this script)',
     )
     parser.add_argument('--debug', action='store_true',

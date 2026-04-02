@@ -40,7 +40,7 @@ echo "=== Stage 7A: DeiT-S supervised baseline ==="
 cd train_evaluate/vit_backbone/baseline
 python train.py                                                           \
     --weights-path "$DEIT_WEIGHTS"                                        # B15/N5
-python train.py --config ../../../configs/vit_baseline_b10_config.yaml   \
+python train.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml   \
     --weights-path "$DEIT_WEIGHTS"                                        # B10/N10
 cd ../../..
 
@@ -57,12 +57,12 @@ python evaluate_novel_ncc.py --k-shot 5 --distance euclidean
 python evaluate_novel_ncc.py --k-shot 5 --distance manhattan
 
 echo "=== Stage 7B: DeiT-S NCC (B10/N10) ==="
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 1 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 1 --distance manhattan
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 3 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 3 --distance manhattan
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance euclidean
-python evaluate_novel_ncc.py --config ../../../configs/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 1 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 1 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 3 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 3 --distance manhattan
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 5 --distance euclidean
+python evaluate_novel_ncc.py --config ../../../configs/birds20/vit_baseline_b10_config.yaml --k-shot 5 --distance manhattan
 cd ../../..
 
 # ---------------------------------------------------------------
@@ -80,15 +80,15 @@ python evaluate.py --k-shot 5 --distance euclidean
 python evaluate.py --k-shot 5 --distance manhattan
 
 echo "=== Stage 7C: DeiT-S ProtoNet (B10/N10) ==="
-python train.py --config ../../../configs/vit_proto_configs_10b_10n.yaml  \
+python train.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml  \
                 --weights-path "$DEIT_WEIGHTS"
 
-python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
-python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
-python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
-python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
-python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
-python evaluate.py  --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
+python evaluate.py  --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance euclidean
+python evaluate.py  --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 1 --distance manhattan
+python evaluate.py  --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
+python evaluate.py  --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance manhattan
+python evaluate.py  --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance euclidean
+python evaluate.py  --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 5 --distance manhattan
 cd ../../..
 
 echo "=== Job finished on $(date) ==="

@@ -228,7 +228,7 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='../../configs/relationnet_configs.yaml')
+    parser.add_argument('--config', default='../../configs/birds20/relationnet_configs.yaml')
     parser.add_argument('--k-shot', type=int, default=None)
     parser.add_argument('--debug', action='store_true', help='5 episodes only')
     args = parser.parse_args()

@@ -11,7 +11,7 @@ from torchvision import transforms
 from torchvision.models import resnet50
 
 # ---------- Load Config ----------
-with open("../../../configs/baseline_resnet_50_fs_config.yaml", "r") as f:
+with open("../../../configs/birds20/baseline_resnet_50_fs_config.yaml", "r") as f:
     cfg = yaml.safe_load(f)
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")

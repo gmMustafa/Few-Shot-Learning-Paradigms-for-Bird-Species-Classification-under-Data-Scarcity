@@ -11,9 +11,9 @@
 #   6. Evaluate on novel TEST split
 #
 # Usage:
-#   python finetune_novel_kshot.py --config ../../../configs/baseline_resnet_50_b15_config.yaml
-#   python finetune_novel_kshot.py --config ../../../configs/baseline_resnet_50_b10_config.yaml
-#   python finetune_novel_kshot.py --config ../../../configs/baseline_resnet_50_b10_config.yaml --k-shot 5 --debug
+#   python finetune_novel_kshot.py --config ../../../configs/birds20/baseline_resnet_50_b15_config.yaml
+#   python finetune_novel_kshot.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml
+#   python finetune_novel_kshot.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml --k-shot 5 --debug
 
 import os
 import json
@@ -113,7 +113,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default="../../../configs/baseline_resnet_50_b15_config.yaml",
+        default="../../../configs/birds20/baseline_resnet_50_b15_config.yaml",
         help="Path to config yaml",
     )
     parser.add_argument("--k-shot", type=int, default=None, help="Override config finetune.k_shot")

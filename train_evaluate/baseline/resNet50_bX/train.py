@@ -5,7 +5,7 @@
 #
 # Usage:
 #   python train.py
-#   python train.py --config ../../../configs/baseline_resnet_50_b10_config.yaml
+#   python train.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml
 #   python train.py --debug
 
 import os
@@ -82,7 +82,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default="../../../configs/baseline_resnet_50_b15_config.yaml",
+        default="../../../configs/birds20/baseline_resnet_50_b15_config.yaml",
         help="Path to config yaml",
     )
     parser.add_argument(

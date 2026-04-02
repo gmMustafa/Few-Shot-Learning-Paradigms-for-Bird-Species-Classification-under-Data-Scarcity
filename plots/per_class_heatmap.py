@@ -6,7 +6,7 @@ Columns = 5 novel bird species
 Values  = per-class mean accuracy (%) across all 600 episodes
 
 One heatmap generated per k-shot (1, 3, 5).
-Saved as: results/comparison/per_class_heatmap_{k}shot.png
+Saved as: results/birds20/comparison/per_class_heatmap_{k}shot.png
 
 Usage:
     python plots/per_class_heatmap.py
@@ -24,7 +24,7 @@ plt.rcParams['axes.facecolor']    = 'white'
 plt.rcParams['savefig.facecolor'] = 'white'
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RES  = os.path.join(ROOT, 'results')
+RES  = os.path.join(ROOT, 'results', 'birds20')
 OUT  = os.path.join(RES, 'comparison')
 os.makedirs(OUT, exist_ok=True)
 

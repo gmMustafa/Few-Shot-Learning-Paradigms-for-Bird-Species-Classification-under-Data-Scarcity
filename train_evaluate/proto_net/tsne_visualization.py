@@ -13,7 +13,7 @@ from utils.sampler import FewShotSampler
 from models.protonet import ProtoNet
 
 # ---------- Load Config ----------
-with open('../../configs/proto_configs.yaml', 'r') as file:
+with open('../../configs/birds20/proto_configs.yaml', 'r') as file:
     config = yaml.safe_load(file)
 
 DEVICE = config["device"] if torch.cuda.is_available() else "cpu"
@@ -37,7 +37,7 @@ model.load_state_dict(torch.load("checkpoints/protonet.pth", map_location=DEVICE
 model.eval()
 
 # ---------- Create Output Folder ----------
-os.makedirs("../../results/proto_net/tsne_plots", exist_ok=True)
+os.makedirs("../../results/birds20/proto_net/tsne_plots", exist_ok=True)
 
 # ---------- Generate Plots for Multiple Episodes ----------
 EPISODES = 5
@@ -92,7 +92,7 @@ for episode_idx in range(EPISODES):
     plt.title(f"t-SNE of Episode {episode_idx+1}")
     plt.grid(True)
     plt.tight_layout()
-    out_path = f"../../results/proto_net/tsne_plots/tsne_episode_{episode_idx+1}.png"
+    out_path = f"../../results/birds20/proto_net/tsne_plots/tsne_episode_{episode_idx+1}.png"
     plt.savefig(out_path)
     plt.close()
 

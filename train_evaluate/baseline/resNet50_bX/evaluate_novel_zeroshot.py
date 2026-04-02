@@ -10,8 +10,8 @@
 # still appear in your comparison tables.
 #
 # Usage:
-#   python evaluate_novel_zeroshot.py --config ../../../configs/baseline_resnet_50_b15_config.yaml
-#   python evaluate_novel_zeroshot.py --config ../../../configs/baseline_resnet_50_b10_config.yaml
+#   python evaluate_novel_zeroshot.py --config ../../../configs/birds20/baseline_resnet_50_b15_config.yaml
+#   python evaluate_novel_zeroshot.py --config ../../../configs/birds20/baseline_resnet_50_b10_config.yaml
 
 import os
 import json
@@ -43,7 +43,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--config",
-        default="../../../configs/baseline_resnet_50_b15_config.yaml",
+        default="../../../configs/birds20/baseline_resnet_50_b15_config.yaml",
         help="Path to config yaml",
     )
     args = parser.parse_args()

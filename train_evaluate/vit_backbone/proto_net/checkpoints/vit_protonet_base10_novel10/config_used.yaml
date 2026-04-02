@@ -36,7 +36,7 @@ novel_classes:
 output:
   ckpt_dir: checkpoints/vit_protonet_base10_novel10
   ckpt_name: vit_protonet_best.pth
-  results_dir: ../../../results/vit/proto_net/base10_novel10
+  results_dir: ../../../results/birds20/vit/proto_net/base10_novel10
 seed: 42
 train:
   episodes_per_epoch: 100

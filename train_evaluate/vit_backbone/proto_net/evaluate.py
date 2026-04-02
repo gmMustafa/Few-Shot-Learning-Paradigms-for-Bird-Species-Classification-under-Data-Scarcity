@@ -4,7 +4,7 @@ DeiT-S ProtoNet Evaluation — episodic evaluation on novel classes.
 Usage:
     python evaluate.py --k-shot 1 --distance euclidean
     python evaluate.py --k-shot 5 --distance manhattan
-    python evaluate.py --config ../../../configs/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
+    python evaluate.py --config ../../../configs/birds20/vit_proto_configs_10b_10n.yaml --k-shot 3 --distance euclidean
     python evaluate.py --debug
 """
 import os
@@ -128,7 +128,7 @@ def save_confusion_matrix(cm, class_names, save_path, title):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config',   default='../../../configs/vit_proto_configs.yaml')
+    parser.add_argument('--config',   default='../../../configs/birds20/vit_proto_configs.yaml')
     parser.add_argument('--k-shot',   type=int, default=None)
     parser.add_argument('--distance', default=None, choices=['euclidean', 'manhattan'])
     parser.add_argument('--debug',    action='store_true')

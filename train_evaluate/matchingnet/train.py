@@ -105,7 +105,7 @@ def run_epoch(model, loader, optimizer, device, n_way, k_shot, q_query, train: b
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', default='../../configs/matchingnet_configs.yaml')
+    parser.add_argument('--config', default='../../configs/birds20/matchingnet_configs.yaml')
     parser.add_argument('--debug', action='store_true',
                         help='Smoke test: 1 epoch, 5 episodes, q_query=4')
     args = parser.parse_args()

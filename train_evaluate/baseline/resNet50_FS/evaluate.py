@@ -93,7 +93,7 @@ def save_tsne_baseline(model, loader, class_names, device, save_path, title):
 
 def main():
     script_dir  = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.normpath(os.path.join(script_dir, "../../../configs/baseline_resnet_50_fs_config.yaml"))
+    config_path = os.path.normpath(os.path.join(script_dir, "../../../configs/birds20/baseline_resnet_50_fs_config.yaml"))
     with open(config_path, "r") as f:
         cfg = yaml.safe_load(f)
 
