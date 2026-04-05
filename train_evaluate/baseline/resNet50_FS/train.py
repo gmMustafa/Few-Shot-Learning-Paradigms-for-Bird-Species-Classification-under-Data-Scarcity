@@ -53,11 +53,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true",
                         help="Smoke-test mode: 1 epoch, patience=1. No config changes needed.")
+    parser.add_argument("--config", default=None,
+                        help="Path to config YAML. Defaults to configs/birds20/baseline_resnet_50_fs_config.yaml.")
     args = parser.parse_args()
 
     # ---------- Config ----------
     script_dir  = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.normpath(os.path.join(script_dir, "../../../configs/birds20/baseline_resnet_50_fs_config.yaml"))
+    if args.config:
+        config_path = os.path.normpath(os.path.join(script_dir, args.config))
+    else:
+        config_path = os.path.normpath(os.path.join(script_dir, "../../../configs/birds20/baseline_resnet_50_fs_config.yaml"))
     with open(config_path, "r") as f:
         cfg = yaml.safe_load(f)
 

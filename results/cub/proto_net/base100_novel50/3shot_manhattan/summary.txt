@@ -1,0 +1,69 @@
+ProtoNet — episodic novel-class evaluation (manhattan)
+============================================================
+Episodes       : 600
+n_way          : 5
+k_shot         : 3
+q_query        : 5
+Distance       : manhattan
+Novel classes  : Black_capped_Vireo, Blue_headed_Vireo, Philadelphia_Vireo, Red_eyed_Vireo, Warbling_Vireo, White_eyed_Vireo, Yellow_throated_Vireo, Bay_breasted_Warbler, Black_and_white_Warbler, Black_throated_Blue_Warbler, Blue_winged_Warbler, Canada_Warbler, Cape_May_Warbler, Cerulean_Warbler, Chestnut_sided_Warbler, Golden_winged_Warbler, Hooded_Warbler, Kentucky_Warbler, Magnolia_Warbler, Mourning_Warbler, Myrtle_Warbler, Nashville_Warbler, Orange_crowned_Warbler, Palm_Warbler, Pine_Warbler, Prairie_Warbler, Prothonotary_Warbler, Swainson_Warbler, Tennessee_Warbler, Wilson_Warbler, Worm_eating_Warbler, Yellow_Warbler, Northern_Waterthrush, Louisiana_Waterthrush, Bohemian_Waxwing, Cedar_Waxwing, American_Three_toed_Woodpecker, Pileated_Woodpecker, Red_bellied_Woodpecker, Red_cockaded_Woodpecker, Red_headed_Woodpecker, Downy_Woodpecker, Bewick_Wren, Cactus_Wren, Carolina_Wren, House_Wren, Marsh_Wren, Rock_Wren, Winter_Wren, Common_Yellowthroat
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/proto_net/checkpoints/protonet_cub_base100_novel50/protonet_cub_best.pth
+
+Mean accuracy  : 79.78% ± 0.89% (95% CI)
+Std            : 11.14%
+Wilson CI 95%  : [79.13%, 80.42%]
+Macro F1       : 0.7980
+Macro Precision: 0.7983
+Macro Recall   : 0.7978
+AUC-OVR (macro): 0.9489
+
+Per-class accuracy:
+  Black_capped_Vireo            :  70.74% | appeared=  54 | queries=  270
+  Blue_headed_Vireo             :  68.85% | appeared=  52 | queries=  260
+  Philadelphia_Vireo            :  69.52% | appeared=  63 | queries=  315
+  Red_eyed_Vireo                :  79.61% | appeared=  51 | queries=  255
+  Warbling_Vireo                :  81.75% | appeared=  57 | queries=  285
+  White_eyed_Vireo              :  79.38% | appeared=  64 | queries=  320
+  Yellow_throated_Vireo         :  70.62% | appeared=  64 | queries=  320
+  Bay_breasted_Warbler          :  87.95% | appeared=  78 | queries=  390
+  Black_and_white_Warbler       :  85.96% | appeared=  57 | queries=  285
+  Black_throated_Blue_Warbler   :  92.99% | appeared=  77 | queries=  385
+  Blue_winged_Warbler           :  72.63% | appeared=  57 | queries=  285
+  Canada_Warbler                :  69.06% | appeared=  53 | queries=  265
+  Cape_May_Warbler              :  73.33% | appeared=  57 | queries=  285
+  Cerulean_Warbler              :  96.00% | appeared=  55 | queries=  275
+  Chestnut_sided_Warbler        :  71.03% | appeared=  58 | queries=  290
+  Golden_winged_Warbler         :  77.31% | appeared=  67 | queries=  335
+  Hooded_Warbler                :  76.98% | appeared=  53 | queries=  265
+  Kentucky_Warbler              :  80.65% | appeared=  62 | queries=  310
+  Magnolia_Warbler              :  65.45% | appeared=  55 | queries=  275
+  Mourning_Warbler              :  69.20% | appeared=  50 | queries=  250
+  Myrtle_Warbler                :  60.32% | appeared=  62 | queries=  310
+  Nashville_Warbler             :  79.31% | appeared=  58 | queries=  290
+  Orange_crowned_Warbler        :  67.83% | appeared=  46 | queries=  230
+  Palm_Warbler                  :  62.86% | appeared=  49 | queries=  245
+  Pine_Warbler                  :  71.86% | appeared=  59 | queries=  295
+  Prairie_Warbler               :  81.00% | appeared=  60 | queries=  300
+  Prothonotary_Warbler          :  87.46% | appeared=  59 | queries=  295
+  Swainson_Warbler              :  73.47% | appeared=  49 | queries=  245
+  Tennessee_Warbler             :  70.57% | appeared=  53 | queries=  265
+  Wilson_Warbler                :  77.61% | appeared=  67 | queries=  335
+  Worm_eating_Warbler           :  77.86% | appeared=  56 | queries=  280
+  Yellow_Warbler                :  66.38% | appeared=  69 | queries=  345
+  Northern_Waterthrush          :  86.15% | appeared=  65 | queries=  325
+  Louisiana_Waterthrush         :  84.00% | appeared=  45 | queries=  225
+  Bohemian_Waxwing              :  91.67% | appeared=  60 | queries=  300
+  Cedar_Waxwing                 :  87.87% | appeared=  61 | queries=  305
+  American_Three_toed_Woodpecker:  91.85% | appeared=  81 | queries=  405
+  Pileated_Woodpecker           :  98.60% | appeared=  57 | queries=  285
+  Red_bellied_Woodpecker        :  97.89% | appeared=  57 | queries=  285
+  Red_cockaded_Woodpecker       :  97.10% | appeared=  62 | queries=  310
+  Red_headed_Woodpecker         :  91.08% | appeared=  65 | queries=  325
+  Downy_Woodpecker              :  95.68% | appeared=  74 | queries=  370
+  Bewick_Wren                   :  72.98% | appeared=  57 | queries=  285
+  Cactus_Wren                   :  97.35% | appeared=  68 | queries=  340
+  Carolina_Wren                 :  81.03% | appeared=  58 | queries=  290
+  House_Wren                    :  66.35% | appeared=  63 | queries=  315
+  Marsh_Wren                    :  64.53% | appeared=  53 | queries=  265
+  Rock_Wren                     :  78.86% | appeared=  70 | queries=  350
+  Winter_Wren                   :  87.08% | appeared=  65 | queries=  325
+  Common_Yellowthroat           :  76.18% | appeared=  68 | queries=  340

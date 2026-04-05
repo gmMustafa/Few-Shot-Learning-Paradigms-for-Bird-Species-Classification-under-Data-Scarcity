@@ -1,0 +1,22 @@
+{
+  "experiment": "resnet50_cub_full200",
+  "model": "resnet50",
+  "seed": 42,
+  "lr": 0.0001,
+  "batch_size": 16,
+  "epochs_trained": 17,
+  "checkpoint": "Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/baseline/resNet50_FS/checkpoints/baseline/cub_full200/resnet50_cub_full200_best.pth",
+  "num_classes": 200,
+  "test_images": 5794,
+  "val_acc_best": 0.802,
+  "accuracy": 0.7946151190887124,
+  "accuracy_ci_95": [
+    0.7840194202202273,
+    0.8048204134054444
+  ],
+  "macro_f1": 0.7941143890558107,
+  "macro_precision": 0.8060189282277866,
+  "macro_recall": 0.7964682212549136,
+  "weighted_f1": 0.7926845063822301,
+  "macro_auc_ovr": 0.9958801566028265
+}

@@ -1,0 +1,9 @@
+Zero-shot novel evaluation
+============================================================
+Experiment       : resnet50_cub_base150
+Base classes     : 150
+Novel classes    : 50
+Novel test imgs  : 1468
+Accuracy         : 0.00%
+95% CI           : [0.00%, 0.00%]
+Note             : 0% by design because the base-only classifier head cannot output novel labels.

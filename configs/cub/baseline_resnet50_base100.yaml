@@ -182,6 +182,13 @@ novel_classes:
   - "Winter_Wren"
   - "Common_Yellowthroat"
 
+# Option B: K-shot fine-tuning settings
+finetune:
+  k_shot: 5             # number of novel training images per class
+  epochs: 20
+  lr: 0.00005           # lower LR for fine-tuning
+  patience: 5
+
 output:
   ckpt_dir:        "checkpoints/baseline/cub_base100"
   results_dir:     "../../../results/cub/baseline/resnet50_base100"

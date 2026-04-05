@@ -185,12 +185,13 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
     X_2d = TSNE(n_components=2, perplexity=perplexity, random_state=42,
                 max_iter=1000, init='pca').fit_transform(X)
 
-    palette     = ['#E53935', '#8E24AA', '#1E88E5', '#43A047', '#FB8C00']
+    #palette     = ['#E53935', '#8E24AA', '#1E88E5', '#43A047', '#FB8C00']
+    palette = plt.cm.get_cmap("gist_ncar", len(novel_classes))
     short_names = [c.replace('AMERICAN ', 'AM. ') for c in novel_classes]
 
     fig, ax = plt.subplots(figsize=(11, 8))
     for ci in range(n_way):
-        col   = palette[ci]
+        col   = palette(ci)
         m_bg  = (y == ci) & (splits == 'train') & ~support_mask
         m_sup = (y == ci) & support_mask
         m_qry = (y == ci) & (splits == 'test')
@@ -209,7 +210,7 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
                markeredgecolor='black', label='Query (test)', linestyle='None'),
     ]
     for ci in range(n_way):
-        legend_els.append(Patch(color=palette[ci], label=short_names[ci]))
+        legend_els.append(Patch(color=palette(ci), label=short_names[ci]))
 
     ax.legend(handles=legend_els, fontsize=9, loc='best', framealpha=0.9)
     ax.set_title(title, fontsize=13, fontweight='bold')

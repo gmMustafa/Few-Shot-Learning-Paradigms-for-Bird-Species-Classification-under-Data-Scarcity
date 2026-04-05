@@ -3,6 +3,7 @@
 import os
 import json
 import math
+import argparse
 import yaml
 import torch
 import torch.nn as nn
@@ -71,12 +72,12 @@ def save_tsne_baseline(model, loader, class_names, device, save_path, title):
     X_2d = TSNE(n_components=2, perplexity=perplexity, random_state=42,
                 max_iter=1000, init='pca').fit_transform(X)
 
-    palette = [plt.cm.tab20(i / 20) for i in range(20)]
+    palette = plt.cm.get_cmap("gist_ncar", len(class_names))
     fig, ax = plt.subplots(figsize=(14, 10))
     for ci, cls in enumerate(class_names):
         mask = y == ci
         ax.scatter(X_2d[mask, 0], X_2d[mask, 1],
-                   color=palette[ci],
+                   color=palette(ci),
                    label=cls.replace('ABYSSINIAN GROUND ', 'ABY. GND '),
                    s=90, alpha=0.85, edgecolors='white', linewidths=0.5)
     ax.legend(bbox_to_anchor=(1.02, 1), loc='upper left', fontsize=7,
@@ -92,8 +93,16 @@ def save_tsne_baseline(model, loader, class_names, device, save_path, title):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default=None,
+                        help="Path to config YAML. Defaults to configs/birds20/baseline_resnet_50_fs_config.yaml.")
+    args = parser.parse_args()
+
     script_dir  = os.path.dirname(os.path.abspath(__file__))
-    config_path = os.path.normpath(os.path.join(script_dir, "../../../configs/birds20/baseline_resnet_50_fs_config.yaml"))
+    if args.config:
+        config_path = os.path.normpath(os.path.join(script_dir, args.config))
+    else:
+        config_path = os.path.normpath(os.path.join(script_dir, "../../../configs/birds20/baseline_resnet_50_fs_config.yaml"))
     with open(config_path, "r") as f:
         cfg = yaml.safe_load(f)
 

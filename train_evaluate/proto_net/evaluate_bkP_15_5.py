@@ -204,12 +204,13 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
         X_2d[support_mask & (y == ci)].mean(axis=0) for ci in range(n_way)
     ])
 
-    palette     = ['#E53935', '#8E24AA', '#1E88E5', '#43A047', '#FB8C00']
+    #palette     = ['#E53935', '#8E24AA', '#1E88E5', '#43A047', '#FB8C00']
+    palette = plt.cm.get_cmap("gist_ncar", len(novel_classes))
     short_names = [c.replace('AMERICAN ', 'AM. ') for c in novel_classes]
 
     fig, ax = plt.subplots(figsize=(11, 8))
     for ci in range(n_way):
-        col   = palette[ci]
+        col   = palette(ci)
         m_bg  = (y == ci) & (splits == 'train') & ~support_mask
         m_sup = (y == ci) & support_mask
         m_qry = (y == ci) & (splits == 'test')
@@ -220,7 +221,7 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
                    marker='o', edgecolors='black', linewidths=1.2)
     if show_prototypes:
         for ci in range(n_way):
-            ax.scatter(proto_2d[ci, 0], proto_2d[ci, 1], color=palette[ci],
+            ax.scatter(proto_2d[ci, 0], proto_2d[ci, 1], color=palette(ci),
                        s=350, marker='*', edgecolors='black', linewidths=0.8, zorder=6)
 
     legend_els = [
@@ -235,7 +236,7 @@ def save_tsne_episode(encoder, novel_train_ds, novel_test_ds, novel_classes,
         legend_els.append(Line2D([0], [0], marker='*', color='gray', markersize=11,
                                  markeredgecolor='black', label='Prototype', linestyle='None'))
     for ci in range(n_way):
-        legend_els.append(Patch(color=palette[ci], label=short_names[ci]))
+        legend_els.append(Patch(color=palette(ci), label=short_names[ci]))
 
     ax.legend(handles=legend_els, fontsize=9, loc='best', framealpha=0.9)
     ax.set_title(title, fontsize=13, fontweight='bold')
