@@ -96,14 +96,25 @@ def build_episode_query(novel_test_ds, selected_class_indices, q_query, rng, dev
 
 
 def save_confusion_matrix(cm, class_names, save_path):
-    fig, ax = plt.subplots(figsize=(7, 6))
-    sns.heatmap(cm, annot=True, fmt='.1f', cmap='Blues',
+    n = len(class_names)
+    if n <= 20:
+        sz, tick_fs = 10, 8
+    elif n <= 50:
+        sz, tick_fs = 16, 6
+    elif n <= 100:
+        sz, tick_fs = 22, 5
+    else:
+        sz, tick_fs = 28, 4
+    fig, ax = plt.subplots(figsize=(sz, sz - 2))
+    sns.heatmap(cm, annot=False, cmap='Blues',
                 xticklabels=class_names, yticklabels=class_names, ax=ax)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=tick_fs)
+    ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=tick_fs)
     ax.set_xlabel('Predicted')
     ax.set_ylabel('True')
     ax.set_title('RelationNet — Aggregated Confusion Matrix (novel classes)')
     plt.tight_layout()
-    plt.savefig(save_path, dpi=150)
+    plt.savefig(save_path, dpi=150, bbox_inches='tight')
     plt.close()
 
 

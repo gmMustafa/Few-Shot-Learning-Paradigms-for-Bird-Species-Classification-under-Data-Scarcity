@@ -97,19 +97,24 @@ def save_tsne_baseline(model, loader, class_names, device, save_path, title):
         init="pca",
     ).fit_transform(X)
 
-    fig, ax = plt.subplots(figsize=(8, 6))
-    palette = plt.cm.get_cmap("tab20", len(class_names))
+    n_cls = len(class_names)
+    tsne_w = max(14, n_cls * 0.12)
+    tsne_h = max(10, n_cls * 0.08)
+    fig, ax = plt.subplots(figsize=(tsne_w, tsne_h))
+    palette = plt.cm.get_cmap("nipy_spectral", n_cls)
 
     for i, cls in enumerate(class_names):
         mask = (y == i)
         ax.scatter(X_2d[mask, 0], X_2d[mask, 1], s=28, alpha=0.8, label=cls, color=palette(i))
 
     ax.set_title(title)
-    ax.legend(fontsize=7, loc="best", ncol=2)
+    legend_cols = max(2, n_cls // 15)
+    ax.legend(fontsize=6, bbox_to_anchor=(1.01, 1), loc="upper left",
+              ncol=legend_cols, framealpha=0.9, borderaxespad=0)
     ax.set_xticks([])
     ax.set_yticks([])
     plt.tight_layout()
-    plt.savefig(save_path, dpi=150)
+    plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
 
 
@@ -246,16 +251,24 @@ def main():
     )).transpose().to_csv(os.path.join(results_dir, "classification_report.csv"))
 
     # Confusion matrix image
-    fig, ax = plt.subplots(figsize=(10, 8))
+    if num_classes <= 20:
+        sz, tick_fs = 10, 8
+    elif num_classes <= 50:
+        sz, tick_fs = 16, 6
+    elif num_classes <= 100:
+        sz, tick_fs = 22, 5
+    else:
+        sz, tick_fs = 28, 4
+    fig, ax = plt.subplots(figsize=(sz, sz - 2))
     im = ax.imshow(cm, cmap="Blues")
     ax.set_xticks(np.arange(num_classes))
     ax.set_yticks(np.arange(num_classes))
-    ax.set_xticklabels(base_classes, rotation=90, fontsize=8)
-    ax.set_yticklabels(base_classes, fontsize=8)
+    ax.set_xticklabels(base_classes, rotation=90, fontsize=tick_fs)
+    ax.set_yticklabels(base_classes, fontsize=tick_fs)
     ax.set_title(f"Confusion Matrix — {cfg['experiment']['name']} (Base Test)")
     plt.colorbar(im, ax=ax)
     plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, "confusion_matrix.png"), dpi=150)
+    plt.savefig(os.path.join(results_dir, "confusion_matrix.png"), dpi=150, bbox_inches="tight")
     plt.close()
 
     # t-SNE

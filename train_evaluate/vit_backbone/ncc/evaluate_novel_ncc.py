@@ -346,16 +346,25 @@ def main():
     pd.DataFrame(global_cm, index=novel_classes, columns=novel_classes).to_csv(
         os.path.join(results_dir, 'confusion_matrix.csv'))
 
-    fig, ax = plt.subplots(figsize=(8, 7))
+    n_novel = len(novel_classes)
+    if n_novel <= 20:
+        sz, tick_fs = 10, 8
+    elif n_novel <= 50:
+        sz, tick_fs = 16, 6
+    elif n_novel <= 100:
+        sz, tick_fs = 22, 5
+    else:
+        sz, tick_fs = 28, 4
+    fig, ax = plt.subplots(figsize=(sz, sz - 2))
     im = ax.imshow(global_cm / episodes, cmap='Blues')
-    ax.set_xticks(np.arange(len(novel_classes)))
-    ax.set_yticks(np.arange(len(novel_classes)))
-    ax.set_xticklabels(novel_classes, rotation=90, fontsize=8)
-    ax.set_yticklabels(novel_classes, fontsize=8)
+    ax.set_xticks(np.arange(n_novel))
+    ax.set_yticks(np.arange(n_novel))
+    ax.set_xticklabels(novel_classes, rotation=90, fontsize=tick_fs)
+    ax.set_yticklabels(novel_classes, fontsize=tick_fs)
     ax.set_title(f'DeiT-S NCC Confusion Matrix — {cfg["experiment"]["name"]} ({distance})')
     plt.colorbar(im, ax=ax)
     plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, 'confusion_matrix.png'), dpi=150)
+    plt.savefig(os.path.join(results_dir, 'confusion_matrix.png'), dpi=150, bbox_inches='tight')
     plt.close()
 
     print(f'Mean accuracy : {mean_acc:.2f}% ± {ci95:.2f}%')

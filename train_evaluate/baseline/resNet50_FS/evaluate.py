@@ -72,16 +72,20 @@ def save_tsne_baseline(model, loader, class_names, device, save_path, title):
     X_2d = TSNE(n_components=2, perplexity=perplexity, random_state=42,
                 max_iter=1000, init='pca').fit_transform(X)
 
-    palette = plt.cm.get_cmap("gist_ncar", len(class_names))
-    fig, ax = plt.subplots(figsize=(14, 10))
+    n_cls = len(class_names)
+    palette = plt.cm.get_cmap("nipy_spectral", n_cls)
+    tsne_w = max(14, n_cls * 0.10)
+    fig, ax = plt.subplots(figsize=(tsne_w, 10))
     for ci, cls in enumerate(class_names):
         mask = y == ci
         ax.scatter(X_2d[mask, 0], X_2d[mask, 1],
                    color=palette(ci),
                    label=cls.replace('ABYSSINIAN GROUND ', 'ABY. GND '),
                    s=90, alpha=0.85, edgecolors='white', linewidths=0.5)
-    ax.legend(bbox_to_anchor=(1.02, 1), loc='upper left', fontsize=7,
-              framealpha=0.9, title='Class', title_fontsize=8)
+    leg_ncol = max(1, n_cls // 20)
+    leg_fs = max(5, min(7, int(140 / n_cls * leg_ncol)))
+    ax.legend(bbox_to_anchor=(1.02, 1), loc='upper left', fontsize=leg_fs,
+              ncol=leg_ncol, framealpha=0.9, title='Class', title_fontsize=8)
     ax.set_title(title, fontsize=13, fontweight='bold')
     ax.set_xlabel('t-SNE Dimension 1', fontsize=10)
     ax.set_ylabel('t-SNE Dimension 2', fontsize=10)
@@ -192,37 +196,44 @@ def main():
 
     # Confusion matrix
     cm = confusion_matrix(y_true, y_pred)
-    fig, ax = plt.subplots(figsize=(12, 10))
+    if num_classes <= 20:
+        sz, tick_fs = 10, 8
+    elif num_classes <= 50:
+        sz, tick_fs = 16, 6
+    elif num_classes <= 100:
+        sz, tick_fs = 22, 5
+    else:
+        sz, tick_fs = 28, 4
+    fig, ax = plt.subplots(figsize=(sz, sz - 2))
     im = ax.imshow(cm, interpolation="nearest", cmap="Blues")
     fig.colorbar(im, ax=ax)
     ticks = np.arange(num_classes)
-    ax.set_xticks(ticks); ax.set_xticklabels(class_names, rotation=45, ha="right", fontsize=8)
-    ax.set_yticks(ticks); ax.set_yticklabels(class_names, fontsize=8)
+    ax.set_xticks(ticks); ax.set_xticklabels(class_names, rotation=90, fontsize=tick_fs)
+    ax.set_yticks(ticks); ax.set_yticklabels(class_names, fontsize=tick_fs)
     ax.set_xlabel("Predicted"); ax.set_ylabel("True")
     ax.set_title(
         f"Confusion Matrix — full20 | test\n"
         f"Accuracy: {accuracy * 100:.1f}% (95% CI: {ci_low*100:.1f}%–{ci_high*100:.1f}%)"
     )
-    for i in range(num_classes):
-        for j in range(num_classes):
-            ax.text(j, i, str(cm[i, j]), ha="center", va="center", fontsize=7,
-                    color="white" if cm[i, j] > cm.max() / 2 else "black")
     fig.tight_layout()
-    fig.savefig(os.path.join(results_dir, "confusion_matrix.png"), dpi=200)
+    fig.savefig(os.path.join(results_dir, "confusion_matrix.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
 
     # Per-class F1 bar chart
     classes_in_report = [c for c in class_names if c in report]
     f1_scores = [report[c]["f1-score"] for c in classes_in_report]
-    fig, ax = plt.subplots(figsize=(12, 5))
-    ax.bar(range(len(classes_in_report)), f1_scores, color="steelblue")
-    ax.set_xticks(range(len(classes_in_report)))
-    ax.set_xticklabels(classes_in_report, rotation=45, ha="right", fontsize=8)
+    n_f1 = len(classes_in_report)
+    f1_w = max(14, n_f1 * 0.12)
+    f1_fs = max(5, min(8, int(900 / n_f1)))
+    fig, ax = plt.subplots(figsize=(f1_w, 7))
+    ax.bar(range(n_f1), f1_scores, color="steelblue")
+    ax.set_xticks(range(n_f1))
+    ax.set_xticklabels(classes_in_report, rotation=90, fontsize=f1_fs)
     ax.set_ylabel("F1-score"); ax.set_title("Per-class F1 — full20 | test")
     ax.set_ylim(0, 1.05)
     ax.axhline(y=np.mean(f1_scores), color="red", linestyle="--", label=f"Mean F1: {np.mean(f1_scores):.3f}")
     ax.legend(); fig.tight_layout()
-    fig.savefig(os.path.join(results_dir, "f1_per_class.png"), dpi=200)
+    fig.savefig(os.path.join(results_dir, "f1_per_class.png"), dpi=150, bbox_inches="tight")
     plt.close(fig)
 
     # Learning curve (reads history.json saved by train.py)
