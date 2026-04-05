@@ -1,0 +1,67 @@
+Relation Networks — 5-way 3-shot Evaluation
+============================================================
+Episodes       : 600
+n_way          : 5 (sampled from 50 novel classes)
+q_query        : 5
+Novel classes  : Black_capped_Vireo, Blue_headed_Vireo, Philadelphia_Vireo, Red_eyed_Vireo, Warbling_Vireo, White_eyed_Vireo, Yellow_throated_Vireo, Bay_breasted_Warbler, Black_and_white_Warbler, Black_throated_Blue_Warbler, Blue_winged_Warbler, Canada_Warbler, Cape_May_Warbler, Cerulean_Warbler, Chestnut_sided_Warbler, Golden_winged_Warbler, Hooded_Warbler, Kentucky_Warbler, Magnolia_Warbler, Mourning_Warbler, Myrtle_Warbler, Nashville_Warbler, Orange_crowned_Warbler, Palm_Warbler, Pine_Warbler, Prairie_Warbler, Prothonotary_Warbler, Swainson_Warbler, Tennessee_Warbler, Wilson_Warbler, Worm_eating_Warbler, Yellow_Warbler, Northern_Waterthrush, Louisiana_Waterthrush, Bohemian_Waxwing, Cedar_Waxwing, American_Three_toed_Woodpecker, Pileated_Woodpecker, Red_bellied_Woodpecker, Red_cockaded_Woodpecker, Red_headed_Woodpecker, Downy_Woodpecker, Bewick_Wren, Cactus_Wren, Carolina_Wren, House_Wren, Marsh_Wren, Rock_Wren, Winter_Wren, Common_Yellowthroat
+Checkpoint     : Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity/train_evaluate/relationnet/checkpoints/relationnet_cub_base150_novel50/relationnet_cub_base150_best.pth
+
+Mean accuracy  : 57.47% ± 0.99% (95% CI)
+Std            : 12.37%
+Wilson CI 95%  : [56.68%, 58.26%]
+Macro F1       : 0.5748
+Macro Precision: 0.5753
+Macro Recall   : 0.5747
+AUC-OVR (macro): 0.8551
+
+Per-class accuracy:
+  Black_capped_Vireo            : 45.36%  | queries=280
+  Blue_headed_Vireo             : 38.93%  | queries=280
+  Philadelphia_Vireo            : 39.44%  | queries=355
+  Red_eyed_Vireo                : 41.51%  | queries=265
+  Warbling_Vireo                : 59.59%  | queries=245
+  White_eyed_Vireo              : 41.64%  | queries=305
+  Yellow_throated_Vireo         : 40.75%  | queries=265
+  Bay_breasted_Warbler          : 49.86%  | queries=345
+  Black_and_white_Warbler       : 84.13%  | queries=315
+  Black_throated_Blue_Warbler   : 70.49%  | queries=305
+  Blue_winged_Warbler           : 76.84%  | queries=285
+  Canada_Warbler                : 68.28%  | queries=290
+  Cape_May_Warbler              : 71.33%  | queries=300
+  Cerulean_Warbler              : 73.04%  | queries=230
+  Chestnut_sided_Warbler        : 34.49%  | queries=345
+  Golden_winged_Warbler         : 48.57%  | queries=315
+  Hooded_Warbler                : 81.82%  | queries=220
+  Kentucky_Warbler              : 60.00%  | queries=305
+  Magnolia_Warbler              : 56.47%  | queries=255
+  Mourning_Warbler              : 65.85%  | queries=325
+  Myrtle_Warbler                : 39.18%  | queries=365
+  Nashville_Warbler             : 50.46%  | queries=325
+  Orange_crowned_Warbler        : 27.41%  | queries=270
+  Palm_Warbler                  : 60.00%  | queries=270
+  Pine_Warbler                  : 61.69%  | queries=355
+  Prairie_Warbler               : 72.98%  | queries=285
+  Prothonotary_Warbler          : 88.89%  | queries=315
+  Swainson_Warbler              : 35.31%  | queries=320
+  Tennessee_Warbler             : 25.17%  | queries=290
+  Wilson_Warbler                : 76.17%  | queries=235
+  Worm_eating_Warbler           : 33.43%  | queries=335
+  Yellow_Warbler                : 67.37%  | queries=285
+  Northern_Waterthrush          : 81.94%  | queries=310
+  Louisiana_Waterthrush         : 58.62%  | queries=290
+  Bohemian_Waxwing              : 71.19%  | queries=295
+  Cedar_Waxwing                 : 48.00%  | queries=250
+  American_Three_toed_Woodpecker: 70.28%  | queries=360
+  Pileated_Woodpecker           : 90.15%  | queries=335
+  Red_bellied_Woodpecker        : 27.10%  | queries=310
+  Red_cockaded_Woodpecker       : 89.06%  | queries=320
+  Red_headed_Woodpecker         : 44.89%  | queries=225
+  Downy_Woodpecker              : 63.88%  | queries=335
+  Bewick_Wren                   : 59.08%  | queries=325
+  Cactus_Wren                   : 84.21%  | queries=285
+  Carolina_Wren                 : 29.72%  | queries=360
+  House_Wren                    : 52.07%  | queries=290
+  Marsh_Wren                    : 37.78%  | queries=270
+  Rock_Wren                     : 70.16%  | queries=305
+  Winter_Wren                   : 52.19%  | queries=320
+  Common_Yellowthroat           : 67.16%  | queries=335
