@@ -1,4 +1,4 @@
-# CUB-200-2011 Matching Networks + FCE (BiLSTM) — ResNet-50 backbone
+# CUB-200-2011 Matching Networks + FCE (BiLSTM) â€” ResNet-50 backbone
 # Richer-base split: 150 base classes (training), 50 novel classes (evaluation)
 #
 # Script: train_evaluate/matchingnet/train.py  /  evaluate.py

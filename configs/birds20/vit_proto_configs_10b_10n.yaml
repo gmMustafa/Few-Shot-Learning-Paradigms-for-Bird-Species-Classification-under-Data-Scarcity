@@ -9,7 +9,7 @@ experiment:
 seed: 42
 image_size: 224
 
-# Fixed class splits — identical to ResNet-50 B10/N10 split
+# Fixed class splits â€” identical to ResNet-50 B10/N10 split
 base_classes:
   - "ABBOTTS BABBLER"
   - "ABBOTTS BOOBY"

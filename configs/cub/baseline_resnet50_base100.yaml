@@ -1,4 +1,4 @@
-# CUB-200-2011 Supervised Baseline — ResNet-50 on 100 base classes
+# CUB-200-2011 Supervised Baseline â€” ResNet-50 on 100 base classes
 # Standard FSL split: base=classes 1-100, novel=classes 151-200
 # Used for: (1) NCC feature extraction, (2) upper-bound reference
 #

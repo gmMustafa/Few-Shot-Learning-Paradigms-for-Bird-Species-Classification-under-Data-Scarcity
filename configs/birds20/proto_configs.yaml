@@ -8,7 +8,7 @@ experiment:
 seed: 42
 image_size: 224
 
-# Fixed class splits — must match baseline configs exactly
+# Fixed class splits â€” must match baseline configs exactly
 base_classes:
   - "ABBOTTS BABBLER"
   - "ABBOTTS BOOBY"

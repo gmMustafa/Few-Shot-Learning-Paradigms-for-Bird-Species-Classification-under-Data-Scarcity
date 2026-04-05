@@ -1,4 +1,4 @@
-# CUB-200-2011 Supervised Baseline — ResNet-50 on 150 base classes
+# CUB-200-2011 Supervised Baseline â€” ResNet-50 on 150 base classes
 # Richer-base split: base=classes 1-150, novel=classes 151-200
 # Analogous to Birds20 B15/N5 (richer base) vs standard Base100 (B10/N10 analogue).
 #

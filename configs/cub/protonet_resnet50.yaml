@@ -1,4 +1,4 @@
-# CUB-200-2011 Prototypical Network — ResNet-50 backbone
+# CUB-200-2011 Prototypical Network â€” ResNet-50 backbone
 # Standard FSL split: 100 base classes (training), 50 novel classes (evaluation)
 # Episodic evaluation: 5-way K-shot, K in {1, 3, 5}, 600 episodes
 #

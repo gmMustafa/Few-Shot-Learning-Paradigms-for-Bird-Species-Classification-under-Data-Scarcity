@@ -1,4 +1,4 @@
-# CUB-200-2011 DeiT-S Supervised Baseline — 100 base classes
+# CUB-200-2011 DeiT-S Supervised Baseline â€” 100 base classes
 # Used for NCC feature extraction with DeiT-S backbone.
 #
 # Script: train_evaluate/vit_backbone/baseline/train.py

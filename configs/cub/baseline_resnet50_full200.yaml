@@ -1,4 +1,4 @@
-# CUB-200-2011 Full Supervised Baseline — ResNet-50 on all 200 classes
+# CUB-200-2011 Full Supervised Baseline â€” ResNet-50 on all 200 classes
 # No base/novel split; trains and evaluates on the full CUB dataset.
 # Analogous to Birds20's baseline_resnet_50_fs_config.yaml (full-20 supervised).
 #

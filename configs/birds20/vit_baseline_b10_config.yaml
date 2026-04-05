@@ -1,4 +1,4 @@
-# DeiT-S supervised baseline — 10 base classes
+# DeiT-S supervised baseline â€” 10 base classes
 # Used for NCC feature extraction after training
 
 image_size: 224
@@ -19,7 +19,7 @@ train:
   patience: 7
   scheduler: "cosine"
 
-# Fixed base classes (10) — identical to ResNet-50 B10 split
+# Fixed base classes (10) â€” identical to ResNet-50 B10 split
 base_classes:
   - ABBOTTS BABBLER
   - ABBOTTS BOOBY
@@ -32,7 +32,7 @@ base_classes:
   - AFRICAN PYGMY GOOSE
   - ALBATROSS
 
-# Novel classes (10) — reserved exclusively for few-shot evaluation
+# Novel classes (10) â€” reserved exclusively for few-shot evaluation
 novel_classes:
   - ALBERTS TOWHEE
   - ALEXANDRINE PARAKEET

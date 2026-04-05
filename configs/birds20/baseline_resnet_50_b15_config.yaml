@@ -18,7 +18,7 @@ train:
   patience: 7           # early stopping patience
   scheduler: "cosine"
 
-# Fixed base classes (15) — never change these once set
+# Fixed base classes (15) â€” never change these once set
 base_classes:
   - ABBOTTS BABBLER
   - ABBOTTS BOOBY
@@ -36,7 +36,7 @@ base_classes:
   - ALTAMIRA YELLOWTHROAT
   - AMERICAN AVOCET
 
-# Fixed novel classes (5) — used only for Option A and Option B evaluation
+# Fixed novel classes (5) â€” used only for Option A and Option B evaluation
 novel_classes:
   - AMERICAN BITTERN
   - AMERICAN COOT

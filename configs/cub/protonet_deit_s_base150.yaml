@@ -1,4 +1,4 @@
-# CUB-200-2011 Prototypical Network — DeiT-S backbone
+# CUB-200-2011 Prototypical Network â€” DeiT-S backbone
 # Richer-base split: 150 base classes (training), 50 novel classes (evaluation)
 #
 # Script: train_evaluate/vit_backbone/proto_net/train.py  /  evaluate.py

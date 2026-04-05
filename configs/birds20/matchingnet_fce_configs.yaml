@@ -1,4 +1,4 @@
-# Matching Networks + Full Context Embedding (FCE) — B15/N5
+# Matching Networks + Full Context Embedding (FCE) â€” B15/N5
 # Adds BiLSTM support encoding + attention LSTM query encoding.
 # See models/matchingnet.py for FCE architecture details.
 
@@ -12,7 +12,7 @@ image_size: 224
 fce:        true
 fce_steps:  10      # number of inner-loop steps in QueryAttLSTM
 
-# Class splits — identical to non-FCE matchingnet_configs.yaml
+# Class splits â€” identical to non-FCE matchingnet_configs.yaml
 base_classes:
   - "ABBOTTS BABBLER"
   - "ABBOTTS BOOBY"

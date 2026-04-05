@@ -1,4 +1,4 @@
-# Matching Networks + Full Context Embedding (FCE) — B10/N10
+# Matching Networks + Full Context Embedding (FCE) â€” B10/N10
 # Adds BiLSTM support encoding + attention LSTM query encoding.
 
 experiment:

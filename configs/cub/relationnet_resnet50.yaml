@@ -1,4 +1,4 @@
-# CUB-200-2011 Relation Networks — ResNet-50 backbone
+# CUB-200-2011 Relation Networks â€” ResNet-50 backbone
 # Script: train_evaluate/relationnet/train.py  /  evaluate.py
 # Usage:
 #   cd train_evaluate/relationnet
