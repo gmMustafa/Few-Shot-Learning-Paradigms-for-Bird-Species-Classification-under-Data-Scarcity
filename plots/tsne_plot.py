@@ -297,16 +297,18 @@ def main():
 
     novel_classes = cfg['novel_classes']
     image_size    = int(cfg.get('image_size', 224))
-    # data root comes from the config's data.train path (strip the 'train' suffix)
-    _data_train_rel = _get_cfg_value(cfg, 'data.train', 'data_train')
-    if _data_train_rel:
-        _resolved = os.path.normpath(os.path.join(ROOT, 'train_evaluate', model_subdir, _data_train_rel))
-        data_root = os.path.dirname(_resolved)  # strip 'train' component
-    else:
-        data_root = os.path.join(ROOT, 'data')  # fallback for old configs
     model_subdir  = MODEL_DIR[args.model]
     model_label   = MODEL_LABEL[args.model]
     backbone_name = BACKBONE_NAME[args.model]
+    # data root comes from the config's data.train path (strip the 'train' suffix)
+    _data_train_rel = _get_cfg_value(cfg, 'data.train', 'data_train')
+    if _data_train_rel:
+        # Config paths are relative to the script inside train_evaluate/<model_subdir>/
+        _script_dir = os.path.join(ROOT, 'train_evaluate', model_subdir)
+        _resolved = os.path.normpath(os.path.join(_script_dir, _data_train_rel))
+        data_root = os.path.dirname(_resolved)  # strip 'train' component
+    else:
+        data_root = os.path.join(ROOT, 'data')  # fallback for old configs
 
     # Config key layout differs: ResNet-50 uses flat keys, ViT uses nested data.*
     ckpt_dir  = _get_cfg_value(cfg, 'output.ckpt_dir')
