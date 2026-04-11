@@ -6,6 +6,7 @@
   "k_shot": 5,
   "q_query": 5,
   "distance": "manhattan",
+  "tta_n": 1,
   "num_episodes": 600,
   "novel_classes": [
     "AMERICAN BITTERN",
