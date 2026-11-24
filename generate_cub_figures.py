@@ -9,7 +9,7 @@ import os
 import shutil
 
 # Paths
-BASE = r".\Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity"
+BASE = os.path.dirname(os.path.abspath(__file__))  # repository root
 CSV_PATH = os.path.join(BASE, "results", "cub", "analysis", "cub_summary.csv")
 OUT_DIR = os.path.join(BASE, "latex", "figures")
 

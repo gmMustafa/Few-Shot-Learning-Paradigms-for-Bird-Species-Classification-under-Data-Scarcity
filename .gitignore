@@ -255,4 +255,19 @@ tree.txt
 #claude
 .claude/
 
-/check
+
+
+# ── Private / internal working files (kept locally, not published) ───────────
+/check/
+imp.txt
+debug_commands.txt
+hpc_commands.txt
+hpc_v.10.txt
+notebooks/ScanningTest.*
+/requirements
+
+# ── Keep result tables that the dashboard and README depend on ───────────────
+!results/**/*.csv
+
+# Streamlit secrets
+.streamlit/secrets.toml

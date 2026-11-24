@@ -1,0 +1,110 @@
+/* ── FAU Thesis Dashboard — Custom Styling ─────────────────────────────────── */
+
+:root {
+  --fau-blue:   #003865;
+  --fau-orange: #FF6B35;
+  --fau-gray:   #6B7280;
+  --fau-light:  #EFF6FF;
+  --card-bg:    #FFFFFF;
+  --body-text:  #1e293b;
+}
+
+/* ── Hide default Streamlit chrome (NOT header — it holds the nav toggle) ────── */
+#MainMenu, footer, .stDeployButton { visibility: hidden !important; }
+
+/* ── Force light background on main content area ────────────────────────────── */
+.stApp {
+  background-color: #F8FAFC !important;
+}
+.block-container {
+  background-color: #F8FAFC !important;
+  padding-top: 1.2rem !important;
+}
+
+/* ── Sidebar light styling ───────────────────────────────────────────────────── */
+[data-testid="stSidebar"],
+[data-testid="stSidebar"] > div {
+  background-color: #F1F5F9 !important;
+}
+[data-testid="stSidebar"] * {
+  color: #1e293b !important;
+}
+[data-testid="stSidebar"] .stRadio label,
+[data-testid="stSidebar"] .stSelectbox label,
+[data-testid="stSidebar"] .stMarkdown p {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--fau-blue) !important;
+}
+
+/* ── Navigation section in sidebar ──────────────────────────────────────────── */
+[data-testid="stSidebarNav"] {
+  padding-top: 0.5rem;
+}
+[data-testid="stSidebarNav"] a {
+  color: #1e293b !important;
+  font-size: 14px !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+[data-testid="stSidebarNav"] a:hover {
+  background-color: #E2E8F0 !important;
+  color: #003865 !important;
+}
+[data-testid="stSidebarNav"] a[aria-current="page"] {
+  background-color: #BFDBFE !important;
+  color: #003865 !important;
+  font-weight: 700 !important;
+}
+/* Nav section group labels */
+[data-testid="stSidebarNav"] li > span,
+[data-testid="stSidebarNavSeparator"] span {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.6px !important;
+  color: #6B7280 !important;
+}
+
+/* ── Override any dark-mode text that leaks through ─────────────────────────── */
+.stMarkdown, .stText, p, span, div {
+  color: inherit;
+}
+
+/* ── Plotly chart container ──────────────────────────────────────────────────── */
+.js-plotly-plot .plotly {
+  background: #FFFFFF !important;
+}
+
+/* ── Sidebar collapse/reopen toggle button ───────────────────────────────────── */
+/* Try both known data-testid values across Streamlit versions */
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"] {
+  display:          flex       !important;
+  visibility:       visible    !important;
+  opacity:          1          !important;
+  background-color: #003865   !important;
+  border-radius:    0 8px 8px 0 !important;
+  min-width:        20px       !important;
+  min-height:       48px       !important;
+  align-items:      center     !important;
+  justify-content:  center     !important;
+  box-shadow:       2px 0 6px rgba(0,0,0,0.20) !important;
+  z-index:          99999      !important;
+  position:         fixed      !important;
+  top:              50%        !important;
+  left:             0          !important;
+  transform:        translateY(-50%) !important;
+}
+[data-testid="collapsedControl"] svg,
+[data-testid="stSidebarCollapsedControl"] svg {
+  fill:   #FFFFFF !important;
+  color:  #FFFFFF !important;
+}
+[data-testid="collapsedControl"]:hover,
+[data-testid="stSidebarCollapsedControl"]:hover {
+  background-color: #1a5fa8 !important;
+  cursor: pointer !important;
+}
