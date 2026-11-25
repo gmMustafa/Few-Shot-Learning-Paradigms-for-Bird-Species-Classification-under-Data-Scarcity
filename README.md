@@ -10,12 +10,14 @@ and nearest-centroid baselines for classifying unseen bird species from 1, 3 or 
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9-EE4C2C?logo=pytorch&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
+[![Live dashboard](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://fsl-birds.streamlit.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 *MSc Artificial Intelligence thesis ·
 Pattern Recognition Lab (Informatik 5), Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) ·
 01.08.2025–01.01.2026 · Advisor: Dr. Mathias Seuret*
+
+**[🔗 Open the interactive dashboard](https://fsl-birds.streamlit.app/)**
 
 [Scope](#-scope) · [Key findings](#-key-findings) · [Results](#-results) · [Dashboard](#-interactive-dashboard) · [Quick start](#-quick-start) · [Reproduce](#-reproducing-the-experiments) · [Structure](#-repository-structure)
 
@@ -202,6 +204,8 @@ are in [`results/birds20/analysis/`](results/birds20/analysis/) and
 ---
 
 ## 📈 Interactive Dashboard
+
+**Live: [fsl-birds.streamlit.app](https://fsl-birds.streamlit.app/)**
 
 The [`dashboard/`](dashboard/) folder contains a **Streamlit** app that reads the result
 files in this repo directly. Nothing has to be exported by hand.
