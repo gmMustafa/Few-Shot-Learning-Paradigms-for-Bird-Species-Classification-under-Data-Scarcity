@@ -27,11 +27,19 @@ if os.path.exists(_CSS):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
-def _canonical(grp):
+def _canonical(df):
+    """Keep one row per (method, k_shot), preferring Euclidean > Cosine > Manhattan > TTA.
+
+    Implemented as sort + drop_duplicates rather than groupby.apply, because pandas 3
+    no longer passes the grouping column to the applied function.
+    """
     pref = {"Euclidean": 0, "Cosine": 1, "Manhattan": 2, "Euclidean+TTA": 3}
-    g = grp.copy()
-    g["_p"] = g["distance"].map(pref).fillna(99)
-    return g.sort_values("_p").drop_duplicates(subset=["method", "k_shot"])
+    return (
+        df.assign(_p=df["distance"].map(pref).fillna(99))
+          .sort_values(["method", "_p"], kind="stable")
+          .drop_duplicates(subset=["method", "k_shot"])
+          .reset_index(drop=True)
+    )
 
 
 def _render(dataset, backbone, methods, show_ci):
@@ -44,7 +52,7 @@ def _render(dataset, backbone, methods, show_ci):
     split_for_stats = splits[0]
     df_stats = filter_results(df_all, split=split_for_stats, dataset=dataset, **bb_kw)
     df_stats = df_stats[df_stats["method"].isin(methods)]
-    df_stats = df_stats.groupby("method", group_keys=False).apply(_canonical).reset_index(drop=True)
+    df_stats = _canonical(df_stats)
 
     gains_13, gains_35 = [], []
     for m in methods:
@@ -81,7 +89,7 @@ def _render(dataset, backbone, methods, show_ci):
     def _prep_split(spl):
         d = filter_results(df_all, split=spl, dataset=dataset, **bb_kw)
         d = d[d["method"].isin(methods)]
-        return d.groupby("method", group_keys=False).apply(_canonical).reset_index(drop=True)
+        return _canonical(d)
 
     df_left  = _prep_split(splits[0])
     df_right = _prep_split(splits[1])
@@ -139,7 +147,7 @@ def _render(dataset, backbone, methods, show_ci):
     for spl in splits:
         sub = filter_results(df_all, split=spl, dataset=dataset, **bb_kw)
         sub = sub[sub["method"].isin(methods)]
-        sub = sub.groupby("method", group_keys=False).apply(_canonical).reset_index(drop=True)
+        sub = _canonical(sub)
         sub["split_col"] = spl
         frames.append(sub)
 

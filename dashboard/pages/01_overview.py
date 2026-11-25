@@ -28,15 +28,15 @@ def _render(dataset, split_val, shot, show_ci):
     df = get_fsl_results()
     sub = filter_results(df, split=split_val, shot=shot, dataset=dataset)
 
-    def _best_row(grp):
-        pref = {"Euclidean": 0, "Cosine": 1, "Manhattan": 2, "Euclidean+TTA": 3}
-        grp = grp.copy()
-        grp["_pref"] = grp["distance"].map(pref).fillna(99)
-        return grp.sort_values("_pref").iloc[0]
-
+    # One row per method, preferring Euclidean > Cosine > Manhattan > TTA.
+    # (Plain sort + drop_duplicates instead of groupby.apply, which behaves
+    # differently in pandas 3: the grouping column is no longer passed in.)
+    pref = {"Euclidean": 0, "Cosine": 1, "Manhattan": 2, "Euclidean+TTA": 3}
     sub = (
-        sub.groupby("method", group_keys=False)
-           .apply(_best_row)
+        sub.assign(_pref=sub["distance"].map(pref).fillna(99))
+           .sort_values(["method", "_pref"], kind="stable")
+           .drop_duplicates(subset=["method"])
+           .drop(columns="_pref")
            .reset_index(drop=True)
     )
 
