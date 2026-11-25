@@ -10,10 +10,10 @@ Figures are grouped by theme. All experiments use a 5-way episodic protocol eval
 
 ---
 
-## 1. Thesis Master Figure
+## 1. Master Summary Figure
 
 ### `thesis_summary_figure.png`
-A single-panel master overview of the thesis results. Combines the best accuracy per method and split into a unified comparison, intended as the primary summary figure for the thesis document. Includes supervised baselines (Full-20, Base-15), NCC, ProtoNet (Euclidean), MatchingNet, and RelationNet at 5-shot.
+A single-panel master overview of the results. Combines the best accuracy per method and split into a unified comparison, intended as the primary summary figure. Includes supervised baselines (Full-20, Base-15), NCC, ProtoNet (Euclidean), MatchingNet, and RelationNet at 5-shot.
 
 ---
 

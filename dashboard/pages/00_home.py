@@ -1,7 +1,7 @@
 """
 Home / Landing Page
 Few-Shot Learning Paradigms for Bird Species Classification under Data Scarcity
-Ghulam Mustafa | FAU Erlangen-Nürnberg | MSc AI
+Ghulam Mustafa | MSc AI Thesis | Pattern Recognition Lab (Informatik 5), FAU Erlangen-Nürnberg
 """
 
 import os, sys
@@ -38,7 +38,7 @@ st.markdown("""
             border-radius:12px;padding:28px 32px;margin-bottom:20px">
   <div style="font-size:11px;color:rgba(255,255,255,0.7);letter-spacing:1px;
               text-transform:uppercase;font-weight:600;margin-bottom:6px">
-    MSc AI Thesis · FAU Erlangen-Nürnberg · 2026
+    MSc AI Thesis · Pattern Recognition Lab · FAU Erlangen-Nürnberg · 2025–2026
   </div>
   <h1 style="margin:0;font-size:24px;font-weight:800;color:#ffffff;letter-spacing:-.3px">
     🐦 Few-Shot Learning for Bird Species Classification

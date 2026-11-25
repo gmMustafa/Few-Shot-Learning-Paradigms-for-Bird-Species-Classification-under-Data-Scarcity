@@ -1,6 +1,6 @@
 # 📈 Results Dashboard
 
-Interactive Streamlit dashboard for the thesis
+Interactive Streamlit dashboard for the MSc thesis
 **"Few-Shot Learning Paradigms for Bird Species Classification under Data Scarcity"**.
 
 ## Run locally

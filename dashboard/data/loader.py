@@ -1,6 +1,6 @@
 """
-Data loader for FSL thesis dashboard.
-Loads and normalises all result data from the thesis experiment outputs.
+Data loader for FSL results dashboard.
+Loads and normalises all result data from the experiment outputs.
 """
 
 import os

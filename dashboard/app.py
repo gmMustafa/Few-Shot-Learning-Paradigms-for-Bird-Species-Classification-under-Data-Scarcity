@@ -1,7 +1,7 @@
 """
-FSL Thesis Dashboard — Navigation Router
+FSL Results Dashboard — Navigation Router
 Few-Shot Learning Paradigms for Bird Species Classification under Data Scarcity
-Ghulam Mustafa | FAU Erlangen-Nürnberg | MSc AI
+Ghulam Mustafa | MSc AI Thesis | Pattern Recognition Lab (Informatik 5), FAU Erlangen-Nürnberg
 """
 
 import os
@@ -10,7 +10,7 @@ import streamlit as st
 _DASH = os.path.dirname(os.path.abspath(__file__))
 
 st.set_page_config(
-    page_title="FSL Bird Classification — Thesis Dashboard",
+    page_title="FSL Bird Classification — Results Dashboard",
     page_icon="🐦",
     layout="wide",
     initial_sidebar_state="expanded",

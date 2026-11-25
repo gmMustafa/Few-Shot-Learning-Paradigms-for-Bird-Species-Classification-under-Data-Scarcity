@@ -1,5 +1,5 @@
 """
-Reusable Plotly chart functions for the FSL thesis dashboard.
+Reusable Plotly chart functions for the FSL results dashboard.
 All functions return a Plotly Figure — pages control layout and display.
 All colours are explicitly set so charts are readable on both light and dark hosts.
 """

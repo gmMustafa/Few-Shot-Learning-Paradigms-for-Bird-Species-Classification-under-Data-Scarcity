@@ -5,19 +5,19 @@
 **Can a model recognise a bird species it has seen only once?**
 
 A controlled, reproducible comparison of metric-based few-shot learning methods —
-Prototypical Networks, Matching Networks, Relation Networks — against strong
-nearest-centroid and supervised baselines, on two bird benchmarks and two backbones.
+Prototypical Networks, Matching Networks and Relation Networks — against supervised
+and nearest-centroid baselines for classifying unseen bird species from 1, 3 or 5 images.
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.9-EE4C2C?logo=pytorch&logoColor=white)
-![timm](https://img.shields.io/badge/timm-DeiT--S-FFB000)
 ![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
-![Experiments](https://img.shields.io/badge/experiments-140%2B-2ea44f)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-*MSc Artificial Intelligence thesis · Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) · 2026*
+*MSc Artificial Intelligence thesis ·
+Pattern Recognition Lab (Informatik 5), Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) ·
+01.08.2025–01.01.2026 · Advisor: Dr. Mathias Seuret*
 
-[Key findings](#-key-findings) · [Results](#-results) · [Dashboard](#-interactive-dashboard) · [Quick start](#-quick-start) · [Reproduce](#-reproducing-the-experiments) · [Structure](#-repository-structure)
+[Scope](#-scope) · [Key findings](#-key-findings) · [Results](#-results) · [Dashboard](#-interactive-dashboard) · [Quick start](#-quick-start) · [Reproduce](#-reproducing-the-experiments) · [Structure](#-repository-structure)
 
 </div>
 
@@ -25,101 +25,151 @@ nearest-centroid and supervised baselines, on two bird benchmarks and two backbo
 
 ## 📌 Overview
 
-Supervised image classifiers need hundreds of labelled images per class. For rare or
-newly-observed bird species that data simply does not exist. **Few-Shot Learning (FSL)**
-aims to classify *novel* classes from only **K = 1, 3 or 5** labelled examples, after
-learning on a disjoint set of *base* classes.
+Supervised image classifiers need many labelled images per class. For rare, seasonal or
+hard-to-photograph bird species that data often does not exist. **Few-Shot Learning (FSL)**
+aims to classify *novel* species from only **K = 1, 3 or 5** labelled examples, after
+learning on a disjoint set of *base* species.
 
-This repository contains the full experimental pipeline of the thesis:
+The thesis builds a controlled evaluation framework that separates three kinds of models:
+supervised upper-bound references, a non-episodic nearest-centroid baseline, and genuine
+few-shot learners. All of them are compared under the same backbone and the same episodic
+evaluation protocol.
 
-- **4 FSL methods** — ProtoNet, MatchingNet, MatchingNet + FCE, RelationNet
-- **Strong baselines** — Nearest-Centroid Classifier (NCC) on a frozen supervised backbone (Chen et al., 2019), K=5 fine-tuning, zero-shot transfer, and fully supervised upper bounds
-- **2 backbones** — ResNet-50 (ImageNet) and DeiT-Small (ViT)
-- **2 datasets × 2 base/novel splits each** — Birds-20 (B15/N5, B10/N10) and CUB-200-2011 (B100/N50, B150/N50)
-- **Ablations** — Euclidean vs Manhattan distance, test-time augmentation, base-class diversity
-- **Protocol** — 5-way K-shot, **600 episodes** per configuration, mean accuracy with 95% confidence intervals, macro-F1, AUC, per-class accuracy, confusion matrices and t-SNE plots
+## 🎯 Scope
+
+### Core study (as in the submitted thesis)
+
+| | |
+|---|---|
+| **Dataset** | [Birds 20 Species – Image Classification](https://www.kaggle.com/datasets/umairshahpirzada/birds-20-species-image-classification) (Pirzada, 2020): 3,408 images; 3,208 train / 100 val / 100 test |
+| **Class split** | 15 base species for training, 5 novel species for evaluation (American Bittern, American Coot, American Flamingo, American Goldfinch, American Kestrel) |
+| **Backbone** | ResNet-50 pretrained on ImageNet (2048-d embeddings) |
+| **Few-shot methods** | Prototypical Networks, Matching Networks, Relation Networks |
+| **Baselines** | Supervised Full-20 (upper bound), supervised Base-15, Nearest-Centroid Classifier (NCC; Chen et al., 2019) |
+| **Protocol** | 5-way K-shot, K ∈ {1, 3, 5}; 600 evaluation episodes; mean accuracy, standard deviation and 95% Wilson confidence intervals; t-SNE of embeddings |
+| **Training** | PyTorch, Adam, cosine-annealing LR, up to 25 epochs (supervised, early stopping) / 30 epochs (episodic), seed 42 |
+
+### Extended experiments (in this repository, beyond the thesis)
+
+The thesis lists larger datasets and Vision Transformers as future work. This repository
+also contains those follow-up experiments:
+
+- **Second split** on Birds-20: 10 base / 10 novel species (B10/N10)
+- **CUB-200-2011** (Wah et al., 2011) with two splits: B100/N50 and B150/N50
+- **DeiT-Small** (ViT) backbone for NCC and ProtoNet
+- **Distance ablation:** Euclidean vs Manhattan for NCC and ProtoNet
+- **MatchingNet + Full Context Embeddings (FCE)** and **ProtoNet + test-time augmentation**
+- **Same-budget comparators:** K=5 fine-tuning and zero-shot transfer of the base-class model
 
 <div align="center">
-<img src="results/5shot_all_methods_comparison.png" width="95%" alt="5-shot accuracy, all methods, all splits"/>
-<br/><sub><b>5-way 5-shot accuracy for every method on both datasets</b> (Euclidean / default metric, 600 episodes each).</sub>
+<img src="results/birds20/analysis/thesis_summary_figure.png" width="90%" alt="Birds-20 core results overview"/>
+<br/><sub><b>Core study (Birds-20, 15 base / 5 novel, ResNet-50)</b>: method ranking, K-shot scaling, per-class accuracy, macro-F1 and the gain from episodic training over NCC.</sub>
 </div>
 
 ---
 
 ## 🔑 Key Findings
 
-1. **Representation quality matters more than the meta-learning algorithm.**
-   A frozen backbone with a simple nearest-centroid classifier (NCC) is competitive with
-   or better than every episodically trained method. On CUB-200 it *beats* ProtoNet at
-   every shot count (e.g. 88.3% vs 83.0% at 5-shot, B100/N50).
+### Core study (Birds-20, B15/N5, ResNet-50)
 
-2. **Episodic training helps only when base data is rich and the domain is easy.**
-   ProtoNet improves over NCC on Birds-20 B15/N5 (+6.0 pp at 1-shot, +1.7 pp at 5-shot),
-   but the gain shrinks or reverses with fewer base classes (B10/N10) and reverses on fine-grained CUB.
+1. **Prototypical Networks are the strongest few-shot method**, reaching 94.1% at 1-shot,
+   99.2% at 3-shot and 99.8% at 5-shot. That is on par with the fully supervised Full-20
+   reference (99.0%), which sees every class with all of its training images.
+2. **Accuracy rises with the number of shots for every method.** Most of the gain comes
+   from K=1 → K=3; K=3 → K=5 adds less than 3 pp.
+3. **Episodic training adds value over a strong frozen backbone.** ProtoNet beats the
+   nearest-centroid baseline that uses the same distance (88.1% → 94.1% at 1-shot,
+   +6.0 pp). The gap shrinks to +1.7 pp at 5-shot.
+4. **Prototype-based methods clearly beat the attention and learned-metric methods.**
+   Matching Networks (60.9–70.9%) and Relation Networks (72.7–78.8%) trail ProtoNet by
+   21–33 pp and NCC by 15–30 pp.
+5. **t-SNE shows compact per-species clusters** for the novel classes, so the base-class
+   embedding transfers to unseen birds.
 
-3. **Learned comparison modules underperform.** MatchingNet (cosine attention) and
-   RelationNet (learned MLP metric) trail the prototype-based methods by roughly 20–35 pp.
-   Full Context Embeddings (FCE) helped MatchingNet only at 1-shot on Birds-20 B15/N5
-   and **hurt it everywhere else**.
+### Extended experiments
 
-4. **A stronger backbone gives the biggest single boost.** Swapping ResNet-50 for DeiT-S
-   raises 1-shot accuracy by up to +8.7 pp (Birds-20 B15/N5 NCC) and makes the
-   method largely **insensitive to the distance metric**.
-
-5. **Euclidean > Manhattan for CNN features.** With ResNet-50, L2 beats L1 by up to
-   ~14 pp (ProtoNet 1-shot, Birds-20). With DeiT-S the gap collapses to < 0.5 pp.
-
-6. **Base-class diversity matters.** Moving from 15 to 10 base classes on Birds-20 costs
-   RelationNet ~13–16 pp, ProtoNet ~4–6 pp, and NCC only ~1 pp.
-
-7. **Diminishing returns beyond 3 shots.** Most of the gain comes from K=1 → K=3;
-   K=3 → K=5 adds only about 0.5–2 pp for the strong methods.
+6. **On fine-grained CUB-200, the frozen NCC baseline beats ProtoNet at every shot count**
+   (88.3% vs 83.0% at 5-shot, B100/N50). Representation quality matters more than the
+   meta-learning algorithm on the harder benchmark.
+7. **A stronger backbone gives the biggest single boost.** DeiT-S raises NCC 1-shot accuracy
+   by up to 8.7 pp (Birds-20 B15/N5) and makes results almost insensitive to the distance metric.
+8. **Euclidean beats Manhattan for ResNet-50 features** by up to ~14 pp (ProtoNet 1-shot,
+   Birds-20). With DeiT-S the gap is below 0.5 pp.
+9. **Base-class diversity matters.** Going from 15 to 10 base classes costs RelationNet
+   13–16 pp, ProtoNet 4–6 pp and NCC only about 1 pp.
+10. **FCE did not reliably help Matching Networks.** It improved only 1-shot on Birds-20
+    B15/N5 and lowered accuracy in every other setting.
 
 ---
 
 ## 📊 Results
 
-All FSL numbers are **5-way K-shot mean accuracy (%) over 600 episodes**. 95% CIs are
-narrow (typically ±0.2–0.8 pp) and are listed in
+All few-shot numbers are **5-way K-shot mean accuracy (%) over 600 episodes**. The 95%
+confidence intervals are narrow (typically ±0.2–0.8 pp) and are listed together with
+macro-F1, precision, recall and AUC in
 [`results/all_results_master.csv`](results/all_results_master.csv).
-Distance is Euclidean unless the method fixes its own metric.
 
-### Birds-20 (20 species, ~3.1k training images)
+### Core study: Birds-20, 15 base / 5 novel, ResNet-50
+
+| Method | Distance | 1-shot | 3-shot | 5-shot |
+|---|---|---:|---:|---:|
+| Nearest-Centroid Classifier | Euclidean | 88.05 | 97.58 | 98.14 |
+| **Prototypical Networks** | Euclidean | **94.06** | **99.18** | **99.80** |
+| Matching Networks | Cosine attention | 60.93 | 68.03 | 70.87 |
+| Relation Networks | Learned | 72.71 | 78.19 | 78.75 |
+
+| Supervised reference (fixed test set, not episodic) | Accuracy |
+|---|---:|
+| Full-20: all 20 species, full training data (upper bound) | 99.00 |
+| Base-15: 15 base species only, evaluated on base classes | 100.00 |
+
+> The supervised models are trained with all available images and evaluated on a fixed test
+> set, so they are reference points rather than head-to-head competitors.
+
+### Extended experiments
+
+<details open>
+<summary><b>Birds-20: both splits and both backbones</b></summary>
 
 | Method | Backbone | B15/N5 1-shot | 3-shot | 5-shot | B10/N10 1-shot | 3-shot | 5-shot |
 |---|---|---:|---:|---:|---:|---:|---:|
-| NCC (frozen) | ResNet-50 | 88.05 | 97.58 | 98.14 | 87.01 | 96.20 | 97.40 |
-| NCC (frozen) | DeiT-S | **96.72** | **99.89** | **99.99** | **95.35** | **98.11** | **98.61** |
+| NCC | ResNet-50 | 88.05 | 97.58 | 98.14 | 87.01 | 96.20 | 97.40 |
+| NCC | DeiT-S | **96.72** | **99.89** | **99.99** | **95.35** | **98.11** | **98.61** |
 | ProtoNet | ResNet-50 | 94.06 | 99.18 | 99.80 | 88.45 | 94.83 | 95.77 |
 | ProtoNet | DeiT-S | 96.46 | 99.51 | 99.77 | 94.47 | 97.17 | 98.11 |
 | ProtoNet + TTA×8 | ResNet-50 | – | – | 99.85 | – | – | 96.64 |
-| MatchingNet (cosine) | ResNet-50 | 60.93 | 68.03 | 70.87 | 59.11 | 63.35 | 66.74 |
+| MatchingNet | ResNet-50 | 60.93 | 68.03 | 70.87 | 59.11 | 63.35 | 66.74 |
 | MatchingNet + FCE | ResNet-50 | 63.79 | 66.11 | 67.24 | 53.99 | 56.85 | 58.81 |
-| RelationNet (learned) | ResNet-50 | 72.71 | 78.19 | 78.75 | 56.41 | 62.71 | 65.71 |
+| RelationNet | ResNet-50 | 72.71 | 78.19 | 78.75 | 56.41 | 62.71 | 65.71 |
 
-### CUB-200-2011 (200 fine-grained species, 11.8k images)
+</details>
+
+<details open>
+<summary><b>CUB-200-2011: 200 fine-grained species</b></summary>
 
 | Method | Backbone | B100/N50 1-shot | 3-shot | 5-shot | B150/N50 1-shot | 3-shot | 5-shot |
 |---|---|---:|---:|---:|---:|---:|---:|
-| NCC (frozen) | ResNet-50 | 72.89 | 86.24 | 88.33 | 74.17 | 87.90 | 89.97 |
-| NCC (frozen) | DeiT-S | **77.23** | **88.27** | **90.17** | **77.77** | **88.72** | **90.57** |
+| NCC | ResNet-50 | 72.89 | 86.24 | 88.33 | 74.17 | 87.90 | 89.97 |
+| NCC | DeiT-S | **77.23** | **88.27** | **90.17** | **77.77** | **88.72** | **90.57** |
 | ProtoNet | ResNet-50 | 70.03 | 80.84 | 83.03 | 71.69 | 83.98 | 85.59 |
 | ProtoNet | DeiT-S | 73.67 | 85.48 | 88.17 | 73.59 | 85.63 | 87.65 |
-| MatchingNet (cosine) | ResNet-50 | 48.74 | 55.62 | 58.64 | 53.86 | 59.80 | 60.86 |
+| MatchingNet | ResNet-50 | 48.74 | 55.62 | 58.64 | 53.86 | 59.80 | 60.86 |
 | MatchingNet + FCE | ResNet-50 | 47.19 | 50.45 | 50.86 | 51.16 | 53.61 | 54.93 |
-| RelationNet (learned) | ResNet-50 | 55.97 | 62.85 | 64.66 | 51.16 | 57.47 | 59.54 |
+| RelationNet | ResNet-50 | 55.97 | 62.85 | 64.66 | 51.16 | 57.47 | 59.54 |
 
-### Reference baselines (ResNet-50)
+</details>
+
+<details>
+<summary><b>Supervised references and same-budget comparators (ResNet-50)</b></summary>
 
 | Setting | Birds-20 | CUB-200 |
 |---|---:|---:|
-| Supervised, all classes (upper bound) | 99.00 (Full-20) | 79.46 (Full-200) |
+| Supervised, all classes | 99.00 (Full-20) | 79.46 (Full-200) |
 | Supervised, base classes only | 100.00 (B15) · 100.00 (B10) | 79.40 (B100) · 78.04 (B150) |
 | K=5 fine-tune on novel classes | 100.00 (B15/N5) · 92.00 (B10/N10) | 64.78 (B100/N50) · 69.01 (B150/N50) |
-| Zero-shot transfer (base head on novel images) | 0.00 | 0.00 |
+| Zero-shot transfer (base-class head on novel images) | 0.00 | 0.00 |
 
-> Supervised rows are evaluated on a fixed test set rather than in 5-way episodes, so they
-> are reference points, not head-to-head competitors to the FSL methods.
+</details>
 
 <details>
 <summary><b>Distance-metric ablation (5-shot)</b></summary>
@@ -138,18 +188,16 @@ Distance is Euclidean unless the method fixes its own metric.
 ### Figures
 
 <div align="center">
-<img src="results/birds20/analysis/thesis_summary_figure.png" width="90%" alt="Birds-20 complete results overview"/>
-<br/><sub><b>Birds-20 B15/N5 overview</b>: ranking, K-shot scaling, per-class heatmap, macro-F1 and the gain from episodic training.</sub>
+<img src="results/5shot_all_methods_comparison.png" width="95%" alt="5-shot accuracy, all methods, all splits"/>
+<br/><sub><b>5-shot accuracy for every method</b> on Birds-20 and CUB-200 (extended experiments; Euclidean / default metric).</sub>
 <br/><br/>
 <img src="results/cub/analysis/cub_kshot_all_both_splits.png" width="95%" alt="CUB K-shot trend"/>
 <br/><sub><b>CUB-200-2011</b>: accuracy vs K for every method and backbone, both splits.</sub>
 </div>
 
-More than 100 further figures (confusion matrices, t-SNE embeddings, per-class
-heatmaps, failure cases, one figure per research question) live in
-[`results/birds20/analysis/`](results/birds20/analysis/) and
-[`results/cub/analysis/`](results/cub/analysis/). Captions for each are in
-[`results/birds20/analysis/README.md`](results/birds20/analysis/README.md).
+More figures (confusion matrices, t-SNE embeddings, per-class heatmaps, failure cases)
+are in [`results/birds20/analysis/`](results/birds20/analysis/) and
+[`results/cub/analysis/`](results/cub/analysis/).
 
 ---
 
@@ -160,7 +208,7 @@ files in this repo directly. Nothing has to be exported by hand.
 
 | Page | What it shows |
 |---|---|
-| 🏠 Home | Headline numbers, datasets and core findings |
+| 🏠 Home | Headline numbers, datasets and findings |
 | 📊 Method Ranking | All methods at a chosen K and split |
 | 📈 K-Shot Efficiency | Accuracy vs K and the marginal gain per extra shot |
 | 🔬 Backbone Comparison | ResNet-50 vs DeiT-S |
@@ -217,15 +265,15 @@ The DeiT-S ImageNet weights are included in `pretrained_weights/` so that ViT ru
 
 Every experiment is driven by a YAML file in [`configs/`](configs/) (class splits,
 seed = 42, hyper-parameters, output paths). Run scripts from their own directory.
+Steps 1–3 with the default configs reproduce the core study.
 
 ```bash
-# 1 — Supervised baseline on base classes (backbone for NCC / fine-tune / zero-shot)
+# 1 — Supervised baselines (Full-20 upper bound, Base-15 backbone for NCC)
+cd train_evaluate/baseline/resNet50_FS && python train.py && python evaluate.py && cd ../../..
 cd train_evaluate/baseline/resNet50_bX
 python train.py                                   # default: Birds-20 B15
 python evaluate.py
-python evaluate_novel_zeroshot.py
-python finetune_novel_kshot.py
-python evaluate_novel_ncc.py --k-shot 1 --distance euclidean   # K ∈ {1,3,5}, L1/L2
+python evaluate_novel_ncc.py --k-shot 1 --distance euclidean   # K ∈ {1,3,5}
 cd ../../..
 
 # 2 — Prototypical Networks
@@ -234,17 +282,27 @@ python train.py
 python evaluate.py --k-shot 5 --distance euclidean
 cd ../..
 
-# 3 — Matching Networks (vanilla / FCE) and Relation Networks
+# 3 — Matching Networks and Relation Networks
 cd train_evaluate/matchingnet && python train.py && python evaluate.py --k-shot 5 && cd ../..
-cd train_evaluate/matchingnet && python train.py --config ../../configs/birds20/matchingnet_fce_configs.yaml && cd ../..
 cd train_evaluate/relationnet && python train.py && python evaluate.py --k-shot 5 && cd ../..
 
-# 4 — DeiT-S backbone
+# ── Extended experiments ──────────────────────────────────────────────────────
+# Fine-tune / zero-shot comparators, Manhattan distance
+cd train_evaluate/baseline/resNet50_bX
+python evaluate_novel_zeroshot.py
+python finetune_novel_kshot.py
+python evaluate_novel_ncc.py --k-shot 1 --distance manhattan
+cd ../../..
+
+# MatchingNet + FCE
+cd train_evaluate/matchingnet && python train.py --config ../../configs/birds20/matchingnet_fce_configs.yaml && cd ../..
+
+# DeiT-S backbone
 cd train_evaluate/vit_backbone/baseline  && python train.py --config ../../../configs/birds20/vit_baseline_b15_config.yaml && cd ../../..
 cd train_evaluate/vit_backbone/ncc       && python evaluate_novel_ncc.py --k-shot 5 && cd ../../..
 cd train_evaluate/vit_backbone/proto_net && python train.py && python evaluate.py --k-shot 5 && cd ../../..
 
-# 5 — Aggregate tables and figures
+# Aggregate tables and figures
 python compare_results.py          # Birds-20 → results/birds20/comparison/
 python compare_results_cub.py      # CUB-200  → results/cub/comparison/
 python plots/kshot_trend.py
@@ -268,17 +326,18 @@ confusion matrix and (for the FSL methods) learning curves and t-SNE plots to
 
 | Group | Method | Trained on | Role |
 |---|---|---|---|
-| Upper bound | Supervised Full / Base | all labelled images | ceiling, not a fair comparator |
-| Naïve transfer | Zero-shot | base classes only | shows a base-class head cannot name novel species (0%) |
-| Supervised comparator | K=5 fine-tune | base + 5 novel images per class | same data budget as 5-shot FSL |
-| Representation baseline | NCC (L1 / L2) | standard CE on base classes, then frozen | isolates the effect of episodic training |
-| FSL | ProtoNet (L1 / L2) | 5-way episodes on base classes | prototype = mean support embedding |
-| FSL | MatchingNet (± FCE) | 5-way episodes | cosine attention over individual supports |
-| FSL | RelationNet | 5-way episodes | learned MLP similarity, MSE objective |
+| Upper bound | Supervised Full-20 | all 20 species, full training data | ceiling, not a fair comparator |
+| Feature extractor | Supervised Base-15 | 15 base species | provides embeddings for NCC |
+| Non-episodic baseline | NCC | Base-15 backbone, frozen | isolates the effect of episodic training |
+| Few-shot | Prototypical Networks | 5-way episodes on base classes | prototype = mean support embedding |
+| Few-shot | Matching Networks | 5-way episodes on base classes | attention over individual support examples |
+| Few-shot | Relation Networks | 5-way episodes on base classes | learned similarity function |
+| *Extended* | K=5 fine-tune, zero-shot | base model + novel images | same data budget as 5-shot FSL |
 
-**Evaluation protocol:** 5-way K-shot, K ∈ {1, 3, 5}. Support images are sampled from
-the novel *train* split and queries from the novel *test* split, so supports and queries
-never overlap. Each configuration is evaluated on 600 random episodes with a fixed seed.
+**Evaluation protocol:** 5-way K-shot, K ∈ {1, 3, 5}. In each of 600 episodes a support
+set (K images per class) and a query set are sampled from the novel classes. Supports
+come from the novel *train* split and queries from the novel *test* split, so they never
+overlap.
 
 **Leakage guard:** [`data_prep/validate_split.py`](data_prep/validate_split.py) checks
 every config for overlapping base and novel classes, duplicate entries and missing class
@@ -297,7 +356,7 @@ one-line call for use inside scripts.
 ├── data_prep/               # CUB preparation and split validation
 ├── models/                  # protonet.py, matchingnet.py (± FCE), relationnet.py, vit.py
 ├── train_evaluate/
-│   ├── baseline/            # ResNet-50 supervised, zero-shot, fine-tune, NCC
+│   ├── baseline/            # ResNet-50 supervised, NCC, fine-tune, zero-shot
 │   ├── proto_net/
 │   ├── matchingnet/
 │   ├── relationnet/
@@ -305,7 +364,7 @@ one-line call for use inside scripts.
 ├── utils/                   # dataset, episodic sampler, metrics, split guard
 ├── plots/                   # K-shot trends, per-class heatmaps, t-SNE
 ├── notebooks/               # EDA (Birds-20, CUB) and results analysis
-├── results/                 # all summaries, CSVs and figures (≈140 experiments)
+├── results/                 # all summaries, CSVs and figures
 ├── fau_hpc_jobs/            # SLURM scripts for the GPU cluster
 ├── pretrained_weights/      # DeiT-S ImageNet weights
 ├── compare_results.py       # Birds-20 comparison table / LaTeX
@@ -317,12 +376,18 @@ one-line call for use inside scripts.
 
 ## ⚠️ Limitations
 
-- **Small Birds-20 test set.** There are only 5 test images per novel class. Episode-level
-  CIs are tight, but they measure variation across support sampling, not test-set size.
-  This is why the CUB-200 experiments were added as a harder, larger benchmark.
+- **Small dataset.** Birds-20 has only 20 species and 5 test images per species. Episode-level
+  confidence intervals are tight, but they reflect variation across support sampling, not
+  test-set size. The CUB-200 experiments were added as a larger, harder benchmark.
+- **Gender imbalance.** About 80% of Birds-20 images show male birds, which usually have
+  more distinctive plumage, and most validation and test images are male. Accuracy on
+  female birds may be lower than reported.
+- **Backbone.** The core study uses a single ResNet-50 backbone. DeiT-S results are in the
+  extended experiments.
+- **Method family.** Only metric-based few-shot methods are evaluated. Optimisation-based
+  meta-learning such as MAML is not covered.
 - **Simplified RelationNet.** An MLP relation module is used on pooled 2048-d features
   instead of the original convolutional module on spatial feature maps.
-- **Single run per configuration.** Variance comes from 600 episodes with one training seed (42).
 
 ---
 
@@ -333,9 +398,13 @@ one-line call for use inside scripts.
 - Sung et al. (2018). *Learning to Compare: Relation Network for Few-Shot Learning.* CVPR.
 - Chen et al. (2019). *A Closer Look at Few-Shot Classification.* ICLR.
 - He et al. (2016). *Deep Residual Learning for Image Recognition.* CVPR.
-- Touvron et al. (2021). *Training Data-Efficient Image Transformers & Distillation through Attention.* ICML.
-- Wah et al. (2011). *The Caltech-UCSD Birds-200-2011 Dataset.* Caltech Tech. Report CNS-TR-2011-001.
+- Deng et al. (2009). *ImageNet: A Large-Scale Hierarchical Image Database.* CVPR.
+- Wilson (1927). *Probable Inference, the Law of Succession, and Statistical Inference.* JASA.
+- van der Maaten & Hinton (2008). *Visualizing Data using t-SNE.* JMLR.
 - Wang et al. (2020). *Generalizing from a Few Examples: A Survey on Few-Shot Learning.* ACM Computing Surveys.
+- Pirzada (2020). *Birds 20 Species Image Classification* [Dataset]. Kaggle.
+- Wah et al. (2011). *The Caltech-UCSD Birds-200-2011 Dataset.* Caltech Tech. Report CNS-TR-2011-001. *(extended experiments)*
+- Touvron et al. (2021). *Training Data-Efficient Image Transformers & Distillation through Attention.* ICML. *(extended experiments)*
 
 ---
 
@@ -346,8 +415,10 @@ one-line call for use inside scripts.
   title  = {Few-Shot Learning Paradigms for Bird Species Classification under Data Scarcity},
   author = {Mustafa, Ghulam},
   school = {Friedrich-Alexander-Universit{\"a}t Erlangen-N{\"u}rnberg},
+  type   = {MSc Thesis in Artificial Intelligence},
+  note   = {Pattern Recognition Lab (Informatik 5). Advisor: Dr. Mathias Seuret},
   year   = {2026},
-  type   = {MSc Thesis in Artificial Intelligence}
+  url    = {https://github.com/gmMustafa/Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity}
 }
 ```
 

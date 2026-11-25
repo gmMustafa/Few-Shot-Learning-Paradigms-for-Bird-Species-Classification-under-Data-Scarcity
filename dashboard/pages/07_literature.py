@@ -28,7 +28,7 @@ st.markdown("""
             padding:20px 24px;color:white;margin-bottom:16px">
   <h2 style="margin:0;font-size:20px">📚 Literature Comparison</h2>
   <p style="margin:4px 0 0;opacity:.85;font-size:13px">
-    CUB-200 B100/N50 · 5-way K-shot results vs published methods (Table 4.26 in thesis)
+    CUB-200 B100/N50 · 5-way K-shot results vs published methods
   </p>
 </div>
 """, unsafe_allow_html=True)
@@ -46,7 +46,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Published results (manually entered from thesis Table 4.26) ────────────────
+# ── Published results (manually entered from the cited papers; not part of the submitted thesis) ────────────────
 LITERATURE = [
     {
         "Reference":      "ProtoNet [Snell 2017]",
