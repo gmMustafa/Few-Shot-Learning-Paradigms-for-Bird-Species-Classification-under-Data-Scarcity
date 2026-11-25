@@ -46,14 +46,19 @@ dashboard/
 ├── pages/              # 00_home … 07_literature
 ├── components/         # charts.py (Plotly), filters.py, cards.py
 ├── data/loader.py      # cached loading and normalisation of results
-├── assets/style.css
-└── .streamlit/config.toml
+└── assets/style.css
 ```
+
+The theme lives in `.streamlit/config.toml` at the **repository root**, because Streamlit
+reads it from the directory the app is launched from (the repo root, both locally and on
+Streamlit Community Cloud).
 
 ## Deploy on Streamlit Community Cloud
 
-1. Push this repository to GitHub.
-2. On [share.streamlit.io](https://share.streamlit.io) choose **New app**.
-3. Select this repository, branch `main`, and main file `dashboard/app.py`.
+1. Sign in at [share.streamlit.io](https://share.streamlit.io) with GitHub and choose **Create app → Deploy a public app from GitHub**.
+2. Repository: `gmMustafa/Few-Shot-Learning-Paradigms-for-Bird-Species-Classification-under-Data-Scarcity`, branch `main`, main file path `dashboard/app.py`.
+3. Under **Advanced settings**, pick Python 3.11. No secrets are needed.
+4. Deploy. Dependencies are installed from `dashboard/requirements.txt`, the requirements file next to the entry point.
 
 The `results/` folder is part of the repository, so no extra data hosting is needed.
+After deployment, every push to `main` redeploys the app automatically.
