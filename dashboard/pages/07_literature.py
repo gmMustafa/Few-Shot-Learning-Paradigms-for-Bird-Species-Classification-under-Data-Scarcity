@@ -46,43 +46,58 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Published results (manually entered from the cited papers; not part of the submitted thesis) ────────────────
+# ── Published CUB-200 5-way results, copied from the cited papers ─────────────
+# Not part of the submitted thesis. Sources:
+#   Chen et al. 2019 (ICLR), "A Closer Look at Few-Shot Classification":
+#       Table 2 (Conv-4) and Table A5 (ResNet-18); ProtoNet is their re-implementation.
+#       (Snell et al. 2017 reported only zero-shot results on CUB.)
+#   Ye et al. 2020 (CVPR), FEAT: Table 8, ConvNet backbone.
+#   Zhang et al., DeepEMD (arXiv:2003.06777, extended version): Table (c) CUB, DeepEMD-FCN.
 LITERATURE = [
     {
-        "Reference":      "ProtoNet [Snell 2017]",
+        "Reference":      "ProtoNet / Conv-4 [Chen 2019]",
         "Backbone":       "Conv-4",
         "Training":       "Episodic",
-        "1-shot (%)":     51.31,
-        "5-shot (%)":     70.00,
+        "1-shot (%)":     50.46,
+        "5-shot (%)":     76.39,
         "Source":         "published",
-        "Note":           "Original ProtoNet, Conv-4 backbone",
+        "Note":           "Re-implementation by Chen et al. (Table 2)",
+    },
+    {
+        "Reference":      "ProtoNet / ResNet-18 [Chen 2019]",
+        "Backbone":       "ResNet-18",
+        "Training":       "Episodic",
+        "1-shot (%)":     72.99,
+        "5-shot (%)":     86.64,
+        "Source":         "published",
+        "Note":           "Re-implementation by Chen et al. (Table A5)",
     },
     {
         "Reference":      "Baseline++ [Chen 2019]",
         "Backbone":       "ResNet-18",
-        "Training":       "Supervised + FC",
-        "1-shot (%)":     63.02,
-        "5-shot (%)":     80.00,
+        "Training":       "Supervised + cosine classifier",
+        "1-shot (%)":     67.02,
+        "5-shot (%)":     83.58,
         "Source":         "published",
-        "Note":           "Strong fine-tuning baseline",
+        "Note":           "Strong fine-tuning baseline (Table A5)",
     },
     {
         "Reference":      "FEAT [Ye 2020]",
-        "Backbone":       "ResNet-12",
+        "Backbone":       "ConvNet",
         "Training":       "Episodic + transformer",
         "1-shot (%)":     68.87,
-        "5-shot (%)":     82.05,
+        "5-shot (%)":     82.90,
         "Source":         "published",
-        "Note":           "Feature Enrichment via transformer",
+        "Note":           "Embedding adaptation with a transformer (Table 8)",
     },
     {
         "Reference":      "DeepEMD [Zhang 2020]",
         "Backbone":       "ResNet-12",
         "Training":       "Earth Mover's Distance",
-        "1-shot (%)":     75.65,
-        "5-shot (%)":     88.69,
+        "1-shot (%)":     77.14,
+        "5-shot (%)":     88.98,
         "Source":         "published",
-        "Note":           "Optimal transport matching",
+        "Note":           "DeepEMD-FCN, optimal transport matching",
     },
 ]
 
@@ -100,8 +115,8 @@ def _get(method, shot):
 our_results = []
 for method_name, backbone_label, training_label in [
     ("ProtoNet",    "ResNet-50", "Episodic (NeurIPS 2017 protocol)"),
-    ("NCC (R50)",   "ResNet-50", "Training-free (NCC)"),
-    ("NCC (DeiT-S)","DeiT-S",   "Training-free (NCC)"),
+    ("NCC (R50)",   "ResNet-50", "No episodic training (NCC)"),
+    ("NCC (DeiT-S)","DeiT-S",   "No episodic training (NCC)"),
 ]:
     a1, ci1 = _get(method_name, 1)
     a5, ci5 = _get(method_name, 5)
@@ -235,16 +250,16 @@ finding_box(
     icon="📌", style="info",
 )
 finding_box(
-    f"<b>NCC/DeiT-S ({ncc_deit_5:.2f}%) approaches task-specific SOTA</b> "
-    f"(DeepEMD {deep_5:.2f}%) without any episodic training, specialised architectures, "
-    "or optimal transport solvers. The DeiT-S backbone's isotropic feature space "
-    "is the key enabler.",
+    f"<b>NCC/DeiT-S ({ncc_deit_5:.2f}%) is on par with a task-specific method</b> "
+    f"(DeepEMD {deep_5:.2f}%) without any episodic training, specialised architecture "
+    "or optimal transport solver. The stronger ImageNet-pretrained backbone does most of the work.",
     icon="🏆", style="success",
 )
+proto_r50_5 = ours_df[ours_df["Reference"]=="Ours — ProtoNet"]["5-shot (%)"]
+proto_r50_txt = f"{proto_r50_5.iloc[0]:.2f}%" if len(proto_r50_5) else "our ProtoNet/R50"
 finding_box(
-    "<b>Our ProtoNet/R50 surpasses published ProtoNet/Conv-4 by a large margin.</b> "
-    "The original ProtoNet used a 4-layer conv backbone on Mini-ImageNet. "
-    "Upgrading to ResNet-50 pretrained on ImageNet brings substantial gains "
-    "even on a harder domain (CUB fine-grained birds).",
+    f"<b>Our ProtoNet/R50 ({proto_r50_txt} at 5-shot) beats ProtoNet with a Conv-4 backbone "
+    "(76.39%) but trails Chen et al.'s ProtoNet with ResNet-18 (86.64%).</b> "
+    "Pretraining, image resolution and the class split differ, so the gap is indicative only.",
     icon="💡", style="info",
 )

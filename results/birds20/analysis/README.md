@@ -109,7 +109,7 @@ Grouped bar chart comparing Euclidean vs Manhattan for ProtoNet and NCC across a
 
 ### `rq6_per_class_variability.png`
 **RQ6 — Which novel species are hardest to classify and why?**
-Per-class accuracy heatmap across all methods and shot counts. Sorted from hardest (left) to easiest (right). ALTAMIRA YELLOWTHROAT (avg 56.1%) and AMERICAN KESTREL (avg 66.2%) are consistently the most challenging. AMERICAN AVOCET and AMERICAN FLAMINGO are consistently the easiest (avg >90%).
+Per-class 1-shot accuracy for NCC (Euclidean), ProtoNet (Euclidean), MatchingNet and RelationNet, with B15/N5 on the left and B10/N10 on the right. In B15/N5, AMERICAN KESTREL is the hardest novel species (mean 52.3% over the four methods) and AMERICAN GOLDFINCH the easiest (96.8%). In B10/N10, ALTAMIRA YELLOWTHROAT, which is a novel class only in this split, is the hardest (50.6%), followed by AMERICAN KESTREL (61.4%).
 
 ### `rq7_stability.png`
 **RQ7 — How stable are FSL evaluations across episodes?**
@@ -172,10 +172,10 @@ Key finding: The 1→3 shot gain averages ~7 pp across methods, while the 3→5 
 ## 11. Failure Case Analysis
 
 ### `failure_case_heatmap.png`
-Per-class accuracy heatmap restricted to B15/N5 experiments only, with novel classes sorted from worst to best average accuracy. Clearly shows ALTAMIRA YELLOWTHROAT as the consistently hardest class across all 12 method/shot combinations. Used to support the "visual heterogeneity" argument in the thesis introduction.
+Per-class accuracy heatmap for the B15/N5 split (NCC, ProtoNet, MatchingNet and RelationNet at 1, 3 and 5 shots; 12 rows), with novel species sorted from worst to best mean accuracy. AMERICAN KESTREL is the hardest class (mean 61.7%), followed by AMERICAN BITTERN (82.9%); AMERICAN GOLDFINCH is the easiest (98.9%). Kestrel accuracy depends strongly on the method: 99.0% for ProtoNet at 5-shot but 15.9% for MatchingNet.
 
 ### `failure_case_sample_images.png`
-Grid of sample images for the 3 hardest novel species (ALTAMIRA YELLOWTHROAT, AMERICAN KESTREL, AMERICAN BITTERN). 4 images per species from the test set. Visually illustrates why these species are harder: subtle plumage patterns, variable lighting, and background clutter confound the classifier.
+Grid of four example images for each of the three hardest novel species in B15/N5: AMERICAN KESTREL (mean 61.7%), AMERICAN BITTERN (82.9%) and AMERICAN FLAMINGO (87.9%). The examples show the within-class variation behind the lower accuracy, for example male vs female kestrel plumage and bitterns camouflaged in reeds.
 
 ---
 
